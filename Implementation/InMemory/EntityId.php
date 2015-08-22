@@ -6,15 +6,15 @@ use Kontuak\EntityId as Base;
 
 class EntityId implements Base
 {
-    private $stringId;
+    private $intId;
 
-    public function __construct($stringId)
+    public function __construct($intId)
     {
-        $this->stringId = $stringId;
+        $this->intId = $intId;
     }
 
     public function serialize()
     {
-        return $this->stringId;
+        return $this->intId;
     }
 }

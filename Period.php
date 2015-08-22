@@ -10,4 +10,9 @@ abstract class Period implements \Iterator
     {
         $this->amount = $amount;
     }
+
+    public function amount()
+    {
+        return $this->amount;
+    }
 }

@@ -6,6 +6,8 @@ use DateTime;
 
 abstract class PeriodicalMovement
 {
+    use EntityTrait;
+
     /** @var int */
     protected $amount;
     /** @var string */
@@ -14,6 +16,22 @@ abstract class PeriodicalMovement
     private $period;
     /** @var Movement */
     protected $templateMovement;
+
+    /**
+     * @return string
+     */
+    public function concept()
+    {
+        return $this->concept;
+    }
+
+    /**
+     * @return Period
+     */
+    public function period()
+    {
+        return $this->period;
+    }
 
     /**
      * @return Movement
@@ -31,6 +49,14 @@ abstract class PeriodicalMovement
         $this->amount = $amount;
         $this->concept = $concept;
         $this->period = $period;
+    }
+
+    /**
+     * @return int
+     */
+    public function amount()
+    {
+        return $this->amount;
     }
 
     /**

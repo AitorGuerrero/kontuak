@@ -1,6 +1,6 @@
 <?php
 
-namespace kontuak\Interactors\CreateAPeriodicalEntry;
+namespace Kontuak\Interactors\CreateAPeriodicalEntry;
 
 use \Exception;
 

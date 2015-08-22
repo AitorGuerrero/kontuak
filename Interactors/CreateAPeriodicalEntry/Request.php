@@ -1,13 +1,13 @@
 <?php
 
-namespace kontuak\Interactors\CreateAPeriodicalEntry;
+namespace Kontuak\Interactors\CreateAPeriodicalEntry;
 
 class Request {
 
-    const TYPE_DAYS = 0;
-    const TYPE_MONTHS = 1;
-    const TYPE_WEEK_DAY = 2;
-    const TYPE_MONTH_DAY = 3;
+    const TYPE_DAYS = 1;
+    const TYPE_MONTHS = 2;
+    const TYPE_WEEK_DAY = 3;
+    const TYPE_MONTH_DAY = 4;
 
     public $amount;
     public $concept;
