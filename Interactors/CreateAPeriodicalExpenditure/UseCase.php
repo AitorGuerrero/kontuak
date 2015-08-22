@@ -1,6 +1,6 @@
 <?php
 
-namespace kontuak\Interactors\CreateAPeriodicalExpenditure;
+namespace Kontuak\Interactors\CreateAPeriodicalExpenditure;
 
 use Kontuak\Interactors\InvalidArgumentException;
 use Kontuak\Period\DaysPeriod;
