@@ -1,25 +1,25 @@
 <?php
 
-namespace kontuak\Interactors\CreateNewExpenditure;
+namespace Kontuak\Interactors\CreateNewExpenditure;
 
 class Request
 {
-    /**
-     * @var float
-     */
+    /** @var float */
     public $amount;
-    /**
-     * @var string
-     */
+    /** @var string */
     public $concept;
+    /** @var string */
+    public $dateTimeSerialized;
 
     /**
      * @param float $amount
      * @param string $concept
+     * @param string $dateTimeSerialized
      */
-    public function __construct($amount, $concept)
+    public function __construct($amount, $concept, $dateTimeSerialized)
     {
         $this->amount = $amount;
         $this->concept = $concept;
+        $this->dateTimeSerialized = $dateTimeSerialized;
     }
 }

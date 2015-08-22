@@ -1,9 +1,11 @@
 <?php
 
-namespace kontuak\Interactors\CreateNewExpenditure;
+namespace Kontuak\Interactors\CreateNewExpenditure;
 
 use Kontuak\Expenditure;
 use Kontuak\ExpendituresCollection;
+use Kontuak\Interactors\InvalidArgumentException;
+use Kontuak\Interactors\SystemException;
 
 class UseCase
 {
@@ -17,9 +19,28 @@ class UseCase
         $this->expendituresCollection = $expendituresCollection;
     }
 
-    public function execute(CreateNewExpenditureRequest $request)
+    public function execute(Request $request)
     {
-        $expenditure = new Expenditure($request->amount, $request->concept);
+        try {
+            $expenditure = new Expenditure(
+                $request->amount,
+                $request->concept,
+                new \DateTime($request->dateTimeSerialized)
+            );
+            $this->expendituresCollection->add($expenditure);
+        } catch (\Kontuak\InvalidArgumentException $e) {
+            throw new InvalidArgumentException();
+        } catch (\Exception $e) {
+            throw new SystemException();
+        }
+
+
         $this->expendituresCollection->add($expenditure);
+        $response = new Response();
+        $response->expenditure = [
+            'id' => $expenditure->id()->serialize()
+        ];
+
+        return $response;
     }
 }

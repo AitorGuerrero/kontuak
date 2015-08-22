@@ -12,11 +12,11 @@ class UseCase
     /**
      * @var EntriesCollection
      */
-    private $expendituresCollection;
+    private $entryCollection;
 
-    public function __construct(EntriesCollection $expendituresCollection)
+    public function __construct(EntriesCollection $entryCollection)
     {
-        $this->expendituresCollection = $expendituresCollection;
+        $this->entryCollection = $entryCollection;
     }
 
     /**
@@ -29,8 +29,8 @@ class UseCase
     {
         $dateTime = new \DateTime();
         try {
-            $expenditure = new Entry($request->amount, $request->concept, $dateTime);
-            $this->expendituresCollection->add($expenditure);
+            $entry = new Entry($request->amount, $request->concept, $dateTime);
+            $this->entryCollection->add($entry);
         } catch (\Kontuak\InvalidArgumentException $e) {
             throw new InvalidArgumentException();
         } catch (\Exception $e) {
@@ -39,7 +39,7 @@ class UseCase
 
         $response = new Response();
         $response->entry = [
-            'id' => $expenditure->id()->serialize()
+            'id' => $entry->id()->serialize()
         ];
         return $response;
     }

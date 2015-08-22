@@ -1,16 +1,27 @@
 <?php
 
-namespace kontuak\Implementation\InMemory;
+namespace Kontuak\Implementation\InMemory;
 
-use kontuak\Expenditure;
-use kontuak\ExpendituresCollection as BaseCollection;
+use Kontuak\Expenditure;
+use Kontuak\ExpendituresCollection as BaseCollection;
 
 class ExpendituresCollection implements BaseCollection
 {
     private $collection = [];
+    private $identifierCounter = 1;
 
-    public function add(Expenditure $expenditure)
+    public function add(Expenditure $entry)
     {
-        $this->collection[] = $expenditure;
+        $entry->identify(new EntityId($this->identifierCounter++));
+        $this->collection[$entry->id()->serialize()] = $entry;
+    }
+
+    /**
+     * @param EntityId $id
+     * @return Entry
+     */
+    public function find(EntityId $id)
+    {
+        return $this->collection[$id->serialize()];
     }
 }
