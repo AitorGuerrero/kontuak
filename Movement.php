@@ -4,6 +4,8 @@ namespace Kontuak;
 
 abstract class Movement
 {
+    use EntityTrait;
+
     /** @var float */
     protected $amount;
     /** @var string */
