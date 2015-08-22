@@ -19,6 +19,22 @@ abstract class Movement
     }
 
     /**
+     * @return float
+     */
+    public function amount()
+    {
+        return $this->amount;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function date()
+    {
+        return $this->date();
+    }
+
+    /**
      * @param float $amount
      */
     protected function updateAmount($amount)
@@ -28,9 +44,13 @@ abstract class Movement
 
     /**
      * @param string $concept
+     * @throws InvalidArgumentException
      */
     protected function updateConcept($concept)
     {
+        if(empty($concept)) {
+            throw new InvalidArgumentException();
+        }
         $this->concept = $concept;
     }
 
@@ -40,10 +60,5 @@ abstract class Movement
     protected function updateDate($date)
     {
         $this->date = $date;
-    }
-
-    public function date()
-    {
-        return $this->date();
     }
 }
