@@ -27,9 +27,8 @@ class UseCase
      */
     public function execute(Request $request)
     {
-        $dateTime = new \DateTime();
         try {
-            $entry = new Entry($request->amount, $request->concept, $dateTime);
+            $entry = new Entry($request->amount, $request->concept, $request->date);
             $this->entryCollection->add($entry);
         } catch (\Kontuak\InvalidArgumentException $e) {
             throw new InvalidArgumentException();

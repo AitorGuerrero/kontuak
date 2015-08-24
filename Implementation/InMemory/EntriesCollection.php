@@ -9,10 +9,18 @@ class EntriesCollection implements BaseCollection
 {
     private $collection = [];
     private $identifierCounter = 1;
+    /** @var \DateTimeInterface */
+    private $timeStamp;
+
+    public function __construct(\DateTimeInterface $timeStamp)
+    {
+        $this->timeStamp = $timeStamp;
+    }
 
     public function add(Entry $entry)
     {
         $entry->identify(new EntityId($this->identifierCounter++));
+        $entry->setCreated($this->timeStamp);
         $this->collection[$entry->id()->serialize()] = $entry;
     }
 

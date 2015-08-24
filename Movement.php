@@ -12,6 +12,8 @@ abstract class Movement
     protected $concept;
     /** @var \DateTimeInterface */
     protected $date;
+    /** @var \DateTimeInterface */
+    protected $created;
 
     public function __construct($amount, $concept, \DateTimeInterface $date)
     {
@@ -33,7 +35,17 @@ abstract class Movement
      */
     public function date()
     {
-        return $this->date();
+        return $this->date;
+    }
+
+    public function created()
+    {
+        return $this->created;
+    }
+
+    public function setCreated(\DateTimeInterface $created)
+    {
+        $this->created = $created;
     }
 
     /**
@@ -62,5 +74,13 @@ abstract class Movement
     protected function updateDate($date)
     {
         $this->date = $date;
+    }
+
+    /**
+     * @return string
+     */
+    public function concept()
+    {
+        return $this->concept;
     }
 }

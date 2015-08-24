@@ -23,12 +23,15 @@ class CreateNewEntryTest extends \PHPUnit_Framework_TestCase
     private $dateTimeSerialized = '2015-08-03';
     /** @var \DateTime */
     private $dateTime;
+    /** @var \DateTime */
+    private $created;
 
     protected function setUp()
     {
         $this->dateTime = new \DateTime($this->dateTimeSerialized);
+        $this->created = new \DateTime();
         $this->request = new Request($this->amount, $this->concept, $this->dateTime);
-        $this->entriesCollection = new EntriesCollection();
+        $this->entriesCollection = new EntriesCollection($this->created);
         $this->useCase = new UseCase($this->entriesCollection);
     }
 
@@ -63,6 +66,7 @@ class CreateNewEntryTest extends \PHPUnit_Framework_TestCase
     {
         $entriesCollection = $this
             ->getMockBuilder('Kontuak\Implementation\InMemory\EntriesCollection')
+            ->disableOriginalConstructor()
             ->getMock();
         $entriesCollection->method('add')->willThrowException(new \Exception());
         /** @var EntriesCollection $entriesCollection */
@@ -70,6 +74,9 @@ class CreateNewEntryTest extends \PHPUnit_Framework_TestCase
         $useCase->execute($this->request);
     }
 
+    /**
+     * @test
+     */
     public function shouldSaveTheEntryCorrectly()
     {
         $response = $this->useCase->execute($this->request);
@@ -78,5 +85,6 @@ class CreateNewEntryTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($this->amount, $createdEntry->amount());
         $this->assertEquals($this->concept, $createdEntry->concept());
         $this->assertEquals($this->dateTime, $createdEntry->date());
+        $this->assertEquals($this->created, $createdEntry->created());
     }
 }

@@ -8,8 +8,8 @@ class Request
     public $amount;
     /** @var string */
     public $concept;
-    /** @var string */
-    private $date;
+    /** @var \DateTimeInterface */
+    public $date;
 
     /**
      * @param float $amount
