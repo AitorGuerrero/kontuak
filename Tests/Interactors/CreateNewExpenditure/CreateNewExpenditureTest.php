@@ -4,6 +4,7 @@ namespace Kontuak\Tests\Interactors\CreateNewEntry;
 
 use Kontuak\Implementation\InMemory\EntityId;
 use Kontuak\Implementation\InMemory\ExpendituresCollection;
+use Kontuak\Implementation\InMemory\MovementsCollection;
 use Kontuak\Interactors\CreateNewExpenditure\UseCase;
 use Kontuak\Interactors\CreateNewExpenditure\Request;
 
@@ -31,7 +32,7 @@ class CreateNewExpenditureTest extends \PHPUnit_Framework_TestCase
         $this->created = new \DateTime();
         $this->dateTime = new \DateTime($this->dateTimeSerialized);
         $this->request = new Request($this->amount, $this->concept, $this->dateTimeSerialized);
-        $this->expendituresCollection = new ExpendituresCollection($this->created);
+        $this->expendituresCollection = new ExpendituresCollection(new MovementsCollection($this->created));
         $this->useCase = new UseCase($this->expendituresCollection);
     }
 
@@ -43,7 +44,9 @@ class CreateNewExpenditureTest extends \PHPUnit_Framework_TestCase
         $wrongAmount = -$this->amount;
         $this->request->amount = $wrongAmount;
         $response = $this->useCase->execute($this->request);
-        $createdExpenditure = $this->expendituresCollection->find(new EntityId($response->expenditure['id']));
+        $createdExpenditure = $this->expendituresCollection->find(
+            new EntityId($response->expenditure['id'])
+        );
 
         $this->assertEquals($createdExpenditure->amount(), $this->amount);
     }

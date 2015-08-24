@@ -34,8 +34,6 @@ class UseCase
             throw new SystemException();
         }
 
-
-        $this->expendituresCollection->add($expenditure);
         $response = new Response();
         $response->expenditure = [
             'id' => $expenditure->id()->serialize()

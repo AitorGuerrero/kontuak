@@ -4,6 +4,7 @@ namespace kontuak\Tests\Interactors\CreateNewEntry;
 
 use Kontuak\Implementation\InMemory\EntityId;
 use Kontuak\Implementation\InMemory\EntriesCollection;
+use Kontuak\Implementation\InMemory\MovementsCollection;
 use Kontuak\Interactors\CreateNewEntry\UseCase;
 use Kontuak\Interactors\CreateNewEntry\Request;
 
@@ -31,7 +32,7 @@ class CreateNewEntryTest extends \PHPUnit_Framework_TestCase
         $this->dateTime = new \DateTime($this->dateTimeSerialized);
         $this->created = new \DateTime();
         $this->request = new Request($this->amount, $this->concept, $this->dateTime);
-        $this->entriesCollection = new EntriesCollection($this->created);
+        $this->entriesCollection = new EntriesCollection(new MovementsCollection($this->created));
         $this->useCase = new UseCase($this->entriesCollection);
     }
 

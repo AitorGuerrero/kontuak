@@ -2,14 +2,16 @@
 
 namespace Kontuak;
 
-use Kontuak\MovementsCollection\Page;
-
 interface MovementsCollection
 {
     /**
-     * @param []Kontuak\MovementsCollection\Filter $filter
-     * @param Page $page
+     * @param Movement $movement
      * @return mixed
      */
-    public function find($filter, Page $page);
+    public function add(Movement $movement);
+    /**
+     * @param EntityId $id
+     * @return Movement
+     */
+    public function find(EntityId $id);
 }

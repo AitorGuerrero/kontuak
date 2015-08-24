@@ -7,21 +7,19 @@ use Kontuak\EntriesCollection as BaseCollection;
 
 class EntriesCollection implements BaseCollection
 {
-    private $collection = [];
-    private $identifierCounter = 1;
-    /** @var \DateTimeInterface */
-    private $timeStamp;
+    /**
+     * @var MovementsCollection
+     */
+    private $collection;
 
-    public function __construct(\DateTimeInterface $timeStamp)
+    public function __construct(MovementsCollection $collection)
     {
-        $this->timeStamp = $timeStamp;
+        $this->collection = $collection;
     }
 
     public function add(Entry $entry)
     {
-        $entry->identify(new EntityId($this->identifierCounter++));
-        $entry->setCreated($this->timeStamp);
-        $this->collection[$entry->id()->serialize()] = $entry;
+        return $this->collection->add($entry);
     }
 
     /**
@@ -30,6 +28,6 @@ class EntriesCollection implements BaseCollection
      */
     public function find(EntityId $id)
     {
-        return $this->collection[$id->serialize()];
+        return $this->collection->find($id);
     }
 }
