@@ -9,16 +9,16 @@ class Request {
     const TYPE_WEEK_DAY = 3;
     const TYPE_MONTH_DAY = 4;
 
+    /** @var float */
     public $amount;
+    /** @var string */
     public $concept;
+    /** @var int */
     public $periodType;
+    /** @var int */
     public $periodAmount;
-
-    public function __construct($amount, $concept, $periodType, $periodAmount)
-    {
-        $this->amount = $amount;
-        $this->concept = $concept;
-        $this->periodType = $periodType;
-        $this->periodAmount = $periodAmount;
-    }
+    /** @var string */
+    public $starts;
+    /** @var string */
+    public $ends;
 }

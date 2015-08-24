@@ -13,12 +13,6 @@ class Request {
     public $concept;
     public $periodType;
     public $periodAmount;
-
-    public function __construct($amount, $concept, $periodType, $periodAmount)
-    {
-        $this->amount = $amount;
-        $this->concept = $concept;
-        $this->periodType = $periodType;
-        $this->periodAmount = $periodAmount;
-    }
+    public $starts;
+    public $ends;
 }

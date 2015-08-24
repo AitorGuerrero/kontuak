@@ -23,7 +23,13 @@ class CreateAPeriodicalExpenditureTest extends \PHPUnit_Framework_TestCase
     protected function setUp()
     {
         $this->collection = new PeriodicalMovementCollection();
-        $this->request = new Request($this->amount, $this->concept, $this->periodType, $this->periodAmount);
+        $this->request = new Request();
+        $this->request->amount = $this->amount;
+        $this->request->periodType = $this->periodType;
+        $this->request->concept = $this->concept;
+        $this->request->periodAmount = $this->periodAmount;
+        $this->request->starts = '2015-08-01';
+
         $this->useCase = new UseCase($this->collection);
     }
 

@@ -4,7 +4,7 @@ namespace Kontuak;
 
 use DateTime;
 
-abstract class PeriodicalMovement
+class PeriodicalMovement
 {
     use EntityTrait;
 
@@ -16,6 +16,14 @@ abstract class PeriodicalMovement
     private $period;
     /** @var Movement */
     protected $templateMovement;
+    /**
+     * @var \DateTimeInterface
+     */
+    private $starts;
+    /**
+     * @var \DateTimeInterface
+     */
+    private $ends;
 
     /**
      * @return string
@@ -34,21 +42,27 @@ abstract class PeriodicalMovement
     }
 
     /**
-     * @return Movement
-     */
-    abstract protected function generateTemplateMovement();
-
-    /**
      * @param $amount
      * @param $concept
+     * @param \DateTimeInterface $starts
+     * @param \DateTimeInterface $ends
      * @param Period $period
      */
-    public function __construct($amount, $concept, Period $period)
-    {
-
+    public function __construct(
+        $amount,
+        $concept,
+        \DateTimeInterface $starts,
+        Period $period
+    ) {
         $this->amount = $amount;
         $this->concept = $concept;
         $this->period = $period;
+        $this->starts = $starts;
+    }
+
+    public function endsAt(\DateTimeInterface $date)
+    {
+        $this->ends = $date;
     }
 
     /**

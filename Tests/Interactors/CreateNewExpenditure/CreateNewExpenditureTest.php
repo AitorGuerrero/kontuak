@@ -31,8 +31,11 @@ class CreateNewExpenditureTest extends \PHPUnit_Framework_TestCase
     {
         $this->created = new \DateTime();
         $this->dateTime = new \DateTime($this->dateTimeSerialized);
-        $this->request = new Request($this->amount, $this->concept, $this->dateTimeSerialized);
-        $this->expendituresCollection = new ExpendituresCollection(new MovementsCollection($this->created));
+        $this->request = new Request();
+        $this->request->amount = $this->amount;
+        $this->request->concept = $this->concept;
+        $this->request->dateTimeSerialized = $this->dateTimeSerialized;
+        $this->expendituresCollection = new MovementsCollection($this->created);
         $this->useCase = new UseCase($this->expendituresCollection);
     }
 
@@ -68,7 +71,7 @@ class CreateNewExpenditureTest extends \PHPUnit_Framework_TestCase
     public function whenCollectionThrowsAnExceptionShouldThrowASystemException()
     {
         $expendituresCollection = $this
-            ->getMockBuilder('Kontuak\Implementation\InMemory\ExpendituresCollection')
+            ->getMockBuilder('Kontuak\Implementation\InMemory\MovementsCollection')
             ->disableOriginalConstructor()
             ->getMock();
         $expendituresCollection->method('add')->willThrowException(new \Exception());

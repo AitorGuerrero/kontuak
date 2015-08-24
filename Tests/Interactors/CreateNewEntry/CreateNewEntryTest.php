@@ -22,17 +22,18 @@ class CreateNewEntryTest extends \PHPUnit_Framework_TestCase
     private $concept = 'Pis';
     /** @var string */
     private $dateTimeSerialized = '2015-08-03';
-    /** @var \DateTime */
-    private $dateTime;
+    private $createdSerialized = '2015-08-01';
     /** @var \DateTime */
     private $created;
 
     protected function setUp()
     {
-        $this->dateTime = new \DateTime($this->dateTimeSerialized);
-        $this->created = new \DateTime();
-        $this->request = new Request($this->amount, $this->concept, $this->dateTime);
-        $this->entriesCollection = new EntriesCollection(new MovementsCollection($this->created));
+        $this->created = new \DateTime($this->createdSerialized);
+        $this->request = new Request();
+        $this->request->concept = $this->concept;
+        $this->request->amount = $this->amount;
+        $this->request->date = $this->dateTimeSerialized;
+        $this->entriesCollection = new MovementsCollection($this->created);
         $this->useCase = new UseCase($this->entriesCollection);
     }
 
@@ -66,7 +67,7 @@ class CreateNewEntryTest extends \PHPUnit_Framework_TestCase
     public function whenCollectionThrowsAnExceptionShouldThrowASystemException()
     {
         $entriesCollection = $this
-            ->getMockBuilder('Kontuak\Implementation\InMemory\EntriesCollection')
+            ->getMockBuilder('Kontuak\Implementation\InMemory\MovementsCollection')
             ->disableOriginalConstructor()
             ->getMock();
         $entriesCollection->method('add')->willThrowException(new \Exception());
@@ -85,7 +86,7 @@ class CreateNewEntryTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals($this->amount, $createdEntry->amount());
         $this->assertEquals($this->concept, $createdEntry->concept());
-        $this->assertEquals($this->dateTime, $createdEntry->date());
-        $this->assertEquals($this->created, $createdEntry->created());
+        $this->assertEquals($this->dateTimeSerialized, $createdEntry->date()->format('Y-m-d'));
+        $this->assertEquals($this->createdSerialized, $createdEntry->created()->format('Y-m-d'));
     }
 }

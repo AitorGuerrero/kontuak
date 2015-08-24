@@ -6,6 +6,8 @@ use Kontuak\EntriesCollection;
 use Kontuak\Entry;
 use Kontuak\Interactors\InvalidArgumentException;
 use Kontuak\Interactors\SystemException;
+use Kontuak\Movement;
+use Kontuak\MovementsCollection;
 
 class UseCase
 {
@@ -14,7 +16,7 @@ class UseCase
      */
     private $entryCollection;
 
-    public function __construct(EntriesCollection $entryCollection)
+    public function __construct(MovementsCollection $entryCollection)
     {
         $this->entryCollection = $entryCollection;
     }
@@ -28,7 +30,7 @@ class UseCase
     public function execute(Request $request)
     {
         try {
-            $entry = new Entry($request->amount, $request->concept, $request->date);
+            $entry = new Movement(abs($request->amount), $request->concept, new \DateTime($request->date));
             $this->entryCollection->add($entry);
         } catch (\Kontuak\InvalidArgumentException $e) {
             throw new InvalidArgumentException();
