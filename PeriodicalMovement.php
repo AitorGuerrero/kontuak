@@ -2,8 +2,6 @@
 
 namespace Kontuak;
 
-use DateTime;
-
 class PeriodicalMovement
 {
     use EntityTrait;
@@ -45,7 +43,6 @@ class PeriodicalMovement
      * @param $amount
      * @param $concept
      * @param \DateTimeInterface $starts
-     * @param \DateTimeInterface $ends
      * @param Period $period
      */
     public function __construct(
@@ -71,57 +68,5 @@ class PeriodicalMovement
     public function amount()
     {
         return $this->amount;
-    }
-
-    /**
-     * @param DateTime $toDate
-     * @return PeriodicalMovement[]
-     */
-    public function generateTo(DateTime $toDate)
-    {
-        $dates = $this->predictDates($toDate);
-        $movements = $this->createMovementsForDates($dates);
-
-        return $movements;
-    }
-
-    private function generateMovementAtDate(DateTime $date)
-    {
-        if(null === $this->templateMovement) {
-            $this->templateMovement = new $this->generateTemplateMovement();
-        }
-        $movement = clone($this->templateMovement);
-        $movement->setDate($date);
-
-        return $movement;
-    }
-
-    /**
-     * @param DateTime $toDate
-     * @return array
-     */
-    protected function predictDates(DateTime $toDate)
-    {
-        $dates = [];
-        $date = new DateTime();
-        $this->period->setHead($date);
-        while ($date <= $toDate) {
-            $dates[] = $date;
-            $date = $this->period->next();
-        }
-        return array($dates, $date);
-    }
-
-    /**
-     * @param $dates
-     * @return array
-     */
-    protected function createMovementsForDates($dates)
-    {
-        $movements = [];
-        foreach ($dates as $date) {
-            $movements[] = $this->generateMovementAtDate($date);
-        }
-        return $movements;
     }
 }
