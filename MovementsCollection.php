@@ -6,7 +6,7 @@ interface MovementsCollection
 {
     /**
      * @param Movement $movement
-     * @return mixed
+     * @return
      */
     public function add(Movement $movement);
     /**
@@ -14,4 +14,39 @@ interface MovementsCollection
      * @return Movement
      */
     public function find(EntityId $id);
+
+    public function orderByDateDesc();
+
+    /**
+     * @param int $amount
+     */
+    public function limit($amount);
+
+    /**
+     * @return Movement[]
+     */
+    public function all();
+
+    /**
+     * @param \DateTimeInterface $date
+     * @return MovementsCollection
+     */
+    public function filterDateLessThan(\DateTimeInterface $date);
+
+    /**
+     * float
+     */
+    public function amountSum();
+
+    /**
+     * @param \DateTimeInterface $dateTime
+     * @return MovementsCollection
+     */
+    public function filterByCreatedIsLessThan(\DateTimeInterface $dateTime);
+
+    /**
+     * @param \DateTimeInterface $date
+     * @return MovementsCollection
+     */
+    public function filterByDateIs(\DateTimeInterface $date);
 }

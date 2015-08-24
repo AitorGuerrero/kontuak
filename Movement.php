@@ -2,7 +2,7 @@
 
 namespace Kontuak;
 
-abstract class Movement
+class Movement
 {
     use EntityTrait;
 
