@@ -14,13 +14,9 @@ class PeriodicalMovement
     private $period;
     /** @var Movement */
     protected $templateMovement;
-    /**
-     * @var \DateTimeInterface
-     */
+    /** @var \DateTimeInterface */
     private $starts;
-    /**
-     * @var \DateTimeInterface
-     */
+    /** @var \DateTimeInterface */
     private $ends;
 
     /**

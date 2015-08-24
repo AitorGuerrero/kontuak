@@ -23,7 +23,7 @@ class UseCase
     {
         $period = $this->periodFactory($request->periodType, $request->periodAmount);
         $periodicalMovement = new PeriodicalMovement(
-            $request->amount,
+            -abs($request->amount),
             $request->concept,
             new \DateTime($request->starts),
             $period

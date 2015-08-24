@@ -23,4 +23,10 @@
         timeoutForLargeTests="60"
         bootstrap="Tests/bootstrap.php"
         verbose="false">
+        <filter>
+                <blacklist>
+                        <directory>vendor</directory>
+                        <directory>Tests</directory>
+                </blacklist>
+        </filter>
 </phpunit>

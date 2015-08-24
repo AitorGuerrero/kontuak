@@ -27,7 +27,7 @@ class UseCase
     public function execute(Request $request)
     {
         $periodicalMovement = new PeriodicalMovement(
-            $request->amount,
+            abs($request->amount),
             $request->concept,
             new \DateTime($request->starts),
             $this->periodFactory($request->periodType, $request->periodAmount)
