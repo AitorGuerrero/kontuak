@@ -2,7 +2,7 @@
 
 namespace Kontuak;
 
-abstract class Period implements \Iterator
+abstract class Period
 {
     private $amount;
 
@@ -15,4 +15,6 @@ abstract class Period implements \Iterator
     {
         return $this->amount;
     }
+
+    abstract function next(\DateTimeInterface $date);
 }

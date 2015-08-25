@@ -26,4 +26,9 @@ class PeriodicalMovementCollection implements PeriodicalMovementsCollection
     {
         return $this->collection[$entityId->serialize()];
     }
+
+    public function all()
+    {
+        return $this->collection;
+    }
 }

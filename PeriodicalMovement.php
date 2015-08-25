@@ -65,4 +65,25 @@ class PeriodicalMovement
     {
         return $this->amount;
     }
+
+    /**
+     * @param \DateTimeInterface $from
+     * @param \DateTimeInterface $to
+     * @return Movement[]
+     */
+    public function generateMovements(\DateTimeInterface $from, \DateTimeInterface $to)
+    {
+        $date = $from->format('Y-m-d');
+        $movements = [];
+        while($date <= $to->format('Y-m-d')) {
+            $movements[] = new Movement($this->amount(), $this->concept(), new \DateTime($date));
+            $date = $this->period->next(new \DateTime($date))->format('Y-m-d');
+        }
+        return $movements;
+    }
+
+    public function updatePeriod(Period $period)
+    {
+        $this->period = $period;
+    }
 }
