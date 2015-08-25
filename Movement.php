@@ -14,12 +14,22 @@ class Movement
     protected $date;
     /** @var \DateTimeInterface */
     protected $created;
+    /** @var PeriodicalMovement|null */
+    private $periodicalMovement;
 
     public function __construct($amount, $concept, \DateTimeInterface $date)
     {
         $this->updateAmount($amount);
         $this->updateConcept($concept);
         $this->updateDate($date);
+    }
+
+    public static function fromPeriodicalMovement(PeriodicalMovement $periodicalMovement, \DateTimeInterface $date)
+    {
+        $movement = new self($periodicalMovement->amount(), $periodicalMovement->concept(), $date);
+        $movement->assignToPeriodicalMovement($periodicalMovement);
+
+        return $movement;
     }
 
     /**
@@ -82,5 +92,15 @@ class Movement
     public function concept()
     {
         return $this->concept;
+    }
+
+    private function assignToPeriodicalMovement(PeriodicalMovement $periodicalMovement)
+    {
+        $this->periodicalMovement = $periodicalMovement;
+    }
+
+    public function periodicalMovement()
+    {
+        return $this->periodicalMovement;
     }
 }

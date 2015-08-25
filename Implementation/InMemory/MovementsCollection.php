@@ -9,9 +9,11 @@
 namespace Kontuak\Implementation\InMemory;
 
 use Kontuak\Movement;
+use Kontuak\PeriodicalMovement;
 
 class MovementsCollection implements \Kontuak\MovementsCollection
 {
+    const ORDER_DATE = 'orderDate';
     const ORDER_DATE_DESC = 'orderDateDesc';
 
     protected $collection = [];
@@ -43,6 +45,12 @@ class MovementsCollection implements \Kontuak\MovementsCollection
         return $this->collection[$id->serialize()];
     }
 
+    public function orderByDate()
+    {
+        $this->order = self::ORDER_DATE;
+        return $this;
+    }
+
     public function orderByDateDesc()
     {
         $this->order = self::ORDER_DATE_DESC;
@@ -64,21 +72,21 @@ class MovementsCollection implements \Kontuak\MovementsCollection
      */
     public function all()
     {
-        $collection = $this->applyFilters($this->collection);
-        $collection = $this->applyOrder($collection);
-        if ($this->limit !== null) {
-            $collection = array_slice($collection, 0 ,$this->limit);
-        }
-        return array_values($collection);
+        return $this->processCollection();
+    }
+
+    private function sortByDate($collection)
+    {
+        usort($collection, function($a, $b) {
+            return $a->date()->format('Y-m-d') < $b->date()->format('Y-m-d') ? -1 : 1;
+        });
+
+        return $collection;
     }
 
     private function sortByDateDesc($collection)
     {
-        usort($collection, function($a, $b) {
-            return $a->date()->format('Y-m-d') > $b->date()->format('Y-m-d') ? -1 : 1;
-        });
-
-        return $collection;
+        return array_reverse($this->sortByDate($collection));
     }
 
     /**
@@ -104,11 +112,7 @@ class MovementsCollection implements \Kontuak\MovementsCollection
      */
     public function amountSum()
     {
-        $collection = $this->applyFilters($this->collection);
-        $collection = $this->sortByDateDesc($collection);
-        if ($this->limit !== null) {
-            $collection = array_slice($collection, 0 ,$this->limit);
-        }
+        $collection = $this->processCollection();
         $amount = 0;
         foreach($collection as $movement) {
             $amount += $movement->amount();
@@ -126,6 +130,9 @@ class MovementsCollection implements \Kontuak\MovementsCollection
         }
         if (isset($this->filters['dateIs'])) {
             $collection = $this->applyFilterByDateIs($collection, $this->filters['dateIs']);
+        }
+        if(isset($this->filters['PeriodicalMovement'])) {
+            $collection = $this->applyFilterByPeriodicalMovement($collection);
         }
 
         return $collection;
@@ -175,7 +182,45 @@ class MovementsCollection implements \Kontuak\MovementsCollection
     {
         if($this->order === self::ORDER_DATE_DESC) {
             return $this->sortByDateDesc($collection);
+        } else if ($this->order === self::ORDER_DATE) {
+            return $this->sortByDate($collection);
         }
+        return $collection;
+    }
+
+    public function filterByPeriodicalMovement(PeriodicalMovement $periodicalMovement)
+    {
+        $this->filters['PeriodicalMovement'] = $periodicalMovement;
+        return $this;
+    }
+
+    private function applyFilterByPeriodicalMovement($collection)
+    {
+        $periodicalMovement = $this->filters['PeriodicalMovement'];
+        return array_filter($collection, function(Movement $movement) use ($periodicalMovement) {
+            return $movement->periodicalMovement() !== null &&
+            $movement->periodicalMovement() === $periodicalMovement;
+        });
+    }
+
+    public function first()
+    {
+        $collection = $this->processCollection();
+
+        return !empty($collection) ? $collection[0] : null;
+    }
+
+    /**
+     * @return array|\Kontuak\Movement[]
+     */
+    private function processCollection()
+    {
+        $collection = $this->applyFilters($this->collection);
+        $collection = $this->applyOrder($collection);
+        if ($this->limit !== null) {
+            $collection = array_slice($collection, 0, $this->limit);
+        }
+        $collection = array_values($collection);
         return $collection;
     }
 }

@@ -3,9 +3,9 @@
 namespace Kontuak\Implementation\InMemory;
 
 use Kontuak\PeriodicalMovement;
-use Kontuak\PeriodicalMovementsCollection;
+use Kontuak\PeriodicalMovement\Collection;
 
-class PeriodicalMovementCollection implements PeriodicalMovementsCollection
+class PeriodicalMovementCollection implements Collection
 {
     private $identifierCounter = 1;
     /** @var []PeriodicalMovement */

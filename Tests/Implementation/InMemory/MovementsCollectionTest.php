@@ -3,6 +3,7 @@
 namespace Kontuak\Tests\Implementation\InMemory;
 
 use Kontuak\Implementation\InMemory\MovementsCollection;
+use Kontuak\PeriodicalMovement;
 
 class MovementsCollectionTest extends \PHPUnit_Framework_TestCase
 {

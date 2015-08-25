@@ -4,6 +4,8 @@ namespace Kontuak\Tests\Implementation;
 
 use Kontuak\EntityId;
 use Kontuak\Movement;
+use Kontuak\Period\DaysPeriod;
+use Kontuak\PeriodicalMovement;
 
 trait MovementsCollectionTest
 {
@@ -154,5 +156,42 @@ trait MovementsCollectionTest
         $movements = $this->collection->filterByDateIs(new \DateTime('2015-09-02'))->all();
 
         $this->assertEquals(2, count($movements));
+    }
+
+    /**
+     * @test
+     */
+    public function filterByOwnedByPeriodicalMovement()
+    {
+        $periodicalMovement = new PeriodicalMovement(1, 'a', new \DateTime(), new DaysPeriod(1));
+        $movement1 = Movement::fromPeriodicalMovement($periodicalMovement, new \DateTime());
+        $movement2 = new Movement(2, 'b', new \DateTime());
+
+        $this->collection->add($movement1);
+        $this->collection->add($movement2);
+
+        $movements = $this
+            ->collection
+            ->filterByPeriodicalMovement($periodicalMovement)
+            ->all();
+
+        $this->assertEquals(1, count($movements));
+        $this->assertEquals($periodicalMovement, $movements[0]->periodicalMovement());
+    }
+
+    /**
+     * @test
+     */
+    public function first()
+    {
+        $movement1 = new Movement(1, 'a', new \DateTime());
+        $movement2 = new Movement(2, 'b', new \DateTime());
+
+        $this->collection->add($movement1);
+        $this->collection->add($movement2);
+
+        $movement = $this->collection->first();
+
+        $this->assertEquals($movement1, $movement);
     }
 }

@@ -15,6 +15,8 @@ interface MovementsCollection
      */
     public function find(EntityId $id);
 
+    public function orderByDate();
+
     public function orderByDateDesc();
 
     /**
@@ -49,4 +51,15 @@ interface MovementsCollection
      * @return MovementsCollection
      */
     public function filterByDateIs(\DateTimeInterface $date);
+
+    /**
+     * @param PeriodicalMovement $periodicalMovement
+     * @return MovementsCollection
+     */
+    public function filterByPeriodicalMovement(PeriodicalMovement $periodicalMovement);
+
+    /**
+     * @return Movement
+     */
+    public function first();
 }

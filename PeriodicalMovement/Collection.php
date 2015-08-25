@@ -1,8 +1,11 @@
 <?php
 
-namespace Kontuak;
+namespace Kontuak\PeriodicalMovement;
 
-interface PeriodicalMovementsCollection
+use Kontuak\EntityId;
+use Kontuak\PeriodicalMovement;
+
+interface Collection
 {
     /**
      * @param PeriodicalMovement $periodicalMovement

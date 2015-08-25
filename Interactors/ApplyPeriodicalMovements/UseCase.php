@@ -3,7 +3,8 @@
 namespace Kontuak\Interactors\ApplyPeriodicalMovements;
 
 use Kontuak\MovementsCollection;
-use Kontuak\PeriodicalMovementsCollection;
+use Kontuak\PeriodicalMovement\Collection as PeriodicalMovementsCollection;
+use Kontuak\PeriodicalMovement\MovementsGenerator;
 
 class UseCase
 {
@@ -13,22 +14,26 @@ class UseCase
     private $periodicalMovementsCollection;
     /** @var \DateTimeInterface */
     private $timeStamp;
+    /** @var MovementsGenerator */
+    private $movementsGenerator;
 
     public function __construct(
         MovementsCollection $movementsCollection,
         PeriodicalMovementsCollection $periodicalMovementsCollection,
-        \DateTimeInterface $timeStamp
+        \DateTimeInterface $timeStamp,
+        MovementsGenerator $movementsGenerator
     ) {
         $this->movementsCollection = $movementsCollection;
         $this->periodicalMovementsCollection = $periodicalMovementsCollection;
         $this->timeStamp = $timeStamp;
+        $this->movementsGenerator = $movementsGenerator;
     }
 
     public function execute()
     {
         $periodicalMovements = $this->periodicalMovementsCollection->all();
         foreach($periodicalMovements as $periodicalMovement) {
-            foreach($periodicalMovement->generateMovements(new \DateTime('2015-08-01') , $this->timeStamp) as $movement) {
+            foreach($this->movementsGenerator->generate($periodicalMovement) as $movement) {
                 $this->movementsCollection->add($movement);
             }
         }

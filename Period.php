@@ -16,5 +16,9 @@ abstract class Period
         return $this->amount;
     }
 
+    /**
+     * @param \DateTimeInterface $date
+     * @return \DateTime
+     */
     abstract function next(\DateTimeInterface $date);
 }

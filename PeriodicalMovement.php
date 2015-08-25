@@ -67,15 +67,15 @@ class PeriodicalMovement
     }
 
     /**
-     * @param \DateTimeInterface $from
      * @param \DateTimeInterface $to
      * @return Movement[]
      */
-    public function generateMovements(\DateTimeInterface $from, \DateTimeInterface $to)
+    public function generateMovements(\DateTimeInterface $to)
     {
-        $date = $from->format('Y-m-d');
+        $date = $this->starts->format('Y-m-d');
+        $toFormated = $to->format('Y-m-d');
         $movements = [];
-        while($date <= $to->format('Y-m-d')) {
+        while($date <= $toFormated) {
             $movements[] = new Movement($this->amount(), $this->concept(), new \DateTime($date));
             $date = $this->period->next(new \DateTime($date))->format('Y-m-d');
         }
@@ -85,5 +85,13 @@ class PeriodicalMovement
     public function updatePeriod(Period $period)
     {
         $this->period = $period;
+    }
+
+    /**
+     * @return \DateTimeInterface
+     */
+    public function starts()
+    {
+        return $this->starts;
     }
 }
