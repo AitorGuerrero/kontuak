@@ -73,6 +73,24 @@ trait MovementsCollectionTest
     /**
      * @test
      */
+    public function byDefaultShouldOrderByCreationDate()
+    {
+        $movement1 = new Movement(1, 'mov1', new \DateTime('2015-09-02'));
+        $movement2 = new Movement(1, 'mov2', new \DateTime('2015-09-05'));
+        $movement3 = new Movement(1, 'mov3', new \DateTime('2015-09-01'));
+        $this->collection->add($movement1);
+        $this->collection->add($movement2);
+        $this->collection->add($movement3);
+        $results = $this->collection->all();
+
+        $this->assertEquals($movement1->id()->serialize(), $results[0]->id()->serialize());
+        $this->assertEquals($movement2->id()->serialize(), $results[1]->id()->serialize());
+        $this->assertEquals($movement3->id()->serialize(), $results[2]->id()->serialize());
+    }
+
+    /**
+     * @test
+     */
     public function filterDateLessThan()
     {
         $date = new \DateTime('2015-09-05');

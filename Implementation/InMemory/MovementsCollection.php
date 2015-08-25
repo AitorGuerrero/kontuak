@@ -8,7 +8,6 @@
 
 namespace Kontuak\Implementation\InMemory;
 
-use Kontuak\EntityIdBase;
 use Kontuak\Movement;
 
 class MovementsCollection implements \Kontuak\MovementsCollection
@@ -66,7 +65,7 @@ class MovementsCollection implements \Kontuak\MovementsCollection
     public function all()
     {
         $collection = $this->applyFilters($this->collection);
-        $collection = $this->sortByDateDesc($collection);
+        $collection = $this->applyOrder($collection);
         if ($this->limit !== null) {
             $collection = array_slice($collection, 0 ,$this->limit);
         }
@@ -166,5 +165,17 @@ class MovementsCollection implements \Kontuak\MovementsCollection
         return array_filter($collection, function (Movement $movement) use ($dateTimeFormatted) {
             return $movement->date()->format('Y-m-d') === $dateTimeFormatted;
         });
+    }
+
+    /**
+     * @param Movement[] $collection
+     * @return \Kontuak\Movement[]
+     */
+    private function applyOrder($collection)
+    {
+        if($this->order === self::ORDER_DATE_DESC) {
+            return $this->sortByDateDesc($collection);
+        }
+        return $collection;
     }
 }
