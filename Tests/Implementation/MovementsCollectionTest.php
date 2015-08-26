@@ -7,6 +7,14 @@ use Kontuak\Movement;
 use Kontuak\Period\DaysPeriod;
 use Kontuak\PeriodicalMovement;
 
+/**
+ * A trait for apply in the MovementsCollection implementations tests.
+ * To use this, you should define at the setUp method the property $collection with your implementation of
+ * MovementsCollection, and the $timeStamp property with the current timeStamp.
+ *
+ * Class MovementsCollectionTest
+ * @package Kontuak\Tests\Implementation
+ */
 trait MovementsCollectionTest
 {
     /** @var \Kontuak\MovementsCollection */
