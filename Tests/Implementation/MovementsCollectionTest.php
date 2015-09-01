@@ -2,7 +2,6 @@
 
 namespace Kontuak\Tests\Implementation;
 
-use Kontuak\EntityId;
 use Kontuak\Movement;
 use Kontuak\MovementId;
 use Kontuak\Period\DaysPeriod;

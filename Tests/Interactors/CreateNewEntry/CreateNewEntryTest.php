@@ -2,7 +2,6 @@
 
 namespace kontuak\Tests\Interactors\CreateNewEntry;
 
-use Kontuak\Implementation\InMemory\EntityId;
 use Kontuak\Implementation\InMemory\EntriesCollection;
 use Kontuak\Implementation\InMemory\MovementsCollection;
 use Kontuak\Interactors\CreateNewEntry\UseCase;

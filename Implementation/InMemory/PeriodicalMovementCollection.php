@@ -4,10 +4,10 @@ namespace Kontuak\Implementation\InMemory;
 
 use Kontuak\PeriodicalMovement;
 use Kontuak\PeriodicalMovement\Collection;
+use Kontuak\PeriodicalMovementId;
 
 class PeriodicalMovementCollection implements Collection
 {
-    private $identifierCounter = 1;
     /** @var []PeriodicalMovement */
     private $collection = [];
 
@@ -17,12 +17,12 @@ class PeriodicalMovementCollection implements Collection
     }
 
     /**
-     * @param \Kontuak\EntityId $entityId
+     * @param PeriodicalMovementId $id
      * @return PeriodicalMovement
      */
-    public function find(\Kontuak\EntityId $entityId)
+    public function find(PeriodicalMovementId $id)
     {
-        return $this->collection[$entityId->serialize()];
+        return $this->collection[$id->serialize()];
     }
 
     public function all()

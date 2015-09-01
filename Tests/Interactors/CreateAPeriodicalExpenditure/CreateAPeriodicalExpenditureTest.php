@@ -2,10 +2,10 @@
 
 namespace Kontuak\Tests\Interactors\CreateAPeriodicalExpenditure;
 
-use Kontuak\Implementation\InMemory\EntityId;
 use Kontuak\Implementation\InMemory\PeriodicalMovementCollection;
 use Kontuak\Interactors\CreateAPeriodicalExpenditure\Request;
 use Kontuak\Interactors\CreateAPeriodicalExpenditure\UseCase;
+use Kontuak\PeriodicalMovementId;
 
 class CreateAPeriodicalExpenditureTest extends \PHPUnit_Framework_TestCase
 {
@@ -49,7 +49,7 @@ class CreateAPeriodicalExpenditureTest extends \PHPUnit_Framework_TestCase
     public function shouldSavePeriodicalMovementCorrectly()
     {
         $response = $this->useCase->execute($this->request);
-        $savedMovement = $this->collection->find(new EntityId($response->periodicalMovement['id']));
+        $savedMovement = $this->collection->find(PeriodicalMovementId::fromString($response->periodicalMovement['id']));
 
         $this->assertEquals($this->amount, $savedMovement->amount());
         $this->assertEquals($this->concept, $savedMovement->concept());

@@ -2,10 +2,10 @@
 
 namespace Kontuak\Tests\Interactors\CreateAPeriodicalEntry;
 
-use Kontuak\Implementation\InMemory\EntityId;
 use Kontuak\Implementation\InMemory\PeriodicalMovementCollection;
 use Kontuak\Interactors\CreateAPeriodicalEntry\Request;
 use Kontuak\Interactors\CreateAPeriodicalEntry\UseCase;
+use Kontuak\PeriodicalMovementId;
 
 class CreateAPeriodicalEntryTest extends \PHPUnit_Framework_TestCase
 {
@@ -48,7 +48,9 @@ class CreateAPeriodicalEntryTest extends \PHPUnit_Framework_TestCase
     public function shouldSavePeriodicalMovementCorrectly()
     {
         $response = $this->useCase->execute($this->request);
-        $savedMovement = $this->collection->find(new EntityId($response->periodicalMovement['id']));
+        $savedMovement = $this->collection->find(
+            PeriodicalMovementId::fromString($response->periodicalMovement['id'])
+        );
 
         $this->assertEquals($this->amount, $savedMovement->amount());
         $this->assertEquals($this->concept, $savedMovement->concept());

@@ -2,8 +2,8 @@
 
 namespace Kontuak\PeriodicalMovement;
 
-use Kontuak\EntityId;
 use Kontuak\PeriodicalMovement;
+use Kontuak\PeriodicalMovementId;
 
 interface Collection
 {
@@ -14,10 +14,10 @@ interface Collection
     public function add(PeriodicalMovement $periodicalMovement);
 
     /**
-     * @param EntityId $entityId
+     * @param PeriodicalMovementId $id
      * @return PeriodicalMovement
      */
-    public function find(EntityId $entityId);
+    public function find(PeriodicalMovementId $id);
 
     /**
      * @return PeriodicalMovement[]
