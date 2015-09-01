@@ -9,6 +9,7 @@ use Kontuak\Period\MonthsPeriod;
 use Kontuak\Period\WeekDayPeriod;
 use Kontuak\PeriodicalExpenditure;
 use Kontuak\PeriodicalMovement;
+use Kontuak\PeriodicalMovementId;
 
 class UseCase
 {
@@ -23,6 +24,7 @@ class UseCase
     {
         $period = $this->periodFactory($request->periodType, $request->periodAmount);
         $periodicalMovement = new PeriodicalMovement(
+            new PeriodicalMovementId(),
             -abs($request->amount),
             $request->concept,
             new \DateTime($request->starts),

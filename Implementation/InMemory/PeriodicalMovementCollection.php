@@ -13,9 +13,7 @@ class PeriodicalMovementCollection implements Collection
 
     public function add(PeriodicalMovement $periodicalMovement)
     {
-        $id = new EntityId($this->identifierCounter++);
-        $periodicalMovement->identify($id);
-        $this->collection[$id->serialize()] = $periodicalMovement;
+        $this->collection[$periodicalMovement->id()->serialize()] = $periodicalMovement;
     }
 
     /**

@@ -9,6 +9,7 @@ use Kontuak\Period\MonthsPeriod;
 use Kontuak\Period\WeekDayPeriod;
 use Kontuak\PeriodicalExpenditure;
 use Kontuak\PeriodicalMovement;
+use Kontuak\PeriodicalMovementId;
 
 class UseCase
 {
@@ -27,6 +28,7 @@ class UseCase
     public function execute(Request $request)
     {
         $periodicalMovement = new PeriodicalMovement(
+            new PeriodicalMovementId(),
             abs($request->amount),
             $request->concept,
             new \DateTime($request->starts),

@@ -7,6 +7,7 @@ use Kontuak\Movement;
 use Kontuak\MovementId;
 use Kontuak\Period\DaysPeriod;
 use Kontuak\PeriodicalMovement;
+use Kontuak\PeriodicalMovementId;
 
 /**
  * A trait for apply in the MovementsCollection implementations tests.
@@ -182,7 +183,13 @@ trait MovementsCollectionTest
      */
     public function filterByOwnedByPeriodicalMovement()
     {
-        $periodicalMovement = new PeriodicalMovement(1, 'a', new \DateTime(), new DaysPeriod(1));
+        $periodicalMovement = new PeriodicalMovement(
+            new PeriodicalMovementId(),
+            1,
+            'a',
+            new \DateTime(),
+            new DaysPeriod(1)
+        );
         $movement1 = Movement::fromPeriodicalMovement($periodicalMovement, new \DateTime());
         $movement2 = new Movement(new MovementId(), 2, 'b', new \DateTime());
 

@@ -9,6 +9,7 @@ use Kontuak\Period\DaysPeriod;
 use Kontuak\Period\WeekDayPeriod;
 use Kontuak\PeriodicalMovement;
 use Kontuak\PeriodicalMovement\MovementsGenerator;
+use Kontuak\PeriodicalMovementId;
 
 class Test extends \PHPUnit_Framework_TestCase
 {
@@ -30,6 +31,7 @@ class Test extends \PHPUnit_Framework_TestCase
         $this->starts = '2015-08-01';
         $this->period = new DaysPeriod(3);
         $this->periodicalMovement = new PeriodicalMovement(
+            new PeriodicalMovementId(),
             10,
             'AA',
             new \DateTime($this->starts),

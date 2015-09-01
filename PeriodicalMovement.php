@@ -4,8 +4,8 @@ namespace Kontuak;
 
 class PeriodicalMovement
 {
-    use EntityTrait;
-
+    /** @var PeriodicalMovementId */
+    protected $id;
     /** @var int */
     protected $amount;
     /** @var string */
@@ -36,12 +36,14 @@ class PeriodicalMovement
     }
 
     /**
+     * @param PeriodicalMovementId $id
      * @param $amount
      * @param $concept
      * @param \DateTimeInterface $starts
      * @param Period $period
      */
     public function __construct(
+        PeriodicalMovementId $id,
         $amount,
         $concept,
         \DateTimeInterface $starts,
@@ -51,6 +53,15 @@ class PeriodicalMovement
         $this->concept = $concept;
         $this->period = $period;
         $this->starts = $starts;
+        $this->id = $id;
+    }
+
+    /**
+     * @return PeriodicalMovementId
+     */
+    public function id()
+    {
+        return $this->id;
     }
 
     public function endsAt(\DateTimeInterface $date)
@@ -73,10 +84,15 @@ class PeriodicalMovement
     public function generateMovements(\DateTimeInterface $to)
     {
         $date = $this->starts->format('Y-m-d');
-        $toFormated = $to->format('Y-m-d');
+        $toFormatted = $to->format('Y-m-d');
         $movements = [];
-        while($date <= $toFormated) {
-            $movements[] = new Movement($this->amount(), $this->concept(), new \DateTime($date));
+        while($date <= $toFormatted) {
+            $movements[] = new Movement(
+                new MovementId(),
+                $this->amount(),
+                $this->concept(),
+                new \DateTime($date)
+            );
             $date = $this->period->next(new \DateTime($date))->format('Y-m-d');
         }
         return $movements;
