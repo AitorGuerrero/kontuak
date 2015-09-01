@@ -4,6 +4,7 @@ namespace Kontuak\Tests\Implementation;
 
 use Kontuak\EntityId;
 use Kontuak\Movement;
+use Kontuak\MovementId;
 use Kontuak\Period\DaysPeriod;
 use Kontuak\PeriodicalMovement;
 
@@ -27,10 +28,15 @@ trait MovementsCollectionTest
      */
     public function whenAddedMovementShouldBeIdentified()
     {
-        $movement = new Movement(1, 'pis', new \DateTime('2015-09-01'));
+        $movement = new Movement(
+            new MovementId(),
+            1,
+            'pis',
+            new \DateTime('2015-09-01')
+        );
         $this->collection->add($movement);
 
-        $this->assertTrue($movement->id() instanceof EntityId);
+        $this->assertTrue($movement->id() instanceof MovementId);
     }
 
     /**
@@ -38,7 +44,12 @@ trait MovementsCollectionTest
      */
     public function whenAddedMovementShouldHaveACreationDate()
     {
-        $movement = new Movement(1, 'pis', new \DateTime('2015-09-01'));
+        $movement = new Movement(
+            new MovementId(),
+            1,
+            'pis',
+            new \DateTime('2015-09-01')
+        );
         $this->collection->add($movement);
 
         $this->assertEquals($this->timeStamp, $movement->created());
@@ -49,9 +60,9 @@ trait MovementsCollectionTest
      */
     public function whenDefinedAOrderedByDateDescShouldReturnElementsInThatOrder()
     {
-        $movement1 = new Movement(1, 'pis', new \DateTime('2015-09-01'));
-        $movement2 = new Movement(1, 'pis', new \DateTime('2015-09-04'));
-        $movement3 = new Movement(1, 'pis', new \DateTime('2015-09-02'));
+        $movement1 = new Movement(new MovementId(), 1, 'pis', new \DateTime('2015-09-01'));
+        $movement2 = new Movement(new MovementId(), 1, 'pis', new \DateTime('2015-09-04'));
+        $movement3 = new Movement(new MovementId(), 1, 'pis', new \DateTime('2015-09-02'));
         $this->collection->add($movement1);
         $this->collection->add($movement2);
         $this->collection->add($movement3);
@@ -68,9 +79,9 @@ trait MovementsCollectionTest
      */
     public function whenSettedALimitShouldLimitTheResults()
     {
-        $movement1 = new Movement(1, 'pis', new \DateTime('2015-09-01'));
-        $movement2 = new Movement(1, 'pis', new \DateTime('2015-09-01'));
-        $movement3 = new Movement(1, 'pis', new \DateTime('2015-09-01'));
+        $movement1 = new Movement(new MovementId(), 1, 'pis', new \DateTime('2015-09-01'));
+        $movement2 = new Movement(new MovementId(), 1, 'pis', new \DateTime('2015-09-01'));
+        $movement3 = new Movement(new MovementId(), 1, 'pis', new \DateTime('2015-09-01'));
         $this->collection->add($movement1);
         $this->collection->add($movement2);
         $this->collection->add($movement3);
@@ -85,9 +96,9 @@ trait MovementsCollectionTest
      */
     public function byDefaultShouldOrderByCreationDate()
     {
-        $movement1 = new Movement(1, 'mov1', new \DateTime('2015-09-02'));
-        $movement2 = new Movement(1, 'mov2', new \DateTime('2015-09-05'));
-        $movement3 = new Movement(1, 'mov3', new \DateTime('2015-09-01'));
+        $movement1 = new Movement(new MovementId(), 1, 'mov1', new \DateTime('2015-09-02'));
+        $movement2 = new Movement(new MovementId(), 1, 'mov2', new \DateTime('2015-09-05'));
+        $movement3 = new Movement(new MovementId(), 1, 'mov3', new \DateTime('2015-09-01'));
         $this->collection->add($movement1);
         $this->collection->add($movement2);
         $this->collection->add($movement3);
@@ -104,9 +115,9 @@ trait MovementsCollectionTest
     public function filterDateLessThan()
     {
         $date = new \DateTime('2015-09-05');
-        $movement1 = new Movement(1, 'pis', new \DateTime('2015-09-05'));
-        $movement2 = new Movement(1, 'pis', new \DateTime('2015-09-01'));
-        $movement3 = new Movement(1, 'pis', new \DateTime('2015-09-07'));
+        $movement1 = new Movement(new MovementId(), 1, 'pis', new \DateTime('2015-09-05'));
+        $movement2 = new Movement(new MovementId(), 1, 'pis', new \DateTime('2015-09-01'));
+        $movement3 = new Movement(new MovementId(), 1, 'pis', new \DateTime('2015-09-07'));
         $this->collection->add($movement1);
         $this->collection->add($movement2);
         $this->collection->add($movement3);
@@ -121,8 +132,8 @@ trait MovementsCollectionTest
      */
     public function amountSum()
     {
-        $this->collection->add(new Movement(20, 'pis', new \DateTime('2015-09-05')));
-        $this->collection->add(new Movement(30, 'pis', new \DateTime('2015-09-05')));
+        $this->collection->add(new Movement(new MovementId(), 20, 'pis', new \DateTime('2015-09-05')));
+        $this->collection->add(new Movement(new MovementId(), 30, 'pis', new \DateTime('2015-09-05')));
 
         $this->assertEquals(50, $this->collection->amountSum());
     }
@@ -133,9 +144,9 @@ trait MovementsCollectionTest
     public function filterByCreatedIsLessThan()
     {
         $date = new \DateTime('2015-09-05 15:20:00');
-        $movement1 = new Movement(1, 'pis', new \DateTime('2015-09-01'));
-        $movement2 = new Movement(1, 'pis', new \DateTime('2015-09-01'));
-        $movement3 = new Movement(1, 'pis', new \DateTime('2015-09-01'));
+        $movement1 = new Movement(new MovementId(), 1, 'pis', new \DateTime('2015-09-01'));
+        $movement2 = new Movement(new MovementId(), 1, 'pis', new \DateTime('2015-09-01'));
+        $movement3 = new Movement(new MovementId(), 1, 'pis', new \DateTime('2015-09-01'));
         $this->collection->add($movement1);
         $this->collection->add($movement2);
         $this->collection->add($movement3);
@@ -153,10 +164,10 @@ trait MovementsCollectionTest
      */
     public function filterByDateIs()
     {
-        $movement1 = new Movement(1, 'pis', new \DateTime('2015-09-01'));
-        $movement2 = new Movement(1, 'pis', new \DateTime('2015-09-02'));
-        $movement3 = new Movement(1, 'pis', new \DateTime('2015-09-02'));
-        $movement4 = new Movement(1, 'pis', new \DateTime('2015-09-05'));
+        $movement1 = new Movement(new MovementId(), 1, 'pis', new \DateTime('2015-09-01'));
+        $movement2 = new Movement(new MovementId(), 1, 'pis', new \DateTime('2015-09-02'));
+        $movement3 = new Movement(new MovementId(), 1, 'pis', new \DateTime('2015-09-02'));
+        $movement4 = new Movement(new MovementId(), 1, 'pis', new \DateTime('2015-09-05'));
         $this->collection->add($movement1);
         $this->collection->add($movement2);
         $this->collection->add($movement3);
@@ -173,7 +184,7 @@ trait MovementsCollectionTest
     {
         $periodicalMovement = new PeriodicalMovement(1, 'a', new \DateTime(), new DaysPeriod(1));
         $movement1 = Movement::fromPeriodicalMovement($periodicalMovement, new \DateTime());
-        $movement2 = new Movement(2, 'b', new \DateTime());
+        $movement2 = new Movement(new MovementId(), 2, 'b', new \DateTime());
 
         $this->collection->add($movement1);
         $this->collection->add($movement2);
@@ -192,8 +203,8 @@ trait MovementsCollectionTest
      */
     public function first()
     {
-        $movement1 = new Movement(1, 'a', new \DateTime());
-        $movement2 = new Movement(2, 'b', new \DateTime());
+        $movement1 = new Movement(new MovementId(), 1, 'a', new \DateTime());
+        $movement2 = new Movement(new MovementId(), 2, 'b', new \DateTime());
 
         $this->collection->add($movement1);
         $this->collection->add($movement2);

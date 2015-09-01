@@ -7,6 +7,7 @@ use Kontuak\Implementation\InMemory\EntriesCollection;
 use Kontuak\Implementation\InMemory\MovementsCollection;
 use Kontuak\Interactors\CreateNewEntry\UseCase;
 use Kontuak\Interactors\CreateNewEntry\Request;
+use Kontuak\MovementId;
 
 class CreateNewEntryTest extends \PHPUnit_Framework_TestCase
 {
@@ -45,7 +46,7 @@ class CreateNewEntryTest extends \PHPUnit_Framework_TestCase
         $wrongAmount = -$this->amount;
         $this->request->amount = $wrongAmount;
         $response = $this->useCase->execute($this->request);
-        $createdEntry = $this->entriesCollection->find(new EntityId($response->entry['id']));
+        $createdEntry = $this->entriesCollection->find(MovementId::fromString($response->entry['id']));
 
         $this->assertEquals($createdEntry->amount(), $this->amount);
     }
@@ -82,7 +83,7 @@ class CreateNewEntryTest extends \PHPUnit_Framework_TestCase
     public function shouldSaveTheEntryCorrectly()
     {
         $response = $this->useCase->execute($this->request);
-        $createdEntry = $this->entriesCollection->find(new EntityId($response->entry['id']));
+        $createdEntry = $this->entriesCollection->find(MovementId::fromString($response->entry['id']));
 
         $this->assertEquals($this->amount, $createdEntry->amount());
         $this->assertEquals($this->concept, $createdEntry->concept());

@@ -10,10 +10,10 @@ interface MovementsCollection
      */
     public function add(Movement $movement);
     /**
-     * @param EntityId $id
+     * @param MovementId $id
      * @return Movement
      */
-    public function find(EntityId $id);
+    public function find(MovementId $id);
 
     public function orderByDate();
 

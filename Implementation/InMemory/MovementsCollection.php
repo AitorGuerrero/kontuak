@@ -9,6 +9,7 @@
 namespace Kontuak\Implementation\InMemory;
 
 use Kontuak\Movement;
+use Kontuak\MovementId;
 use Kontuak\PeriodicalMovement;
 
 class MovementsCollection implements \Kontuak\MovementsCollection
@@ -17,7 +18,6 @@ class MovementsCollection implements \Kontuak\MovementsCollection
     const ORDER_DATE_DESC = 'orderDateDesc';
 
     protected $collection = [];
-    protected $identifierCounter = 1;
     /** @var \DateTimeInterface */
     protected $timeStamp;
     private $limit;
@@ -31,16 +31,15 @@ class MovementsCollection implements \Kontuak\MovementsCollection
 
     public function add(Movement $movement)
     {
-        $movement->identify(new EntityId($this->identifierCounter++));
         $movement->setCreated($this->timeStamp);
         $this->collection[$movement->id()->serialize()] = $movement;
     }
 
     /**
-     * @param \Kontuak\EntityId $id
+     * @param MovementId $id
      * @return Movement
      */
-    public function find(\Kontuak\EntityId $id)
+    public function find(MovementId $id)
     {
         return $this->collection[$id->serialize()];
     }

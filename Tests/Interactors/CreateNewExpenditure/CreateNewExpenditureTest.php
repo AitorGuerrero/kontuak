@@ -7,6 +7,7 @@ use Kontuak\Implementation\InMemory\ExpendituresCollection;
 use Kontuak\Implementation\InMemory\MovementsCollection;
 use Kontuak\Interactors\CreateNewExpenditure\UseCase;
 use Kontuak\Interactors\CreateNewExpenditure\Request;
+use Kontuak\MovementId;
 
 class CreateNewExpenditureTest extends \PHPUnit_Framework_TestCase
 {
@@ -48,7 +49,7 @@ class CreateNewExpenditureTest extends \PHPUnit_Framework_TestCase
         $this->request->amount = $wrongAmount;
         $response = $this->useCase->execute($this->request);
         $createdExpenditure = $this->expendituresCollection->find(
-            new EntityId($response->expenditure['id'])
+            MovementId::fromString(($response->expenditure['id']))
         );
 
         $this->assertEquals($createdExpenditure->amount(), $this->amount);
@@ -86,7 +87,9 @@ class CreateNewExpenditureTest extends \PHPUnit_Framework_TestCase
     public function shouldSaveTheExpenditureCorrectly()
     {
         $response = $this->useCase->execute($this->request);
-        $createdExpenditure = $this->expendituresCollection->find(new EntityId($response->expenditure['id']));
+        $createdExpenditure = $this->expendituresCollection->find(
+            MovementId::fromString($response->expenditure['id'])
+        );
 
         $this->assertEquals($this->amount, $createdExpenditure->amount());
         $this->assertEquals($this->concept, $createdExpenditure->concept());

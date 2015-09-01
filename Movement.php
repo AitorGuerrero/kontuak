@@ -4,8 +4,9 @@ namespace Kontuak;
 
 class Movement
 {
-    use EntityTrait;
 
+    /** @var MovementId */
+    protected $id;
     /** @var float */
     protected $amount;
     /** @var string */
@@ -17,16 +18,31 @@ class Movement
     /** @var PeriodicalMovement|null */
     private $periodicalMovement;
 
-    public function __construct($amount, $concept, \DateTimeInterface $date)
+
+    public function __construct(MovementId $movementId, $amount, $concept, \DateTimeInterface $date)
     {
+        $this->id = $movementId;
         $this->updateAmount($amount);
         $this->updateConcept($concept);
         $this->updateDate($date);
     }
 
+    /**
+     * @return MovementId
+     */
+    public function id()
+    {
+        return $this->id;
+    }
+
     public static function fromPeriodicalMovement(PeriodicalMovement $periodicalMovement, \DateTimeInterface $date)
     {
-        $movement = new self($periodicalMovement->amount(), $periodicalMovement->concept(), $date);
+        $movement = new self(
+            new MovementId(),
+            $periodicalMovement->amount(),
+            $periodicalMovement->concept(),
+            $date
+        );
         $movement->assignToPeriodicalMovement($periodicalMovement);
 
         return $movement;

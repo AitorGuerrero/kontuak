@@ -8,6 +8,7 @@ use Kontuak\Implementation\InMemory\MovementsCollection;
 use Kontuak\Interactors\MovementsHistory\Request;
 use Kontuak\Interactors\MovementsHistory\UseCase;
 use Kontuak\Movement;
+use Kontuak\MovementId;
 use Kontuak\MovementsCollection\TotalAmount;
 
 class MovementsHistoryTest extends \PHPUnit_Framework_TestCase
@@ -37,9 +38,9 @@ class MovementsHistoryTest extends \PHPUnit_Framework_TestCase
      */
     public function shouldReturnMovementsOrderedByDateDesc()
     {
-        $entry1 = new Movement(30, 'A', new \DateTime('2015-08-01'));
-        $entry2 = new Movement(100, 'B', new \DateTime('2015-08-05'));
-        $expenditure1 = new Movement(-50, 'C', new \DateTime('2015-08-04'));
+        $entry1 = new Movement(new MovementId(), 30, 'A', new \DateTime('2015-08-01'));
+        $entry2 = new Movement(new MovementId(), 100, 'B', new \DateTime('2015-08-05'));
+        $expenditure1 = new Movement(new MovementId(), -50, 'C', new \DateTime('2015-08-04'));
         $this->collection->add($entry1);
         $this->collection->add($entry2);
         $this->collection->add($expenditure1);
@@ -59,7 +60,7 @@ class MovementsHistoryTest extends \PHPUnit_Framework_TestCase
         $amount = 30;
         $concept = 'A';
         $date = '2015-08-01';
-        $entry1 = new Movement($amount, $concept, new \DateTime($date));
+        $entry1 = new Movement(new MovementId(), $amount, $concept, new \DateTime($date));
         $this->collection->add($entry1);
         $response = $this->useCase->execute($this->request);
 
@@ -73,9 +74,9 @@ class MovementsHistoryTest extends \PHPUnit_Framework_TestCase
      */
     public function shouldReturnTheMovementsTotalAmount()
     {
-        $this->collection->add(new Movement(30, 'A', new \DateTime('2015-08-01')));
-        $this->collection->add(new Movement(100, 'B', new \DateTime('2015-08-05')));
-        $this->collection->add(new Movement(-50, 'C', new \DateTime('2015-08-04')));
+        $this->collection->add(new Movement(new MovementId(), 30, 'A', new \DateTime('2015-08-01')));
+        $this->collection->add(new Movement(new MovementId(), 100, 'B', new \DateTime('2015-08-05')));
+        $this->collection->add(new Movement(new MovementId(), -50, 'C', new \DateTime('2015-08-04')));
         $response = $this->useCase->execute($this->request);
 
         $this->assertEquals(30, $response->movements[0]['totalAmount']);
@@ -88,9 +89,9 @@ class MovementsHistoryTest extends \PHPUnit_Framework_TestCase
      */
     public function whenThereAreMoreMovementsThanLimitShouldGetCorrectTotalAmount()
     {
-        $this->collection->add(new Movement(30, 'A', new \DateTime('2015-08-01')));
-        $this->collection->add(new Movement(100, 'B', new \DateTime('2015-08-05')));
-        $this->collection->add(new Movement(-50, 'C', new \DateTime('2015-08-04')));
+        $this->collection->add(new Movement(new MovementId(), 30, 'A', new \DateTime('2015-08-01')));
+        $this->collection->add(new Movement(new MovementId(), 100, 'B', new \DateTime('2015-08-05')));
+        $this->collection->add(new Movement(new MovementId(), -50, 'C', new \DateTime('2015-08-04')));
         $this->request->limit = 2;
         $response = $this->useCase->execute($this->request);
 

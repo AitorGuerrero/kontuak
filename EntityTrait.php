@@ -4,6 +4,9 @@ namespace Kontuak;
 
 trait EntityTrait
 {
+    /**
+     * @var EntityId
+     */
     private $id;
 
     /**

@@ -7,6 +7,7 @@ use Kontuak\ExpendituresCollection;
 use Kontuak\Interactors\InvalidArgumentException;
 use Kontuak\Interactors\SystemException;
 use Kontuak\Movement;
+use Kontuak\MovementId;
 use Kontuak\MovementsCollection;
 
 class UseCase
@@ -25,6 +26,7 @@ class UseCase
     {
         try {
             $expenditure = new Movement(
+                new MovementId(),
                 -abs($request->amount),
                 $request->concept,
                 new \DateTime($request->dateTimeSerialized)
