@@ -3,38 +3,39 @@
 namespace Kontuak\Interactors\ApplyPeriodicalMovements;
 
 use Kontuak\MovementsCollection;
-use Kontuak\PeriodicalMovement\Collection as PeriodicalMovementsCollection;
+use Kontuak\MovementsSource;
 use Kontuak\PeriodicalMovement\MovementsGenerator;
+use Kontuak\PeriodicalMovementsSource;
 
 class UseCase
 {
-    /** @var MovementsCollection */
-    private $movementsCollection;
-    /** @var PeriodicalMovementCollection */
-    private $periodicalMovementsCollection;
+    /** @var MovementsSource */
+    private $movementsSource;
+    /** @var PeriodicalMovementsSource */
+    private $periodicalMovementsSource;
     /** @var \DateTimeInterface */
     private $timeStamp;
     /** @var MovementsGenerator */
     private $movementsGenerator;
 
     public function __construct(
-        MovementsCollection $movementsCollection,
-        PeriodicalMovementsCollection $periodicalMovementsCollection,
+        MovementsSource $movementsSource,
+        PeriodicalMovementsSource $periodicalMovementsSource,
         \DateTimeInterface $timeStamp,
         MovementsGenerator $movementsGenerator
     ) {
-        $this->movementsCollection = $movementsCollection;
-        $this->periodicalMovementsCollection = $periodicalMovementsCollection;
+        $this->movementsSource = $movementsSource;
+        $this->periodicalMovementsSource = $periodicalMovementsSource;
         $this->timeStamp = $timeStamp;
         $this->movementsGenerator = $movementsGenerator;
     }
 
     public function execute()
     {
-        $periodicalMovements = $this->periodicalMovementsCollection->all();
+        $periodicalMovements = $this->periodicalMovementsSource->collection()->all();
         foreach($periodicalMovements as $periodicalMovement) {
             foreach($this->movementsGenerator->generate($periodicalMovement) as $movement) {
-                $this->movementsCollection->add($movement);
+                $this->movementsSource->add($movement);
             }
         }
     }

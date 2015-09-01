@@ -5,21 +5,22 @@ namespace Kontuak\Interactors\MovementsHistory;
 use Kontuak\Interactors\InvalidArgumentException;
 use Kontuak\MovementsCollection;
 use Kontuak\MovementsCollection\TotalAmount;
+use Kontuak\MovementsSource;
 
 class UseCase
 {
     /**
-     * @var MovementsCollection
+     * @var MovementsSource
      */
-    private $collection;
+    private $source;
     /**
      * @var TotalAmount
      */
     private $totalAmountService;
 
-    public function __construct(MovementsCollection $collection, TotalAmount $totalAmountService)
+    public function __construct(MovementsSource $source, TotalAmount $totalAmountService)
     {
-        $this->collection = $collection;
+        $this->source = $source;
         $this->totalAmountService = $totalAmountService;
     }
 
@@ -30,10 +31,11 @@ class UseCase
         }
 
         $movements = array_reverse(
-            $this->collection
+            $this->source
+                ->collection()
                 ->orderByDateDesc()
                 ->limit($request->limit)
-                ->all()
+                ->toArray()
         );
         $response = new Response();
         $plainMovements = [];

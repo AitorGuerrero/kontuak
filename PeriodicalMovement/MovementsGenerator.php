@@ -4,18 +4,19 @@ namespace Kontuak\PeriodicalMovement;
 
 use Kontuak\Implementation\InMemory\MovementsCollection;
 use Kontuak\Movement;
+use Kontuak\MovementsSource;
 use Kontuak\PeriodicalMovement;
 
 class MovementsGenerator
 {
-    /** @var MovementsCollection */
-    private $movementsCollection;
+    /** @var MovementsSource */
+    private $movementsSource;
     /** @var \DateTimeInterface */
     private $timeStamp;
 
-    public function __construct(MovementsCollection $movementsCollection, \DateTimeInterface $timeStamp)
+    public function __construct(MovementsSource $movementsSource, \DateTimeInterface $timeStamp)
     {
-        $this->movementsCollection = $movementsCollection;
+        $this->movementsSource = $movementsSource;
         $this->timeStamp = $timeStamp;
     }
 
@@ -52,7 +53,8 @@ class MovementsGenerator
 
     private function findLastGeneratedMovement(PeriodicalMovement $periodicalMovement)
     {
-        return $this->movementsCollection
+        return $this->movementsSource
+            ->collection()
             ->filterByPeriodicalMovement($periodicalMovement)
             ->orderByDateDesc()
             ->first();

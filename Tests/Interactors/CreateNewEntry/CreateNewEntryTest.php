@@ -4,6 +4,7 @@ namespace kontuak\Tests\Interactors\CreateNewEntry;
 
 use Kontuak\Implementation\InMemory\EntriesCollection;
 use Kontuak\Implementation\InMemory\MovementsCollection;
+use Kontuak\Implementation\InMemory\MovementsSource;
 use Kontuak\Interactors\CreateNewEntry\UseCase;
 use Kontuak\Interactors\CreateNewEntry\Request;
 use Kontuak\MovementId;
@@ -14,8 +15,8 @@ class CreateNewEntryTest extends \PHPUnit_Framework_TestCase
     private $request;
     /** @var UseCase */
     private $useCase;
-    /** @var EntriesCollection */
-    private $entriesCollection;
+    /** @var MovementsSource */
+    private $source;
     /** @var int */
     private $amount = 10;
     /** @var string */
@@ -33,8 +34,8 @@ class CreateNewEntryTest extends \PHPUnit_Framework_TestCase
         $this->request->concept = $this->concept;
         $this->request->amount = $this->amount;
         $this->request->date = $this->dateTimeSerialized;
-        $this->entriesCollection = new MovementsCollection($this->created);
-        $this->useCase = new UseCase($this->entriesCollection);
+        $this->source = new MovementsSource();
+        $this->useCase = new UseCase($this->source, $this->created);
     }
 
     /**
@@ -45,7 +46,11 @@ class CreateNewEntryTest extends \PHPUnit_Framework_TestCase
         $wrongAmount = -$this->amount;
         $this->request->amount = $wrongAmount;
         $response = $this->useCase->execute($this->request);
-        $createdEntry = $this->entriesCollection->find(MovementId::fromString($response->entry['id']));
+        $createdEntry = $this
+            ->source
+            ->collection()
+            ->filterById(MovementId::fromString($response->entry['id']))
+            ->first();
 
         $this->assertEquals($createdEntry->amount(), $this->amount);
     }
@@ -67,12 +72,12 @@ class CreateNewEntryTest extends \PHPUnit_Framework_TestCase
     public function whenCollectionThrowsAnExceptionShouldThrowASystemException()
     {
         $entriesCollection = $this
-            ->getMockBuilder('Kontuak\Implementation\InMemory\MovementsCollection')
+            ->getMockBuilder('Kontuak\Implementation\InMemory\MovementsSource')
             ->disableOriginalConstructor()
             ->getMock();
         $entriesCollection->method('add')->willThrowException(new \Exception());
-        /** @var EntriesCollection $entriesCollection */
-        $useCase = new UseCase($entriesCollection);
+        /** @var MovementsSource $entriesCollection */
+        $useCase = new UseCase($entriesCollection, $this->created);
         $useCase->execute($this->request);
     }
 
@@ -82,7 +87,11 @@ class CreateNewEntryTest extends \PHPUnit_Framework_TestCase
     public function shouldSaveTheEntryCorrectly()
     {
         $response = $this->useCase->execute($this->request);
-        $createdEntry = $this->entriesCollection->find(MovementId::fromString($response->entry['id']));
+        $createdEntry = $this
+            ->source
+            ->collection()
+            ->filterById(MovementId::fromString($response->entry['id']))
+            ->first();
 
         $this->assertEquals($this->amount, $createdEntry->amount());
         $this->assertEquals($this->concept, $createdEntry->concept());

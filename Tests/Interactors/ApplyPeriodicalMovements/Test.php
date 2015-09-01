@@ -2,9 +2,9 @@
 
 namespace Kontuak\Tests\Interactors\ApplyPeriodicalMovements;
 
-use Kontuak\Implementation\InMemory\MovementsCollection;
-use Kontuak\Implementation\InMemory\PeriodicalMovementCollection;
-use Kontuak\Interactors\ApplyPeriodicalMovements\UseCase;
+use Kontuak\Implementation\InMemory\MovementsSource;
+use Kontuak\Implementation\InMemory\PeriodicalMovementsSource;
+use Kontuak\Interactors\ApplyPeriodicalMovements;
 use Kontuak\Period\DaysPeriod;
 use Kontuak\Period\WeekDayPeriod;
 use Kontuak\PeriodicalMovement;
@@ -13,18 +13,19 @@ use Kontuak\PeriodicalMovementId;
 
 class Test extends \PHPUnit_Framework_TestCase
 {
-    /** @var UseCase */
+    /** @var MovementsSource */
+    private $movementsSource;
+    /** @var PeriodicalMovementsSource */
+    private $periodicalMovementsSource;
+    /** @var ApplyPeriodicalMovements\UseCase */
     private $useCase;
-    private $periodicalMovementsCollection;
     private $starts;
     private $period;
     /** @var PeriodicalMovement */
     private $periodicalMovement;
     /** @var \DateTime */
     private $timeStamp;
-    /** @var MovementsCollection */
-    private $movementsCollection;
-    private $timeStampFormated;
+    private $timeStampFormatted;
 
     protected function setUp()
     {
@@ -37,16 +38,16 @@ class Test extends \PHPUnit_Framework_TestCase
             new \DateTime($this->starts),
             $this->period
         );
-        $this->timeStampFormated = '2015-08-09';
+        $this->timeStampFormatted = '2015-08-09';
         $this->timeStamp = new \DateTime('2015-08-09');
-        $this->movementsCollection = new MovementsCollection($this->timeStamp);
-        $this->periodicalMovementsCollection = new PeriodicalMovementCollection();
-        $this->periodicalMovementsCollection->add($this->periodicalMovement);
-        $this->useCase = new UseCase(
-            $this->movementsCollection,
-            $this->periodicalMovementsCollection,
+        $this->movementsSource = $movementsSource = new MovementsSource();
+        $this->periodicalMovementsSource = new PeriodicalMovementsSource();
+        $this->periodicalMovementsSource->add($this->periodicalMovement);
+        $this->useCase = new ApplyPeriodicalMovements\UseCase(
+            $movementsSource,
+            $this->periodicalMovementsSource,
             $this->timeStamp,
-            new MovementsGenerator($this->movementsCollection, $this->timeStamp)
+            new MovementsGenerator($this->movementsSource, $this->timeStamp)
         );
     }
 
@@ -57,7 +58,7 @@ class Test extends \PHPUnit_Framework_TestCase
     {
         $this->useCase->execute();
 
-        $movements = $this->movementsCollection->orderByDate()->all();
+        $movements = $this->movementsSource->collection()->orderByDate()->toArray();
         $this->assertEquals('2015-08-01', $movements[0]->date()->format('Y-m-d'));
     }
 
@@ -68,7 +69,7 @@ class Test extends \PHPUnit_Framework_TestCase
     {
         $this->timeStamp->setDate(2015, 8, 10);
         $this->useCase->execute();
-        $movements = $this->movementsCollection->orderByDate()->all();
+        $movements = $this->movementsSource->collection()->orderByDate()->toArray();
         $this->assertEquals(4, count($movements));
         $this->assertEquals('2015-08-10', $movements[3]->date()->format('Y-m-d'));
     }
@@ -80,7 +81,7 @@ class Test extends \PHPUnit_Framework_TestCase
     {
         $this->useCase->execute();
 
-        $movements = $this->movementsCollection->orderByDate()->all();
+        $movements = $this->movementsSource->collection()->orderByDate()->toArray();
         $this->assertEquals(3, count($movements));
         $this->assertEquals('2015-08-01', $movements[0]->date()->format('Y-m-d'));
         $this->assertEquals('2015-08-04', $movements[1]->date()->format('Y-m-d'));
@@ -95,7 +96,7 @@ class Test extends \PHPUnit_Framework_TestCase
         $this->useCase->execute();
         $this->timeStamp->setDate(2015, 8, 20);
         $this->useCase->execute();
-        $movements = $this->movementsCollection->orderByDate()->all();
+        $movements = $this->movementsSource->collection()->orderByDate()->toArray();
 
         $this->assertEquals(7, count($movements));
     }

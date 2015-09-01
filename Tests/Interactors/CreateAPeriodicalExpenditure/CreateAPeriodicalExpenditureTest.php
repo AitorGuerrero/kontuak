@@ -3,6 +3,7 @@
 namespace Kontuak\Tests\Interactors\CreateAPeriodicalExpenditure;
 
 use Kontuak\Implementation\InMemory\PeriodicalMovementCollection;
+use Kontuak\Implementation\InMemory\PeriodicalMovementsSource;
 use Kontuak\Interactors\CreateAPeriodicalExpenditure\Request;
 use Kontuak\Interactors\CreateAPeriodicalExpenditure\UseCase;
 use Kontuak\PeriodicalMovementId;
@@ -17,12 +18,12 @@ class CreateAPeriodicalExpenditureTest extends \PHPUnit_Framework_TestCase
     private $concept = 'Pus';
     private $periodType = Request::TYPE_DAYS;
     private $periodAmount = 4;
-    /** @var PeriodicalMovementCollection */
-    private $collection;
+    /** @var PeriodicalMovementsSource */
+    private $source;
 
     protected function setUp()
     {
-        $this->collection = new PeriodicalMovementCollection();
+        $this->source = new PeriodicalMovementsSource();
         $this->request = new Request();
         $this->request->amount = $this->amount;
         $this->request->periodType = $this->periodType;
@@ -30,7 +31,7 @@ class CreateAPeriodicalExpenditureTest extends \PHPUnit_Framework_TestCase
         $this->request->periodAmount = $this->periodAmount;
         $this->request->starts = '2015-08-01';
 
-        $this->useCase = new UseCase($this->collection);
+        $this->useCase = new UseCase($this->source);
     }
 
     /**
@@ -49,7 +50,7 @@ class CreateAPeriodicalExpenditureTest extends \PHPUnit_Framework_TestCase
     public function shouldSavePeriodicalMovementCorrectly()
     {
         $response = $this->useCase->execute($this->request);
-        $savedMovement = $this->collection->find(PeriodicalMovementId::fromString($response->periodicalMovement['id']));
+        $savedMovement = $this->source->collection()->find(PeriodicalMovementId::fromString($response->periodicalMovement['id']));
 
         $this->assertEquals($this->amount, $savedMovement->amount());
         $this->assertEquals($this->concept, $savedMovement->concept());

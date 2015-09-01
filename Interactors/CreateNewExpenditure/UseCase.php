@@ -9,6 +9,7 @@ use Kontuak\Interactors\SystemException;
 use Kontuak\Movement;
 use Kontuak\MovementId;
 use Kontuak\MovementsCollection;
+use Kontuak\MovementsSource;
 
 class UseCase
 {
@@ -16,10 +17,15 @@ class UseCase
      * @var ExpendituresCollection
      */
     private $expendituresCollection;
+    /**
+     * @var \DateTimeInterface
+     */
+    private $currentDateTime;
 
-    public function __construct(MovementsCollection $expendituresCollection)
+    public function __construct(MovementsSource $expendituresCollection, \DateTimeInterface $currentDateTime)
     {
         $this->expendituresCollection = $expendituresCollection;
+        $this->currentDateTime = $currentDateTime;
     }
 
     public function execute(Request $request)
@@ -29,7 +35,8 @@ class UseCase
                 new MovementId(),
                 -abs($request->amount),
                 $request->concept,
-                new \DateTime($request->dateTimeSerialized)
+                new \DateTime($request->dateTimeSerialized),
+                $this->currentDateTime
             );
             $this->expendituresCollection->add($expenditure);
         } catch (\Kontuak\InvalidArgumentException $e) {

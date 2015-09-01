@@ -4,36 +4,39 @@ namespace Kontuak;
 
 interface MovementsCollection
 {
-    /**
-     * @param Movement $movement
-     * @return
-     */
-    public function add(Movement $movement);
-    /**
-     * @param MovementId $id
-     * @return Movement
-     */
-    public function find(MovementId $id);
 
+    /**
+     * @return MovementsCollection
+     */
     public function orderByDate();
 
+    /**
+     * @return MovementsCollection
+     */
     public function orderByDateDesc();
 
     /**
      * @param int $amount
+     * @return MovementsCollection
      */
     public function limit($amount);
 
     /**
      * @return Movement[]
      */
-    public function all();
+    public function toArray();
 
     /**
      * @param \DateTimeInterface $date
      * @return MovementsCollection
      */
     public function filterDateLessThan(\DateTimeInterface $date);
+
+    /**
+     * @param MovementId $id
+     * @return MovementsCollection
+     */
+    public function filterById(MovementId $id);
 
     /**
      * float

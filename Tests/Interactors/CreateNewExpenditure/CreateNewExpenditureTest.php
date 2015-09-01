@@ -4,6 +4,7 @@ namespace Kontuak\Tests\Interactors\CreateNewEntry;
 
 use Kontuak\Implementation\InMemory\ExpendituresCollection;
 use Kontuak\Implementation\InMemory\MovementsCollection;
+use Kontuak\Implementation\InMemory\MovementsSource;
 use Kontuak\Interactors\CreateNewExpenditure\UseCase;
 use Kontuak\Interactors\CreateNewExpenditure\Request;
 use Kontuak\MovementId;
@@ -14,8 +15,8 @@ class CreateNewExpenditureTest extends \PHPUnit_Framework_TestCase
     private $request;
     /** @var UseCase */
     private $useCase;
-    /** @var ExpendituresCollection */
-    private $expendituresCollection;
+    /** @var MovementsSource */
+    private $expendituresSource;
     /** @var int */
     private $amount = -10;
     /** @var string */
@@ -35,8 +36,8 @@ class CreateNewExpenditureTest extends \PHPUnit_Framework_TestCase
         $this->request->amount = $this->amount;
         $this->request->concept = $this->concept;
         $this->request->dateTimeSerialized = $this->dateTimeSerialized;
-        $this->expendituresCollection = new MovementsCollection($this->created);
-        $this->useCase = new UseCase($this->expendituresCollection);
+        $this->expendituresSource = new MovementsSource($this->created);
+        $this->useCase = new UseCase($this->expendituresSource, $this->created);
     }
 
     /**
@@ -47,9 +48,11 @@ class CreateNewExpenditureTest extends \PHPUnit_Framework_TestCase
         $wrongAmount = -$this->amount;
         $this->request->amount = $wrongAmount;
         $response = $this->useCase->execute($this->request);
-        $createdExpenditure = $this->expendituresCollection->find(
-            MovementId::fromString(($response->expenditure['id']))
-        );
+        $createdExpenditure = $this
+            ->expendituresSource
+            ->collection()
+            ->filterById(MovementId::fromString(($response->expenditure['id'])))
+            ->first();
 
         $this->assertEquals($createdExpenditure->amount(), $this->amount);
     }
@@ -70,13 +73,13 @@ class CreateNewExpenditureTest extends \PHPUnit_Framework_TestCase
      */
     public function whenCollectionThrowsAnExceptionShouldThrowASystemException()
     {
-        $expendituresCollection = $this
-            ->getMockBuilder('Kontuak\Implementation\InMemory\MovementsCollection')
+        $expendituresSource = $this
+            ->getMockBuilder('Kontuak\Implementation\InMemory\MovementsSource')
             ->disableOriginalConstructor()
             ->getMock();
-        $expendituresCollection->method('add')->willThrowException(new \Exception());
-        /** @var ExpendituresCollection $expendituresCollection */
-        $useCase = new UseCase($expendituresCollection);
+        $expendituresSource->method('add')->willThrowException(new \Exception());
+        /** @var MovementsSource $expendituresSource */
+        $useCase = new UseCase($expendituresSource, $this->created);
         $useCase->execute($this->request);
     }
 
@@ -86,9 +89,9 @@ class CreateNewExpenditureTest extends \PHPUnit_Framework_TestCase
     public function shouldSaveTheExpenditureCorrectly()
     {
         $response = $this->useCase->execute($this->request);
-        $createdExpenditure = $this->expendituresCollection->find(
+        $createdExpenditure = $this->expendituresSource->collection()->filterById(
             MovementId::fromString($response->expenditure['id'])
-        );
+        )->first();
 
         $this->assertEquals($this->amount, $createdExpenditure->amount());
         $this->assertEquals($this->concept, $createdExpenditure->concept());

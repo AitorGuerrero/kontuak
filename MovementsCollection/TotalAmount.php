@@ -1,33 +1,28 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: aitor.guerrero
- * Date: 22/8/15
- * Time: 14:45
- */
 
 namespace Kontuak\MovementsCollection;
 
-
 use Kontuak\Movement;
-use Kontuak\MovementsCollection;
+use Kontuak\MovementsSource;
 
 class TotalAmount
 {
-    /** @var MovementsCollection */
-    private $collection;
+    /** @var MovementsSource */
+    private $source;
 
-    public function __construct(MovementsCollection $collection)
+    public function __construct(MovementsSource $source)
     {
-        $this->collection = $collection;
+        $this->source = $source;
     }
 
     public function getForAMovement(Movement $movement)
     {
-        $previousTotalAmount = $this->collection
+        $previousTotalAmount = $this->source
+            ->collection()
             ->filterDateLessThan($movement->date())
             ->amountSum();
-        $dateAmount = $this->collection
+        $dateAmount = $this->source
+            ->collection()
             ->filterByDateIs($movement->date())
             ->filterByCreatedIsLessThan($movement->created())
             ->amountSum();

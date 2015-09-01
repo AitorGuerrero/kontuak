@@ -19,12 +19,18 @@ class Movement
     private $periodicalMovement;
 
 
-    public function __construct(MovementId $movementId, $amount, $concept, \DateTimeInterface $date)
+    public function __construct(
+        MovementId $movementId,
+        $amount,
+        $concept,
+        \DateTimeInterface $date,
+        \DateTimeInterface $created)
     {
         $this->id = $movementId;
         $this->updateAmount($amount);
         $this->updateConcept($concept);
         $this->updateDate($date);
+        $this->created = $created;
     }
 
     /**
@@ -41,7 +47,8 @@ class Movement
             new MovementId(),
             $periodicalMovement->amount(),
             $periodicalMovement->concept(),
-            $date
+            $date,
+            new \DateTime()
         );
         $movement->assignToPeriodicalMovement($periodicalMovement);
 
@@ -67,11 +74,6 @@ class Movement
     public function created()
     {
         return $this->created;
-    }
-
-    public function setCreated(\DateTimeInterface $created)
-    {
-        $this->created = $created;
     }
 
     /**

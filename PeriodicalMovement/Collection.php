@@ -7,11 +7,6 @@ use Kontuak\PeriodicalMovementId;
 
 interface Collection
 {
-    /**
-     * @param PeriodicalMovement $periodicalMovement
-     * @return
-     */
-    public function add(PeriodicalMovement $periodicalMovement);
 
     /**
      * @param PeriodicalMovementId $id
