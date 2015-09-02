@@ -4,6 +4,9 @@ namespace Kontuak;
 
 abstract class Period
 {
+    const TYPE_DAY = 'day';
+    const TYPE_MONTH_DAY = 'month_day';
+
     private $amount;
 
     public function __construct($amount)
@@ -17,8 +20,8 @@ abstract class Period
     }
 
     /**
-     * @param \DateTimeInterface $date
-     * @return \DateTime
+     * Should return a constant TYPE_* defined in this class
+     * @return mixed
      */
-    abstract function next(\DateTimeInterface $date);
+    abstract function type();
 }

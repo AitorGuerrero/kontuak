@@ -15,9 +15,9 @@ class PeriodicalMovement
     /** @var Movement */
     protected $templateMovement;
     /** @var \DateTimeInterface */
-    private $starts;
+    protected $starts;
     /** @var \DateTimeInterface */
-    private $ends;
+    protected $ends;
 
     /**
      * @return string
