@@ -2,6 +2,7 @@
 
 namespace Kontuak\Implementation\InMemory\Movement;
 
+use Kontuak\Movement\Id;
 use Kontuak\PeriodicalMovement;
 use Kontuak\Movement;
 
@@ -18,6 +19,8 @@ class Collection implements Movement\Collection
     const FILTER_PERIODICAL_MOVEMENT = 'periodicalMovement';
     /** @var Movement[] */
     private $collection = [];
+    /** @var Source */
+    private $source;
 
     /**
      * @param Source $source
@@ -25,6 +28,7 @@ class Collection implements Movement\Collection
     public function __construct(Source $source)
     {
         $this->collection = $source->toArray();
+        $this->source = $source;
     }
 
     /**
@@ -144,5 +148,14 @@ class Collection implements Movement\Collection
     public function count()
     {
         return count($this->collection);
+    }
+
+    /**
+     * @param Id $id
+     * @return \Kontuak\Movement
+     */
+    public function findById(Id $id)
+    {
+        return $this->source->toArray()[$id->serialize()];
     }
 }

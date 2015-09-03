@@ -2,6 +2,7 @@
 
 namespace Kontuak\Interactors\ApplyPeriodicalMovements;
 
+use Kontuak\Movement;
 use Kontuak\MovementsCollection;
 use Kontuak\MovementsSource;
 use Kontuak\PeriodicalMovement\MovementsGenerator;
@@ -9,7 +10,7 @@ use Kontuak\PeriodicalMovementsSource;
 
 class UseCase
 {
-    /** @var MovementsSource */
+    /** @var Movement\Source */
     private $movementsSource;
     /** @var PeriodicalMovementsSource */
     private $periodicalMovementsSource;
@@ -19,7 +20,7 @@ class UseCase
     private $movementsGenerator;
 
     public function __construct(
-        MovementsSource $movementsSource,
+        Movement\Source $movementsSource,
         PeriodicalMovementsSource $periodicalMovementsSource,
         \DateTimeInterface $timeStamp,
         MovementsGenerator $movementsGenerator

@@ -3,14 +3,13 @@
 namespace Kontuak\MovementsCollection;
 
 use Kontuak\Movement;
-use Kontuak\MovementsSource;
 
 class TotalAmount
 {
-    /** @var MovementsSource */
+    /** @var Movement\Source */
     private $source;
 
-    public function __construct(MovementsSource $source)
+    public function __construct(Movement\Source $source)
     {
         $this->source = $source;
     }

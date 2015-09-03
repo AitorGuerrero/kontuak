@@ -5,7 +5,7 @@ namespace Kontuak\Interactors\MovementsHistory;
 use Kontuak\Interactors\InvalidArgumentException;
 use Kontuak\MovementsCollection;
 use Kontuak\MovementsCollection\TotalAmount;
-use Kontuak\MovementsSource;
+use Kontuak\Movement;
 
 class UseCase
 {
@@ -18,7 +18,7 @@ class UseCase
      */
     private $totalAmountService;
 
-    public function __construct(MovementsSource $source, TotalAmount $totalAmountService)
+    public function __construct(Movement\Source $source, TotalAmount $totalAmountService)
     {
         $this->source = $source;
         $this->totalAmountService = $totalAmountService;
@@ -30,17 +30,23 @@ class UseCase
             throw new InvalidArgumentException();
         }
 
-        $movements = array_reverse(
-            $this->source
-                ->collection()
-                ->orderByDateDesc()
-                ->limit($request->limit)
-                ->toArray()
-        );
+        $movements = $this
+            ->source
+            ->collection()
+            ->orderByDateDesc();
+        $movementsArray = [];
+        for(
+            ($movement = $movements->current()) && $i = 0;
+            ($movement !== false) && $i < $request->limit;
+            ($movement = $movements->next()) && $i++
+        ) {
+            $movementsArray[] = $movement;
+        }
+        $movementsArray = array_reverse($movementsArray);
         $response = new Response();
         $plainMovements = [];
-        $totalAmount = $this->previousTotalAmount($movements[0]);
-        foreach ($movements as $movement) {
+        $totalAmount = $this->previousTotalAmount(current($movementsArray));
+        foreach ($movementsArray as $movement) {
             $totalAmount += $movement->amount();
             $plainMovements[] = [
                 'id' => $movement->id()->serialize(),

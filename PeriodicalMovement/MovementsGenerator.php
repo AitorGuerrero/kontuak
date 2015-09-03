@@ -9,12 +9,12 @@ use Kontuak\PeriodicalMovement;
 
 class MovementsGenerator
 {
-    /** @var MovementsSource */
+    /** @var Movement\Source */
     private $movementsSource;
     /** @var \DateTimeInterface */
     private $timeStamp;
 
-    public function __construct(MovementsSource $movementsSource, \DateTimeInterface $timeStamp)
+    public function __construct(Movement\Source $movementsSource, \DateTimeInterface $timeStamp)
     {
         $this->movementsSource = $movementsSource;
         $this->timeStamp = $timeStamp;
@@ -39,7 +39,7 @@ class MovementsGenerator
     private function firstDate(PeriodicalMovement $periodicalMovement)
     {
         $lastGeneratedMovement = $this->findLastGeneratedMovement($periodicalMovement);
-        if ($lastGeneratedMovement !== null) {
+        if ($lastGeneratedMovement !== false) {
             $date = $periodicalMovement
                 ->period()
                 ->next($lastGeneratedMovement->date())
@@ -57,6 +57,6 @@ class MovementsGenerator
             ->collection()
             ->filterByPeriodicalMovement($periodicalMovement)
             ->orderByDateDesc()
-            ->first();
+            ->current();
     }
 }

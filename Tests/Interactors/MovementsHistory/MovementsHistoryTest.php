@@ -4,17 +4,17 @@ namespace Kontuak\Tests\Interactors\MovementsHistory;
 
 use Kontuak\Entry;
 use Kontuak\Expenditure;
+use Kontuak\Implementation\InMemory\Movement\Source;
 use Kontuak\Implementation\InMemory\MovementsCollection;
 use Kontuak\Implementation\InMemory\MovementsSource;
 use Kontuak\Interactors\MovementsHistory\Request;
 use Kontuak\Interactors\MovementsHistory\UseCase;
 use Kontuak\Movement;
-use Kontuak\MovementId;
 use Kontuak\MovementsCollection\TotalAmount;
 
 class MovementsHistoryTest extends \PHPUnit_Framework_TestCase
 {
-    /** @var MovementsCollection */
+    /** @var Movement\Source */
     private $source;
     /** @var UseCase */
     private $useCase;
@@ -25,7 +25,7 @@ class MovementsHistoryTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->source = new MovementsSource();
+        $this->source = new Source();
         $this->totalAmountService = new TotalAmount($this->source);
         $this->useCase = new UseCase($this->source, $this->totalAmountService);
         $this->request = new Request();
@@ -38,9 +38,9 @@ class MovementsHistoryTest extends \PHPUnit_Framework_TestCase
      */
     public function shouldReturnMovementsOrderedByDateDesc()
     {
-        $entry1 = new Movement(new MovementId(), 30, 'A', new \DateTime('2015-08-01'), new \DateTime('2015-01-01'));
-        $entry2 = new Movement(new MovementId(), 100, 'B', new \DateTime('2015-08-05'), new \DateTime('2015-01-01'));
-        $expenditure1 = new Movement(new MovementId(), -50, 'C', new \DateTime('2015-08-04'), new \DateTime('2015-01-01'));
+        $entry1 = new Movement(new Movement\Id(), 30, 'A', new \DateTime('2015-08-01'), new \DateTime('2015-01-01'));
+        $entry2 = new Movement(new Movement\Id(), 100, 'B', new \DateTime('2015-08-05'), new \DateTime('2015-01-01'));
+        $expenditure1 = new Movement(new Movement\Id(), -50, 'C', new \DateTime('2015-08-04'), new \DateTime('2015-01-01'));
         $this->source->add($entry1);
         $this->source->add($entry2);
         $this->source->add($expenditure1);
@@ -60,7 +60,7 @@ class MovementsHistoryTest extends \PHPUnit_Framework_TestCase
         $amount = 30;
         $concept = 'A';
         $date = '2015-08-01';
-        $entry1 = new Movement(new MovementId(), $amount, $concept, new \DateTime($date), new \DateTime('2015-01-01'));
+        $entry1 = new Movement(new Movement\Id(), $amount, $concept, new \DateTime($date), new \DateTime('2015-01-01'));
         $this->source->add($entry1);
         $response = $this->useCase->execute($this->request);
 
@@ -74,9 +74,9 @@ class MovementsHistoryTest extends \PHPUnit_Framework_TestCase
      */
     public function shouldReturnTheMovementsTotalAmount()
     {
-        $this->source->add(new Movement(new MovementId(), 30, 'A', new \DateTime('2015-08-01'), new \DateTime('2015-01-01')));
-        $this->source->add(new Movement(new MovementId(), 100, 'B', new \DateTime('2015-08-05'), new \DateTime('2015-01-01')));
-        $this->source->add(new Movement(new MovementId(), -50, 'C', new \DateTime('2015-08-04'), new \DateTime('2015-01-01')));
+        $this->source->add(new Movement(new Movement\Id(), 30, 'A', new \DateTime('2015-08-01'), new \DateTime('2015-01-01')));
+        $this->source->add(new Movement(new Movement\Id(), 100, 'B', new \DateTime('2015-08-05'), new \DateTime('2015-01-01')));
+        $this->source->add(new Movement(new Movement\Id(), -50, 'C', new \DateTime('2015-08-04'), new \DateTime('2015-01-01')));
         $response = $this->useCase->execute($this->request);
 
         $this->assertEquals(30, $response->movements[0]['totalAmount']);
@@ -89,9 +89,9 @@ class MovementsHistoryTest extends \PHPUnit_Framework_TestCase
      */
     public function whenThereAreMoreMovementsThanLimitShouldGetCorrectTotalAmount()
     {
-        $this->source->add(new Movement(new MovementId(), 30, 'A', new \DateTime('2015-08-01'), new \DateTime('2015-01-01')));
-        $this->source->add(new Movement(new MovementId(), 100, 'B', new \DateTime('2015-08-05'), new \DateTime('2015-01-01')));
-        $this->source->add(new Movement(new MovementId(), -50, 'C', new \DateTime('2015-08-04'), new \DateTime('2015-01-01')));
+        $this->source->add(new Movement(new Movement\Id(), 30, 'A', new \DateTime('2015-08-01'), new \DateTime('2015-01-01')));
+        $this->source->add(new Movement(new Movement\Id(), 100, 'B', new \DateTime('2015-08-05'), new \DateTime('2015-01-01')));
+        $this->source->add(new Movement(new Movement\Id(), -50, 'C', new \DateTime('2015-08-04'), new \DateTime('2015-01-01')));
         $this->request->limit = 2;
         $response = $this->useCase->execute($this->request);
 

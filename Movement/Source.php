@@ -13,7 +13,7 @@ use Kontuak\Movement;
 interface Source
 {
     /**
-     * @return MovementsCollection
+     * @return Collection
      */
     public function collection();
 

@@ -45,4 +45,10 @@ interface Collection extends \Iterator, \Countable
      * @return float
      */
     public function amountSum();
+
+    /**
+     * @param Id $id
+     * @return \Kontuak\Movement
+     */
+    public function findById(Id $id);
 }

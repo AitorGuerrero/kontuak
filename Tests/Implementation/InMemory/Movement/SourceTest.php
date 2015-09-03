@@ -4,7 +4,6 @@ namespace Kontuak\Tests\Implementation\InMemory\Movement;
 
 use Kontuak\Implementation\InMemory\Movement\Source;
 use Kontuak\Movement;
-use Kontuak\MovementId;
 use Kontuak\Period\DaysPeriod;
 use Kontuak\PeriodicalMovement;
 use Kontuak\PeriodicalMovementId;
@@ -156,7 +155,7 @@ class SourceTest extends \PHPUnit_Framework_TestCase
     public function movementGenerator($amount = null, $concept = null, $date = null, $created = null)
     {
         return new Movement(
-            new MovementId(),
+            new Movement\Id(),
             $amount === null ? 300 : $amount,
             $concept === null ? 'Concept' : $concept,
             $date === null ? new \DateTime('2015-05-01') : $date,

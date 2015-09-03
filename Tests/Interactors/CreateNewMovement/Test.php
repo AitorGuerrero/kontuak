@@ -2,20 +2,18 @@
 
 namespace kontuak\Tests\Interactors\CreateNewEntry;
 
-use Kontuak\Implementation\InMemory\EntriesCollection;
-use Kontuak\Implementation\InMemory\MovementsCollection;
-use Kontuak\Implementation\InMemory\MovementsSource;
+use Kontuak\Implementation\InMemory\Movement as InMemoryMovement;
 use Kontuak\Interactors\CreateNewEntry\UseCase;
 use Kontuak\Interactors\CreateNewEntry\Request;
-use Kontuak\MovementId;
+use Kontuak\Movement;
 
-class CreateNewEntryTest extends \PHPUnit_Framework_TestCase
+class Test extends \PHPUnit_Framework_TestCase
 {
     /** @var Request */
     private $request;
     /** @var UseCase */
     private $useCase;
-    /** @var MovementsSource */
+    /** @var InMemoryMovement\Source */
     private $source;
     /** @var int */
     private $amount = 10;
@@ -34,7 +32,7 @@ class CreateNewEntryTest extends \PHPUnit_Framework_TestCase
         $this->request->concept = $this->concept;
         $this->request->amount = $this->amount;
         $this->request->date = $this->dateTimeSerialized;
-        $this->source = new MovementsSource();
+        $this->source = new InMemoryMovement\Source();
         $this->useCase = new UseCase($this->source, $this->created);
     }
 
@@ -49,8 +47,7 @@ class CreateNewEntryTest extends \PHPUnit_Framework_TestCase
         $createdEntry = $this
             ->source
             ->collection()
-            ->filterById(MovementId::fromString($response->entry['id']))
-            ->first();
+            ->findById(Movement\Id::fromString($response->entry['id']));
 
         $this->assertEquals($createdEntry->amount(), $this->amount);
     }
@@ -72,11 +69,11 @@ class CreateNewEntryTest extends \PHPUnit_Framework_TestCase
     public function whenCollectionThrowsAnExceptionShouldThrowASystemException()
     {
         $entriesCollection = $this
-            ->getMockBuilder('Kontuak\Implementation\InMemory\MovementsSource')
+            ->getMockBuilder('Kontuak\Movement\Source')
             ->disableOriginalConstructor()
             ->getMock();
         $entriesCollection->method('add')->willThrowException(new \Exception());
-        /** @var MovementsSource $entriesCollection */
+        /** @var Movement\Source $entriesCollection */
         $useCase = new UseCase($entriesCollection, $this->created);
         $useCase->execute($this->request);
     }
@@ -90,8 +87,7 @@ class CreateNewEntryTest extends \PHPUnit_Framework_TestCase
         $createdEntry = $this
             ->source
             ->collection()
-            ->filterById(MovementId::fromString($response->entry['id']))
-            ->first();
+            ->findById(Movement\Id::fromString($response->entry['id']));
 
         $this->assertEquals($this->amount, $createdEntry->amount());
         $this->assertEquals($this->concept, $createdEntry->concept());

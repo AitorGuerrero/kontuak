@@ -2,10 +2,12 @@
 
 namespace Kontuak;
 
+use Kontuak\Movement\Id;
+
 class Movement
 {
 
-    /** @var MovementId */
+    /** @var Id */
     protected $id;
     /** @var float */
     protected $amount;
@@ -20,7 +22,7 @@ class Movement
 
 
     public function __construct(
-        MovementId $movementId,
+        Id $movementId,
         $amount,
         $concept,
         \DateTimeInterface $date,
@@ -34,7 +36,7 @@ class Movement
     }
 
     /**
-     * @return MovementId
+     * @return Movement\Id
      */
     public function id()
     {
@@ -44,7 +46,7 @@ class Movement
     public static function fromPeriodicalMovement(PeriodicalMovement $periodicalMovement, \DateTimeInterface $date)
     {
         $movement = new self(
-            new MovementId(),
+            new Id(),
             $periodicalMovement->amount(),
             $periodicalMovement->concept(),
             $date,

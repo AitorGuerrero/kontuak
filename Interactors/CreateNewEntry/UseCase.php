@@ -2,19 +2,14 @@
 
 namespace Kontuak\Interactors\CreateNewEntry;
 
-use Kontuak\EntriesCollection;
-use Kontuak\Entry;
 use Kontuak\Interactors\InvalidArgumentException;
 use Kontuak\Interactors\SystemException;
 use Kontuak\Movement;
-use Kontuak\MovementId;
-use Kontuak\MovementsCollection;
-use Kontuak\MovementsSource;
 
 class UseCase
 {
     /**
-     * @var MovementsSource
+     * @var Movement\Source
      */
     private $movementsSource;
     /**
@@ -22,7 +17,7 @@ class UseCase
      */
     private $currentDateTime;
 
-    public function __construct(MovementsSource $movementsSource, \DateTimeInterface $currentDateTime)
+    public function __construct(Movement\Source $movementsSource, \DateTimeInterface $currentDateTime)
     {
         $this->movementsSource = $movementsSource;
         $this->currentDateTime = $currentDateTime;
@@ -38,7 +33,7 @@ class UseCase
     {
         try {
             $entry = new Movement(
-                new MovementId(),
+                new Movement\Id(),
                 abs($request->amount),
                 $request->concept,
                 new \DateTime($request->date),

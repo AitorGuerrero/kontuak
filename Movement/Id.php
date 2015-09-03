@@ -1,8 +1,8 @@
 <?php
 
-namespace Kontuak;
+namespace Kontuak\Movement;
 
-class MovementId
+class Id
 {
     /** @var string */
     private $uniqueId;
