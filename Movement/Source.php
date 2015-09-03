@@ -1,6 +1,8 @@
 <?php
 
-namespace Kontuak;
+namespace Kontuak\Movement;
+
+use Kontuak\Movement;
 
 /**
  * Interface MovementsSource
@@ -8,7 +10,7 @@ namespace Kontuak;
  * This has to be implemented usually with a database system.
  * @package Kontuak
  */
-interface MovementsSource
+interface Source
 {
     /**
      * @return MovementsCollection
