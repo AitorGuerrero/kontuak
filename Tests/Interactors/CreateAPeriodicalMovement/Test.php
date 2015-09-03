@@ -1,37 +1,34 @@
 <?php
 
-namespace Kontuak\Tests\Interactors\CreateAPeriodicalExpenditure;
+namespace Kontuak\Tests\Interactors\CreateAPeriodicalMovement;
 
-use Kontuak\Implementation\InMemory\PeriodicalMovementCollection;
-use Kontuak\Implementation\InMemory\PeriodicalMovementsSource;
-use Kontuak\Interactors\CreateAPeriodicalExpenditure\Request;
-use Kontuak\Interactors\CreateAPeriodicalExpenditure\UseCase;
-use Kontuak\PeriodicalMovementId;
+use Kontuak\Interactors\CreateAPeriodicalMovement;
+use Kontuak\Implementation\InMemory;
+use Kontuak\PeriodicalMovement;
 
-class CreateAPeriodicalExpenditureTest extends \PHPUnit_Framework_TestCase
+class Test extends \PHPUnit_Framework_TestCase
 {
-    /** @var Request */
+    /** @var CreateAPeriodicalMovement\Request */
     private $request;
-    /** @var UseCase */
+    /** @var CreateAPeriodicalMovement\UseCase */
     private $useCase;
-    private $amount = -10;
+    private $amount = 10;
     private $concept = 'Pus';
-    private $periodType = Request::TYPE_DAYS;
+    private $periodType = CreateAPeriodicalMovement\Request::TYPE_DAYS;
     private $periodAmount = 4;
-    /** @var PeriodicalMovementsSource */
+    /** @var PeriodicalMovement\Source */
     private $source;
 
     protected function setUp()
     {
-        $this->source = new PeriodicalMovementsSource();
-        $this->request = new Request();
+        $this->source = new InMemory\PeriodicalMovement\Source();
+        $this->request = new CreateAPeriodicalMovement\Request($this->amount, $this->concept, $this->periodType, $this->periodAmount);
         $this->request->amount = $this->amount;
-        $this->request->periodType = $this->periodType;
         $this->request->concept = $this->concept;
+        $this->request->periodType = $this->periodType;
         $this->request->periodAmount = $this->periodAmount;
         $this->request->starts = '2015-08-01';
-
-        $this->useCase = new UseCase($this->source);
+        $this->useCase = new CreateAPeriodicalMovement\UseCase($this->source);
     }
 
     /**
@@ -50,7 +47,9 @@ class CreateAPeriodicalExpenditureTest extends \PHPUnit_Framework_TestCase
     public function shouldSavePeriodicalMovementCorrectly()
     {
         $response = $this->useCase->execute($this->request);
-        $savedMovement = $this->source->collection()->find(PeriodicalMovementId::fromString($response->periodicalMovement['id']));
+        $savedMovement = $this->source->collection()->find(
+            PeriodicalMovement\Id::fromString($response->periodicalMovement['id'])
+        );
 
         $this->assertEquals($this->amount, $savedMovement->amount());
         $this->assertEquals($this->concept, $savedMovement->concept());

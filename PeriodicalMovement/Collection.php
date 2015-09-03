@@ -3,16 +3,15 @@
 namespace Kontuak\PeriodicalMovement;
 
 use Kontuak\PeriodicalMovement;
-use Kontuak\PeriodicalMovementId;
 
 interface Collection
 {
 
     /**
-     * @param PeriodicalMovementId $id
+     * @param PeriodicalMovement\Id $id
      * @return PeriodicalMovement
      */
-    public function find(PeriodicalMovementId $id);
+    public function find(PeriodicalMovement\Id $id);
 
     /**
      * @return PeriodicalMovement[]

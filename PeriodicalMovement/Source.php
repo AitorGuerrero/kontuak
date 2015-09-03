@@ -1,8 +1,10 @@
 <?php
 
-namespace Kontuak;
+namespace Kontuak\PeriodicalMovement;
 
-interface PeriodicalMovementsSource
+use Kontuak\PeriodicalMovement;
+
+interface Source
 {
     /**
      * @return \Kontuak\PeriodicalMovement\Collection
@@ -10,4 +12,6 @@ interface PeriodicalMovementsSource
     public function collection();
 
     public function add(PeriodicalMovement $movement);
+
+    public function toArray();
 }

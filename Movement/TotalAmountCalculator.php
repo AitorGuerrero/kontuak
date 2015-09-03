@@ -1,10 +1,10 @@
 <?php
 
-namespace Kontuak\MovementsCollection;
+namespace Kontuak\Movement;
 
 use Kontuak\Movement;
 
-class TotalAmount
+class TotalAmountCalculator
 {
     /** @var Movement\Source */
     private $source;

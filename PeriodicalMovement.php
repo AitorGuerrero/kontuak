@@ -36,14 +36,14 @@ class PeriodicalMovement
     }
 
     /**
-     * @param PeriodicalMovementId $id
+     * @param PeriodicalMovement\Id $id
      * @param $amount
      * @param $concept
      * @param \DateTimeInterface $starts
      * @param Period $period
      */
     public function __construct(
-        PeriodicalMovementId $id,
+        PeriodicalMovement\Id $id,
         $amount,
         $concept,
         \DateTimeInterface $starts,
@@ -57,7 +57,7 @@ class PeriodicalMovement
     }
 
     /**
-     * @return PeriodicalMovementId
+     * @return PeriodicalMovement\Id
      */
     public function id()
     {

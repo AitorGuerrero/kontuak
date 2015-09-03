@@ -3,9 +3,8 @@
 namespace Kontuak\Implementation\InMemory\Movement;
 
 use Kontuak\Movement;
-use Kontuak\Movement\Source as BaseMovementsSource;
 
-class Source implements BaseMovementsSource
+class Source implements Movement\Source
 {
     /**
      * @var Movement[]

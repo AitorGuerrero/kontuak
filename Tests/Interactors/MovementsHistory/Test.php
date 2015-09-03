@@ -2,17 +2,12 @@
 
 namespace Kontuak\Tests\Interactors\MovementsHistory;
 
-use Kontuak\Entry;
-use Kontuak\Expenditure;
 use Kontuak\Implementation\InMemory\Movement\Source;
-use Kontuak\Implementation\InMemory\MovementsCollection;
-use Kontuak\Implementation\InMemory\MovementsSource;
 use Kontuak\Interactors\MovementsHistory\Request;
 use Kontuak\Interactors\MovementsHistory\UseCase;
 use Kontuak\Movement;
-use Kontuak\MovementsCollection\TotalAmount;
 
-class MovementsHistoryTest extends \PHPUnit_Framework_TestCase
+class Test extends \PHPUnit_Framework_TestCase
 {
     /** @var Movement\Source */
     private $source;
@@ -20,13 +15,13 @@ class MovementsHistoryTest extends \PHPUnit_Framework_TestCase
     private $useCase;
     /** @var Request */
     private $request;
-    /** @var TotalAmount */
+    /** @var Movement\TotalAmountCalculator */
     private $totalAmountService;
 
     protected function setUp()
     {
         $this->source = new Source();
-        $this->totalAmountService = new TotalAmount($this->source);
+        $this->totalAmountService = new Movement\TotalAmountCalculator($this->source);
         $this->useCase = new UseCase($this->source, $this->totalAmountService);
         $this->request = new Request();
         $this->request->limit = 5;

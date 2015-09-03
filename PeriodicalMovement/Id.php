@@ -1,8 +1,8 @@
 <?php
 
-namespace Kontuak;
+namespace Kontuak\PeriodicalMovement;
 
-class PeriodicalMovementId
+class Id
 {
     /** @var string */
     private $uniqueId;

@@ -3,27 +3,24 @@
 namespace Kontuak\Interactors\ApplyPeriodicalMovements;
 
 use Kontuak\Movement;
-use Kontuak\MovementsCollection;
-use Kontuak\MovementsSource;
-use Kontuak\PeriodicalMovement\MovementsGenerator;
-use Kontuak\PeriodicalMovementsSource;
+use Kontuak\PeriodicalMovement;
 
 class UseCase
 {
     /** @var Movement\Source */
     private $movementsSource;
-    /** @var PeriodicalMovementsSource */
+    /** @var PeriodicalMovement\Source */
     private $periodicalMovementsSource;
     /** @var \DateTimeInterface */
     private $timeStamp;
-    /** @var MovementsGenerator */
+    /** @var PeriodicalMovement\MovementsGenerator */
     private $movementsGenerator;
 
     public function __construct(
         Movement\Source $movementsSource,
-        PeriodicalMovementsSource $periodicalMovementsSource,
+        PeriodicalMovement\Source $periodicalMovementsSource,
         \DateTimeInterface $timeStamp,
-        MovementsGenerator $movementsGenerator
+        PeriodicalMovement\MovementsGenerator $movementsGenerator
     ) {
         $this->movementsSource = $movementsSource;
         $this->periodicalMovementsSource = $periodicalMovementsSource;

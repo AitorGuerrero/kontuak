@@ -1,33 +1,30 @@
 <?php
 
-namespace Kontuak\Implementation\InMemory;
+namespace Kontuak\Implementation\InMemory\PeriodicalMovement;
 
 use Kontuak\PeriodicalMovement;
-use Kontuak\PeriodicalMovement\Collection;
-use Kontuak\PeriodicalMovementId;
 
-class PeriodicalMovementCollection implements Collection
+class Collection implements PeriodicalMovement\Collection
 {
     const ORDER_DATE = 'date';
     const ORDER_DIRECTION_ASC = 'asc';
     const ORDER_DIRECTION_DESC = 'desc';
-    /** @var PeriodicalMovementsSource */
+    /** @var PeriodicalMovement\Source */
     private $source;
-    private $order;
     private $orderDirection;
     /** @var PeriodicalMovement[] */
     private $collection = [];
 
-    public function __construct(PeriodicalMovementsSource $source)
+    public function __construct(PeriodicalMovement\Source $source)
     {
         $this->source = $source;
     }
 
     /**
-     * @param PeriodicalMovementId $id
+     * @param PeriodicalMovement\Id $id
      * @return PeriodicalMovement
      */
-    public function find(PeriodicalMovementId $id)
+    public function find(PeriodicalMovement\Id $id)
     {
         return $this->source->toArray()[$id->serialize()];
     }
@@ -35,13 +32,6 @@ class PeriodicalMovementCollection implements Collection
     public function all()
     {
         return $this->processCollection();
-    }
-
-    public function orderByDate()
-    {
-        $this->order = self::ORDER_DATE;
-        $this->orderDirection = self::ORDER_DIRECTION_ASC;
-        return $this;
     }
 
     private function processCollection()
@@ -60,19 +50,9 @@ class PeriodicalMovementCollection implements Collection
 
     private function applyOrder()
     {
-        if ($this->order === self::ORDER_DATE) {
-            $this->applyOrderDate();
-        }
         if($this->orderDirection === self::ORDER_DIRECTION_DESC) {
             $this->collection = array_reverse($this->collection);
         }
-    }
-
-    private function applyOrderDate()
-    {
-        usort($this->collection, function(PeriodicalMovement $a, PeriodicalMovement $b) {
-            return $a->date() > $b->date() ? 1 : -1;
-        });
     }
 
     private function applyLimit()

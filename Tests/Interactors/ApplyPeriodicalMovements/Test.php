@@ -2,21 +2,17 @@
 
 namespace Kontuak\Tests\Interactors\ApplyPeriodicalMovements;
 
-use Kontuak\Implementation\InMemory\Movement;
-use Kontuak\Implementation\InMemory\MovementsSource;
-use Kontuak\Implementation\InMemory\PeriodicalMovementsSource;
+use Kontuak\Implementation\InMemory;
 use Kontuak\Interactors\ApplyPeriodicalMovements;
 use Kontuak\Period\DaysPeriod;
-use Kontuak\Period\WeekDayPeriod;
 use Kontuak\PeriodicalMovement;
-use Kontuak\PeriodicalMovement\MovementsGenerator;
-use Kontuak\PeriodicalMovementId;
+use Kontuak\Movement;
 
 class Test extends \PHPUnit_Framework_TestCase
 {
     /** @var Movement\Source */
     private $movementsSource;
-    /** @var PeriodicalMovementsSource */
+    /** @var InMemory\PeriodicalMovement\Source */
     private $periodicalMovementsSource;
     /** @var ApplyPeriodicalMovements\UseCase */
     private $useCase;
@@ -33,7 +29,7 @@ class Test extends \PHPUnit_Framework_TestCase
         $this->starts = '2015-08-01';
         $this->period = new DaysPeriod(3);
         $this->periodicalMovement = new PeriodicalMovement(
-            new PeriodicalMovementId(),
+            new PeriodicalMovement\Id(),
             10,
             'AA',
             new \DateTime($this->starts),
@@ -41,14 +37,14 @@ class Test extends \PHPUnit_Framework_TestCase
         );
         $this->timeStampFormatted = '2015-08-09';
         $this->timeStamp = new \DateTime('2015-08-09');
-        $this->movementsSource = $movementsSource = new Movement\Source();
-        $this->periodicalMovementsSource = new PeriodicalMovementsSource();
+        $this->movementsSource = $movementsSource = new InMemory\Movement\Source();
+        $this->periodicalMovementsSource = new InMemory\PeriodicalMovement\Source();
         $this->periodicalMovementsSource->add($this->periodicalMovement);
         $this->useCase = new ApplyPeriodicalMovements\UseCase(
             $movementsSource,
             $this->periodicalMovementsSource,
             $this->timeStamp,
-            new MovementsGenerator($this->movementsSource, $this->timeStamp)
+            new PeriodicalMovement\MovementsGenerator($this->movementsSource, $this->timeStamp)
         );
     }
 
@@ -74,7 +70,8 @@ class Test extends \PHPUnit_Framework_TestCase
         $this->assertEquals(4, $movements->count());
         $movements->next();
         $movements->next();
-        $this->assertEquals('2015-08-10', $movements->next()->date()->format('Y-m-d'));
+        $movements->next();
+        $this->assertEquals('2015-08-10', $movements->current()->date()->format('Y-m-d'));
     }
 
     /**
@@ -87,8 +84,10 @@ class Test extends \PHPUnit_Framework_TestCase
         $movements = $this->movementsSource->collection()->orderByDate();
         $this->assertEquals(3, $movements->count());
         $this->assertEquals('2015-08-01', $movements->current()->date()->format('Y-m-d'));
-        $this->assertEquals('2015-08-04', $movements->next()->date()->format('Y-m-d'));
-        $this->assertEquals('2015-08-07', $movements->next()->date()->format('Y-m-d'));
+        $movements->next();
+        $this->assertEquals('2015-08-04', $movements->current()->date()->format('Y-m-d'));
+        $movements->next();
+        $this->assertEquals('2015-08-07', $movements->current()->date()->format('Y-m-d'));
     }
 
     /**

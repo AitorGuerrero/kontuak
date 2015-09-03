@@ -85,7 +85,7 @@ class SourceTest extends \PHPUnit_Framework_TestCase
     public function shouldFilterByPeriodicalMovement()
     {
         $periodicalMovement = new PeriodicalMovement(
-            new PeriodicalMovementId(),
+            new PeriodicalMovement\Id(),
             100,
             'pus',
             new \DateTime('2015-05-01'),

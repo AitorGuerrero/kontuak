@@ -4,7 +4,7 @@ namespace Kontuak\Tests\Period;
 
 use Kontuak\Period\MonthDayPeriod;
 
-class MonthDayPeriodTest extends \PHPUnit_Framework_TestCase
+class Test extends \PHPUnit_Framework_TestCase
 {
     /**
      * @test
