@@ -1,6 +1,6 @@
 <?php
 
-namespace Kontuak\Interactors\ApplyPeriodicalMovements;
+namespace Kontuak\Interactors\PeriodicalMovement\Apply;
 
 use Kontuak\Movement;
 use Kontuak\PeriodicalMovement;

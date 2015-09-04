@@ -1,9 +1,9 @@
 <?php
 
-namespace Kontuak\Tests\Interactors\ApplyPeriodicalMovements;
+namespace Kontuak\Tests\Interactors\PeriodicalMovement\Apply;
 
 use Kontuak\Implementation\InMemory;
-use Kontuak\Interactors\ApplyPeriodicalMovements;
+use Kontuak\Interactors\PeriodicalMovement\Apply;
 use Kontuak\Period\DaysPeriod;
 use Kontuak\PeriodicalMovement;
 use Kontuak\Movement;
@@ -14,7 +14,7 @@ class Test extends \PHPUnit_Framework_TestCase
     private $movementsSource;
     /** @var InMemory\PeriodicalMovement\Source */
     private $periodicalMovementsSource;
-    /** @var ApplyPeriodicalMovements\UseCase */
+    /** @var Apply\UseCase */
     private $useCase;
     private $starts;
     private $period;
@@ -40,7 +40,7 @@ class Test extends \PHPUnit_Framework_TestCase
         $this->movementsSource = $movementsSource = new InMemory\Movement\Source();
         $this->periodicalMovementsSource = new InMemory\PeriodicalMovement\Source();
         $this->periodicalMovementsSource->add($this->periodicalMovement);
-        $this->useCase = new ApplyPeriodicalMovements\UseCase(
+        $this->useCase = new Apply\UseCase(
             $movementsSource,
             $this->periodicalMovementsSource,
             $this->timeStamp,
