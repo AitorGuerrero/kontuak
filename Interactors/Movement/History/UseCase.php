@@ -15,11 +15,17 @@ class UseCase
      * @var Movement\TotalAmountCalculator
      */
     private $totalAmountService;
+    /** @var \DateTime */
+    private $today;
 
-    public function __construct(Movement\Source $source, Movement\TotalAmountCalculator $totalAmountService)
-    {
+    public function __construct(
+        Movement\Source $source,
+        Movement\TotalAmountCalculator $totalAmountService,
+        \DateTime $today = null
+    ) {
         $this->source = $source;
         $this->totalAmountService = $totalAmountService;
+        $this->today = null !== $today ? $today : new \DateTime();
     }
 
     public function execute(Request $request)
@@ -31,6 +37,7 @@ class UseCase
         $movements = $this
             ->source
             ->collection()
+            ->filterDateLessThan($this->today)
             ->orderByDateDesc();
         $movementsArray = [];
         for(

@@ -20,9 +20,10 @@ class Test extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
+        $today = new \DateTime('2016-01-01');
         $this->source = new Source();
         $this->totalAmountService = new Movement\TotalAmountCalculator($this->source);
-        $this->useCase = new UseCase($this->source, $this->totalAmountService);
+        $this->useCase = new UseCase($this->source, $this->totalAmountService, $today);
         $this->request = new Request();
         $this->request->limit = 5;
     }
@@ -62,6 +63,21 @@ class Test extends \PHPUnit_Framework_TestCase
         $this->assertEquals($amount, $response->movements[0]['amount']);
         $this->assertEquals($concept, $response->movements[0]['concept']);
         $this->assertEquals($date, $response->movements[0]['date']);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldReturnMovementsBeforeToday()
+    {
+        $date1 = new \DateTime('2015-08-01');
+        $date2 = new \DateTime('2016-08-08');
+        $this->source->add(new Movement(new Movement\Id(), 100, 'B', $date1, new \DateTime('2015-01-01')));
+        $this->source->add(new Movement(new Movement\Id(), -50, 'C', $date2, new \DateTime('2015-01-01')));
+        $response = $this->useCase->execute($this->request);
+
+        $this->assertEquals(1, count($response->movements));
+        $this->assertEquals('2015-08-01', $response->movements[0]['date']);
     }
 
     /**
