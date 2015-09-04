@@ -5,6 +5,8 @@ namespace kontuak\Tests\Interactors\Movement\Create;
 use Kontuak\Implementation\InMemory\Movement as InMemoryMovement;
 use Kontuak\Interactors\CreateNewEntry\UseCase;
 use Kontuak\Interactors\CreateNewEntry\Request;
+use Kontuak\Interactors\InvalidArgumentException;
+use Kontuak\Interactors\SystemException;
 use Kontuak\Movement;
 
 class Test extends \PHPUnit_Framework_TestCase
@@ -42,8 +44,13 @@ class Test extends \PHPUnit_Framework_TestCase
      */
     public function whenConceptIsEmptyShouldThrowAnException()
     {
-        $this->request->concept = '';
-        $this->useCase->execute($this->request);
+        try {
+            $this->request->concept = '';
+            $this->useCase->execute($this->request);
+        } catch (InvalidArgumentException $e) {
+            $this->assertEquals('"concept" should not be blank', $e->getMessage());
+            throw $e;
+        }
     }
 
     /**
@@ -56,10 +63,23 @@ class Test extends \PHPUnit_Framework_TestCase
             ->getMockBuilder('Kontuak\Movement\Source')
             ->disableOriginalConstructor()
             ->getMock();
-        $entriesCollection->method('add')->willThrowException(new \Exception());
+        $thrownException = new \Exception();
+        $entriesCollection->method('add')->willThrowException($thrownException);
         /** @var Movement\Source $entriesCollection */
-        $useCase = new UseCase($entriesCollection, $this->created);
-        $useCase->execute($this->request);
+        try {
+            $useCase = new UseCase($entriesCollection, $this->created);
+            $useCase->execute($this->request);
+        } catch (SystemException $e) {
+            $this->assertEquals(
+                'Persistence Layer failed',
+                $e->getMessage()
+            );
+            $this->assertSame(
+                $thrownException,
+                $e->originalException()
+            );
+            throw $e;
+        }
     }
 
     /**

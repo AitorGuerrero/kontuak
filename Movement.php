@@ -6,6 +6,7 @@ use Kontuak\Movement\Id;
 
 class Movement
 {
+    private $emptyConceptMessage = '"concept" should not be blank';
 
     /** @var Id */
     protected $id;
@@ -93,7 +94,7 @@ class Movement
     protected function updateConcept($concept)
     {
         if(empty($concept)) {
-            throw new InvalidArgumentException();
+            throw new InvalidArgumentException($this->emptyConceptMessage);
         }
         $this->concept = $concept;
     }

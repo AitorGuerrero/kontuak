@@ -39,11 +39,13 @@ class UseCase
                 new \DateTime($request->date),
                 $this->currentDateTime
             );
-            $this->movementsSource->add($entry);
         } catch (\Kontuak\InvalidArgumentException $e) {
-            throw new InvalidArgumentException();
+            throw new InvalidArgumentException($e->getMessage());
+        }
+        try {
+            $this->movementsSource->add($entry);
         } catch (\Exception $e) {
-            throw new SystemException();
+            throw new SystemException('Persistence Layer failed', $e);
         }
 
         $response = new Response();
