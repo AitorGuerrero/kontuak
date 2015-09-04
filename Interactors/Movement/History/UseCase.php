@@ -51,6 +51,7 @@ class UseCase
                 'amount' => $movement->amount(),
                 'concept' => $movement->concept(),
                 'date' => $movement->date()->format('Y-m-d'),
+                'created' => $movement->created()->format('Y-m-d h:i:s'),
                 'totalAmount' => $totalAmount
             ];
         }

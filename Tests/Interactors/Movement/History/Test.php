@@ -95,6 +95,28 @@ class Test extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @test
+     */
+    public function shouldReturnRequiredData()
+    {
+        $movementId = new Movement\Id();
+        $amount = -50;
+        $concept = 'C';
+        $date = new \DateTime('2015-08-04');
+        $created = new \DateTime('2015-01-01');
+        $this->source->add(new Movement($movementId, $amount, $concept, $date, $created));
+        $this->request->limit = 2;
+        $response = $this->useCase->execute($this->request);
+
+        $this->assertEquals($movementId->serialize(), $response->movements[0]['id']);
+        $this->assertEquals($amount, $response->movements[0]['amount']);
+        $this->assertEquals($concept, $response->movements[0]['concept']);
+        $this->assertEquals($date->format('Y-m-d'), $response->movements[0]['date']);
+        $this->assertEquals($created->format('Y-m-d h:i:s'), $response->movements[0]['created']);
+        $this->assertEquals(-50, $response->movements[0]['totalAmount']);
+    }
+
+    /**
      * @expectedException \Kontuak\Interactors\InvalidArgumentException
      * @test
      */
