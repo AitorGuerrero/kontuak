@@ -1,20 +1,20 @@
 <?php
 
-namespace Kontuak\Tests\Interactors\CreateAPeriodicalMovement;
+namespace Kontuak\Tests\Interactors\PeriodicalMovement\Create;
 
-use Kontuak\Interactors\CreateAPeriodicalMovement;
+use Kontuak\Interactors\PeriodicalMovement\Create;
 use Kontuak\Implementation\InMemory;
 use Kontuak\PeriodicalMovement;
 
 class Test extends \PHPUnit_Framework_TestCase
 {
-    /** @var CreateAPeriodicalMovement\Request */
+    /** @var Create\Request */
     private $request;
-    /** @var CreateAPeriodicalMovement\UseCase */
+    /** @var Create\UseCase */
     private $useCase;
     private $amount = 10;
     private $concept = 'Pus';
-    private $periodType = CreateAPeriodicalMovement\Request::TYPE_DAYS;
+    private $periodType = Create\Request::TYPE_DAYS;
     private $periodAmount = 4;
     /** @var PeriodicalMovement\Source */
     private $source;
@@ -22,13 +22,13 @@ class Test extends \PHPUnit_Framework_TestCase
     protected function setUp()
     {
         $this->source = new InMemory\PeriodicalMovement\Source();
-        $this->request = new CreateAPeriodicalMovement\Request($this->amount, $this->concept, $this->periodType, $this->periodAmount);
+        $this->request = new Create\Request($this->amount, $this->concept, $this->periodType, $this->periodAmount);
         $this->request->amount = $this->amount;
         $this->request->concept = $this->concept;
         $this->request->periodType = $this->periodType;
         $this->request->periodAmount = $this->periodAmount;
         $this->request->starts = '2015-08-01';
-        $this->useCase = new CreateAPeriodicalMovement\UseCase($this->source);
+        $this->useCase = new Create\UseCase($this->source);
     }
 
     /**

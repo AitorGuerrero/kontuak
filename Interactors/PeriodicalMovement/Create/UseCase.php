@@ -1,6 +1,6 @@
 <?php
 
-namespace Kontuak\Interactors\CreateAPeriodicalExpenditure;
+namespace Kontuak\Interactors\PeriodicalMovement\Create;
 
 use Kontuak\Interactors\InvalidArgumentException;
 use Kontuak\Period\DaysPeriod;
@@ -19,19 +19,21 @@ class UseCase
         $this->periodicalMovementSource = $periodicalMovementSource;
     }
 
+    /**
+     * @param Request $request
+     * @return Response
+     * @throws InvalidArgumentException
+     */
     public function execute(Request $request)
     {
-        $period = $this->periodFactory($request->periodType, $request->periodAmount);
         $periodicalMovement = new PeriodicalMovement(
             new PeriodicalMovement\Id(),
-            -abs($request->amount),
+            abs($request->amount),
             $request->concept,
             new \DateTime($request->starts),
-            $period
+            $this->periodFactory($request->periodType, $request->periodAmount)
         );
-        $periodicalMovement->endsAt(new \DateTime($request->ends));
         $this->periodicalMovementSource->add($periodicalMovement);
-
         $response = new Response();
         $response->periodicalMovement = [
             'id' => $periodicalMovement->id()->serialize()
@@ -54,7 +56,7 @@ class UseCase
             case Request::TYPE_MONTH_DAY:
                 return new MonthDayPeriod($amount);
             default:
-                throw new InvalidArgumentException();
+                throw new InvalidArgumentException($type);
         }
     }
 }

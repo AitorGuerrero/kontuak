@@ -1,6 +1,6 @@
 <?php
 
-namespace Kontuak\Interactors\CreateAPeriodicalMovement;
+namespace Kontuak\Interactors\PeriodicalMovement\Create;
 
 class Response
 {
