@@ -1,6 +1,6 @@
 <?php
 
-namespace kontuak\Tests\Interactors\CreateNewEntry;
+namespace kontuak\Tests\Interactors\Movement\Create;
 
 use Kontuak\Implementation\InMemory\Movement as InMemoryMovement;
 use Kontuak\Interactors\CreateNewEntry\UseCase;
@@ -34,22 +34,6 @@ class Test extends \PHPUnit_Framework_TestCase
         $this->request->date = $this->dateTimeSerialized;
         $this->source = new InMemoryMovement\Source();
         $this->useCase = new UseCase($this->source, $this->created);
-    }
-
-    /**
-     * @test
-     */
-    public function whenTheAmountIsNegativeShouldSaveAsPositive()
-    {
-        $wrongAmount = -$this->amount;
-        $this->request->amount = $wrongAmount;
-        $response = $this->useCase->execute($this->request);
-        $createdEntry = $this
-            ->source
-            ->collection()
-            ->findById(Movement\Id::fromString($response->entry['id']));
-
-        $this->assertEquals($createdEntry->amount(), $this->amount);
     }
 
     /**
