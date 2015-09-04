@@ -33,18 +33,18 @@ class Test extends \PHPUnit_Framework_TestCase
      */
     public function shouldReturnMovementsOrderedByDateDesc()
     {
-        $entry1 = new Movement(new Movement\Id(), 30, 'A', new \DateTime('2015-08-01'), new \DateTime('2015-01-01'));
-        $entry2 = new Movement(new Movement\Id(), 100, 'B', new \DateTime('2015-08-05'), new \DateTime('2015-01-01'));
-        $expenditure1 = new Movement(new Movement\Id(), -50, 'C', new \DateTime('2015-08-04'), new \DateTime('2015-01-01'));
-        $this->source->add($entry1);
-        $this->source->add($entry2);
-        $this->source->add($expenditure1);
+        $movement1 = new Movement(new Movement\Id(), 30, 'A', new \DateTime('2015-08-01'), new \DateTime('2015-01-01'));
+        $movement2 = new Movement(new Movement\Id(), 100, 'B', new \DateTime('2015-08-05'), new \DateTime('2015-01-01'));
+        $movement3 = new Movement(new Movement\Id(), -50, 'C', new \DateTime('2015-08-04'), new \DateTime('2015-01-01'));
+        $this->source->add($movement1);
+        $this->source->add($movement2);
+        $this->source->add($movement3);
         $response = $this->useCase->execute($this->request);
 
         $this->assertEquals(3, count($response->movements));
-        $this->assertEquals($entry1->id()->serialize(), $response->movements[0]['id']);
-        $this->assertEquals($expenditure1->id()->serialize(), $response->movements[1]['id']);
-        $this->assertEquals($entry2->id()->serialize(), $response->movements[2]['id']);
+        $this->assertEquals($movement2->id()->serialize(), $response->movements[0]['id']);
+        $this->assertEquals($movement3->id()->serialize(), $response->movements[1]['id']);
+        $this->assertEquals($movement1->id()->serialize(), $response->movements[2]['id']);
     }
 
     /**
@@ -74,9 +74,9 @@ class Test extends \PHPUnit_Framework_TestCase
         $this->source->add(new Movement(new Movement\Id(), -50, 'C', new \DateTime('2015-08-04'), new \DateTime('2015-01-01')));
         $response = $this->useCase->execute($this->request);
 
-        $this->assertEquals(30, $response->movements[0]['totalAmount']);
+        $this->assertEquals(80, $response->movements[0]['totalAmount']);
         $this->assertEquals(-20, $response->movements[1]['totalAmount']);
-        $this->assertEquals(80, $response->movements[2]['totalAmount']);
+        $this->assertEquals(30, $response->movements[2]['totalAmount']);
     }
 
     /**
@@ -90,8 +90,8 @@ class Test extends \PHPUnit_Framework_TestCase
         $this->request->limit = 2;
         $response = $this->useCase->execute($this->request);
 
-        $this->assertEquals(-20, $response->movements[0]['totalAmount']);
-        $this->assertEquals(80, $response->movements[1]['totalAmount']);
+        $this->assertEquals(80, $response->movements[0]['totalAmount']);
+        $this->assertEquals(-20, $response->movements[1]['totalAmount']);
     }
 
     /**

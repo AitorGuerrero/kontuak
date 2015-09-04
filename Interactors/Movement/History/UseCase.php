@@ -25,7 +25,7 @@ class UseCase
     public function execute(Request $request)
     {
         if(gettype($request->limit) !== 'integer') {
-            throw new InvalidArgumentException();
+            throw new InvalidArgumentException('Required argument "limit"');
         }
 
         $movements = $this
@@ -35,7 +35,7 @@ class UseCase
         $movementsArray = [];
         for(
             $movement = $movements->current(), $i = 0;
-            $movement !== false && $i < $request->limit;
+            $movements->valid() && $i < $request->limit;
             $movements->next(), $movement = $movements->current(), $i++
         ) {
             $movementsArray[] = $movement;
@@ -54,7 +54,7 @@ class UseCase
                 'totalAmount' => $totalAmount
             ];
         }
-        $response->movements = $plainMovements;
+        $response->movements = array_reverse($plainMovements);
 
         return $response;
     }
