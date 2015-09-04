@@ -43,7 +43,7 @@ class UseCase
         } catch (\Kontuak\InvalidArgumentException $e) {
             throw new InvalidArgumentException();
         } catch (\Exception $e) {
-            throw new SystemException();
+            throw new SystemException('Persistence Layer failed', $e);
         }
 
         $response = new Response();
