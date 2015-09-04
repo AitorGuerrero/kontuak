@@ -35,7 +35,7 @@ trait SourceTest
         $this->source->add($movement2);
         $collection = $this->source->collection()->filterDateLessThan(new \DateTime('2015-06-01'));
 
-        $this->assertEquals(1AA, $collection->count());
+        $this->assertEquals(1, $collection->count());
         $this->assertSame($collection->current(), $movement1);
     }
 
