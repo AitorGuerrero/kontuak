@@ -1,6 +1,6 @@
 <?php
 
-namespace Kontuak\Interactors\MovementsHistory;
+namespace Kontuak\Interactors\Movement\History;
 
 class Response
 {
