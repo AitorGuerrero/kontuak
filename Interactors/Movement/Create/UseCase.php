@@ -33,7 +33,7 @@ class UseCase
     {
         try {
             $entry = new Movement(
-                new Movement\Id(),
+                Movement\Id::fromString($request->id),
                 $request->amount,
                 $request->concept,
                 new \DateTime($request->date),
@@ -41,7 +41,7 @@ class UseCase
             );
             $this->movementsSource->add($entry);
         } catch (\Kontuak\InvalidArgumentException $e) {
-            throw new InvalidArgumentException();
+            throw new InvalidArgumentException($e->getMessage());
         } catch (\Exception $e) {
             throw new SystemException('Persistence Layer failed', $e);
         }

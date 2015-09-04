@@ -3,8 +3,8 @@
 namespace kontuak\Tests\Interactors\Movement\Create;
 
 use Kontuak\Implementation\InMemory\Movement as InMemoryMovement;
-use Kontuak\Interactors\CreateNewEntry\UseCase;
-use Kontuak\Interactors\CreateNewEntry\Request;
+use Kontuak\Interactors\Movement\Create\UseCase;
+use Kontuak\Interactors\Movement\Create\Request;
 use Kontuak\Interactors\InvalidArgumentException;
 use Kontuak\Interactors\SystemException;
 use Kontuak\Movement;
