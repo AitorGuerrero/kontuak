@@ -33,7 +33,7 @@ class UseCase
     {
         try {
             $entry = new Movement(
-                new Movement\Id(),
+                Movement\Id::fromString($request->id),
                 abs($request->amount),
                 $request->concept,
                 new \DateTime($request->date),

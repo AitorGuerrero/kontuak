@@ -26,11 +26,13 @@ class Test extends \PHPUnit_Framework_TestCase
     private $createdSerialized = '2015-08-01';
     /** @var \DateTime */
     private $created;
+    private $id = '531d52c5-d217-4a94-92f3-3e0f9b603a7a';
 
     protected function setUp()
     {
         $this->created = new \DateTime($this->createdSerialized);
         $this->request = new Request();
+        $this->request->id = $this->id;
         $this->request->concept = $this->concept;
         $this->request->amount = $this->amount;
         $this->request->date = $this->dateTimeSerialized;
@@ -87,12 +89,13 @@ class Test extends \PHPUnit_Framework_TestCase
      */
     public function shouldSaveTheEntryCorrectly()
     {
-        $response = $this->useCase->execute($this->request);
+        $this->useCase->execute($this->request);
         $createdEntry = $this
             ->source
             ->collection()
-            ->findById(Movement\Id::fromString($response->entry['id']));
+            ->findById(Movement\Id::fromString($this->id));
 
+        $this->assertEquals($this->id, $createdEntry->id()->serialize());
         $this->assertEquals($this->amount, $createdEntry->amount());
         $this->assertEquals($this->concept, $createdEntry->concept());
         $this->assertEquals($this->dateTimeSerialized, $createdEntry->date()->format('Y-m-d'));
