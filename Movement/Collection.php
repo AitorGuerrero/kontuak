@@ -24,6 +24,12 @@ interface Collection extends \Iterator, \Countable
     public function filterDateLessThan(\DateTimeInterface $date);
 
     /**
+     * @param \DateTimeInterface $date
+     * @return $this
+     */
+    public function filterDateLessOrEqualTo(\DateTimeInterface $date);
+
+    /**
      * @param \DateTimeInterface $dateTime
      * @return Collection
      */

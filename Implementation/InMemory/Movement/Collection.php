@@ -79,6 +79,20 @@ class Collection implements Movement\Collection
     }
 
     /**
+     * @param \DateTimeInterface $date
+     * @return $this
+     */
+    public function filterDateLessOrEqualTo(\DateTimeInterface $date)
+    {
+        $filter = $date->format('Y-m-d');
+        $this->collection = array_filter($this->collection, function (Movement $a) use ($filter) {
+            return $a->date()->format('Y-m-d') <= $filter;
+        });
+
+        return $this;
+    }
+
+    /**
      * @param \DateTimeInterface $dateTime
      * @return Movement\Collection
      */
