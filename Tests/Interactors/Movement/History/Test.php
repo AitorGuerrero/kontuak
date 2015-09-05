@@ -9,6 +9,8 @@ use Kontuak\Movement;
 
 class Test extends \PHPUnit_Framework_TestCase
 {
+    /** @var \DateTime */
+    private $today;
     /** @var Movement\Source */
     private $source;
     /** @var UseCase */
@@ -20,10 +22,10 @@ class Test extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $today = new \DateTime('2016-01-01');
+        $this->today = new \DateTime('2016-01-01');
         $this->source = new Source();
         $this->totalAmountService = new Movement\TotalAmountCalculator($this->source);
-        $this->useCase = new UseCase($this->source, $this->totalAmountService, $today);
+        $this->useCase = new UseCase($this->source, $this->totalAmountService, $this->today);
         $this->request = new Request();
         $this->request->limit = 5;
     }
@@ -70,14 +72,36 @@ class Test extends \PHPUnit_Framework_TestCase
      */
     public function shouldReturnMovementsBeforeToday()
     {
-        $date1 = new \DateTime('2015-08-01');
-        $date2 = new \DateTime('2016-08-08');
-        $this->source->add(new Movement(new Movement\Id(), 100, 'B', $date1, new \DateTime('2015-01-01')));
-        $this->source->add(new Movement(new Movement\Id(), -50, 'C', $date2, new \DateTime('2015-01-01')));
+        $beforeDateStr = '2015-08-01';
+        $this->source->add(new Movement(new Movement\Id(), 100, 'B', new \DateTime($beforeDateStr), new \DateTime('2015-01-01')));
         $response = $this->useCase->execute($this->request);
 
         $this->assertEquals(1, count($response->movements));
-        $this->assertEquals('2015-08-01', $response->movements[0]['date']);
+        $this->assertEquals($beforeDateStr, $response->movements[0]['date']);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldNotReturnMovementsAfterToday()
+    {
+        $beforeDateStr = '2020-08-01';
+        $this->source->add(new Movement(new Movement\Id(), 100, 'B', new \DateTime($beforeDateStr), new \DateTime('2015-01-01')));
+        $response = $this->useCase->execute($this->request);
+
+        $this->assertTrue(empty($response->movements));
+    }
+
+    /**
+     * @test
+     */
+    public function shouldReturnMovementsOfToday()
+    {
+        $this->source->add(new Movement(new Movement\Id(), -50, 'C', $this->today, new \DateTime('2015-01-01')));
+        $response = $this->useCase->execute($this->request);
+
+        $this->assertEquals(1, count($response->movements));
+        $this->assertEquals($this->today->format('Y-m-d'), $response->movements[0]['date']);
     }
 
     /**
@@ -86,13 +110,11 @@ class Test extends \PHPUnit_Framework_TestCase
     public function shouldReturnTheMovementsTotalAmount()
     {
         $this->source->add(new Movement(new Movement\Id(), 30, 'A', new \DateTime('2015-08-01'), new \DateTime('2015-01-01')));
-        $this->source->add(new Movement(new Movement\Id(), 100, 'B', new \DateTime('2015-08-05'), new \DateTime('2015-01-01')));
-        $this->source->add(new Movement(new Movement\Id(), -50, 'C', new \DateTime('2015-08-04'), new \DateTime('2015-01-01')));
+        $this->source->add(new Movement(new Movement\Id(), -40, 'B', new \DateTime('2015-08-05'), new \DateTime('2015-01-01')));
         $response = $this->useCase->execute($this->request);
 
-        $this->assertEquals(80, $response->movements[0]['totalAmount']);
-        $this->assertEquals(-20, $response->movements[1]['totalAmount']);
-        $this->assertEquals(30, $response->movements[2]['totalAmount']);
+        $this->assertEquals(-10, $response->movements[0]['totalAmount']);
+        $this->assertEquals(30, $response->movements[1]['totalAmount']);
     }
 
     /**

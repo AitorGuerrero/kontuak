@@ -30,25 +30,47 @@ class UseCase
 
     public function execute(Request $request)
     {
-        if(gettype($request->limit) !== 'integer') {
-            throw new InvalidArgumentException('Required argument "limit"');
+        $this->assertRequest($request);
+        $response = new Response();
+        $movements = $this->movements();
+        if($movements->count() > 0) {
+            $response->movements = $this->processMovementsToOutput($movements, $request->limit);
+        } else {
+            $response->movements = [];
         }
 
-        $movements = $this
-            ->source
-            ->collection()
-            ->filterDateLessThan($this->today)
-            ->orderByDateDesc();
+        return $response;
+    }
+
+    private function previousTotalAmount($movement)
+    {
+        return $this->totalAmountService->getForAMovement($movement);
+    }
+
+    /**
+     * @param $limit
+     * @param $movements
+     * @return array
+     */
+    private function collectionToArray($movements, $limit)
+    {
         $movementsArray = [];
-        for(
+        for (
             $movement = $movements->current(), $i = 0;
-            $movements->valid() && $i < $request->limit;
+            $movements->valid() && $i < $limit;
             $movements->next(), $movement = $movements->current(), $i++
         ) {
             $movementsArray[] = $movement;
         }
-        $movementsArray = array_reverse($movementsArray);
-        $response = new Response();
+        return $movementsArray;
+    }
+
+    /**
+     * @param $movementsArray
+     * @return array
+     */
+    private function movementsToPlain($movementsArray)
+    {
         $plainMovements = [];
         $totalAmount = $this->previousTotalAmount(current($movementsArray));
         foreach ($movementsArray as $movement) {
@@ -62,13 +84,44 @@ class UseCase
                 'totalAmount' => $totalAmount
             ];
         }
-        $response->movements = array_reverse($plainMovements);
-
-        return $response;
+        return $plainMovements;
     }
 
-    private function previousTotalAmount($movement)
+    /**
+     * @param $movements
+     * @param $limit
+     * @return array
+     */
+    private function processMovementsToOutput($movements, $limit)
     {
-        return $this->totalAmountService->getForAMovement($movement);
+        $movementsArray = $this->collectionToArray($movements, $limit);
+        $movementsArray = array_reverse($movementsArray);
+        $plainMovements = $this->movementsToPlain($movementsArray);
+        $plainMovements = array_reverse($plainMovements);
+        return $plainMovements;
+    }
+
+    /**
+     * @return Movement\Collection
+     */
+    private function movements()
+    {
+        $movements = $this
+            ->source
+            ->collection()
+            ->filterDateLessOrEqualTo($this->today)
+            ->orderByDateDesc();
+        return $movements;
+    }
+
+    /**
+     * @param Request $request
+     * @throws InvalidArgumentException
+     */
+    private function assertRequest(Request $request)
+    {
+        if (gettype($request->limit) !== 'integer') {
+            throw new InvalidArgumentException('Required argument "limit"');
+        }
     }
 }
