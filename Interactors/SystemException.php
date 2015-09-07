@@ -2,7 +2,7 @@
 
 namespace Kontuak\Interactors;
 
-class SystemException extends \Exception
+class SystemException extends InteractorException
 {
     /** @var int */
     private $originalException;

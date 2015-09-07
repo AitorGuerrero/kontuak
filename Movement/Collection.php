@@ -55,6 +55,7 @@ interface Collection extends \Iterator, \Countable
     /**
      * @param Id $id
      * @return \Kontuak\Movement
+     *
      */
     public function findById(Id $id);
 }

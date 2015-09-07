@@ -2,6 +2,6 @@
 
 namespace Kontuak\Interactors;
 
-class InvalidArgumentException extends \Exception
+class InvalidArgumentException extends InteractorException
 {
 }

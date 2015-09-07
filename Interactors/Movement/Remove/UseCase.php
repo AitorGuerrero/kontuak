@@ -1,0 +1,26 @@
+<?php
+
+namespace Kontuak\Interactors\Movement\Remove;
+
+use Kontuak\Movement;
+
+class UseCase
+{
+    /** @var Movement\Source */
+    private $source;
+
+    public function __construct(Movement\Source $source)
+    {
+        $this->source = $source;
+    }
+    public function execute(Request $request)
+    {
+        $id = Movement\Id::fromString($request->id);
+        try {
+            $movement = $this->source->collection()->findById($id);
+        } catch (Movement\Collection\MovementNotFoundException $e) {
+            throw new MovementDoesNotExistsException($id);
+        }
+        $this->source->remove($movement);
+    }
+}

@@ -2,7 +2,6 @@
 
 namespace Kontuak\Implementation\InMemory\Movement;
 
-use Kontuak\Movement\Id;
 use Kontuak\PeriodicalMovement;
 use Kontuak\Movement;
 
@@ -165,11 +164,17 @@ class Collection implements Movement\Collection
     }
 
     /**
-     * @param Id $id
-     * @return \Kontuak\Movement
+     * @param Movement\Id $id
+     * @throws Movement\Collection\MovementNotFoundException
+     * @return Movement
      */
-    public function findById(Id $id)
+    public function findById(Movement\Id $id)
     {
-        return $this->source->toArray()[$id->serialize()];
+        $collection = $this->source->toArray();
+        $serializedId = $id->serialize();
+        if(!isset($collection[$serializedId])) {
+            throw new Movement\Collection\MovementNotFoundException();
+        }
+        return $collection[$serializedId];
     }
 }

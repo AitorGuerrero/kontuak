@@ -18,4 +18,10 @@ interface Source
     public function collection();
 
     public function add(Movement $movement);
+
+    /**
+     * @param Movement $movement
+     * @return void
+     */
+    public function remove(Movement $movement);
 }

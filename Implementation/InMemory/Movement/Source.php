@@ -30,4 +30,13 @@ class Source implements Movement\Source
     {
         return $this->movements;
     }
+
+    /**
+     * @param Movement $movement
+     * @return void
+     */
+    public function remove(Movement $movement)
+    {
+        unset($this->movements[$movement->id()->serialize()]);
+    }
 }
