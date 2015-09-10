@@ -7,9 +7,12 @@ class Id
     /** @var string */
     private $uniqueId;
 
-    public function __construct()
+    public function __construct($id = null)
     {
-        $this->uniqueId = uniqid();
+        if($id === null) {
+            $id = uniqid();
+        }
+        $this->uniqueId = $id;
     }
 
     public function serialize()

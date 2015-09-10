@@ -82,7 +82,7 @@ class Movement
     /**
      * @param float $amount
      */
-    protected function updateAmount($amount)
+    public function updateAmount($amount)
     {
         $this->amount = $amount;
     }
@@ -91,7 +91,7 @@ class Movement
      * @param string $concept
      * @throws InvalidArgumentException
      */
-    protected function updateConcept($concept)
+    public function updateConcept($concept)
     {
         if(empty($concept)) {
             throw new InvalidArgumentException($this->emptyConceptMessage);
@@ -102,7 +102,7 @@ class Movement
     /**
      * @param \DateTimeInterface $date
      */
-    protected function updateDate($date)
+    public function updateDate(\DateTimeInterface $date)
     {
         $this->date = $date;
     }
