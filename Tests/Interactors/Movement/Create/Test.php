@@ -2,7 +2,7 @@
 
 namespace kontuak\Tests\Interactors\Movement\Create;
 
-use Kontuak\Implementation\InMemory\Movement as InMemoryMovement;
+use Kontuak\Implementation\Movement\Source;
 use Kontuak\Interactors\Movement\Create\UseCase;
 use Kontuak\Interactors\Movement\Create\Request;
 use Kontuak\Interactors\InvalidArgumentException;
@@ -15,7 +15,7 @@ class Test extends \PHPUnit_Framework_TestCase
     private $request;
     /** @var UseCase */
     private $useCase;
-    /** @var InMemoryMovement\Source */
+    /** @var Source\InMemory */
     private $source;
     /** @var int */
     private $amount = 10;
@@ -36,7 +36,7 @@ class Test extends \PHPUnit_Framework_TestCase
         $this->request->concept = $this->concept;
         $this->request->amount = $this->amount;
         $this->request->date = $this->dateTimeSerialized;
-        $this->source = new InMemoryMovement\Source();
+        $this->source = new Source\InMemory();
         $this->useCase = new UseCase($this->source, $this->created);
     }
 

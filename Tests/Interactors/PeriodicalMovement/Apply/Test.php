@@ -7,12 +7,13 @@ use Kontuak\Interactors\PeriodicalMovement\Apply;
 use Kontuak\Period\DaysPeriod;
 use Kontuak\PeriodicalMovement;
 use Kontuak\Movement;
+use Kontuak\Implementation;
 
 class Test extends \PHPUnit_Framework_TestCase
 {
     /** @var Movement\Source */
     private $movementsSource;
-    /** @var InMemory\PeriodicalMovement\Source */
+    /** @var \Kontuak\Implementation\PeriodicalMovement\Source\InMemory */
     private $periodicalMovementsSource;
     /** @var Apply\UseCase */
     private $useCase;
@@ -37,11 +38,11 @@ class Test extends \PHPUnit_Framework_TestCase
         );
         $this->timeStampFormatted = '2015-08-09';
         $this->timeStamp = new \DateTime('2015-08-09');
-        $this->movementsSource = $movementsSource = new InMemory\Movement\Source();
-        $this->periodicalMovementsSource = new InMemory\PeriodicalMovement\Source();
+        $this->movementsSource = new Implementation\Movement\Source\InMemory();
+        $this->periodicalMovementsSource = new Implementation\PeriodicalMovement\Source\InMemory();
         $this->periodicalMovementsSource->add($this->periodicalMovement);
         $this->useCase = new Apply\UseCase(
-            $movementsSource,
+            $this->movementsSource,
             $this->periodicalMovementsSource,
             $this->timeStamp,
             new PeriodicalMovement\MovementsGenerator($this->movementsSource, $this->timeStamp)

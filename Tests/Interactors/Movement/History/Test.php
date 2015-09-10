@@ -2,7 +2,7 @@
 
 namespace Kontuak\Tests\Interactors\Movement\History;
 
-use Kontuak\Implementation\InMemory\Movement\Source;
+use Kontuak\Implementation\Movement\Source;
 use Kontuak\Interactors\Movement\History\Request;
 use Kontuak\Interactors\Movement\History\UseCase;
 use Kontuak\Movement;
@@ -23,7 +23,7 @@ class Test extends \PHPUnit_Framework_TestCase
     protected function setUp()
     {
         $this->today = new \DateTime('2016-01-01');
-        $this->source = new Source();
+        $this->source = new Source\InMemory();
         $this->totalAmountService = new Movement\TotalAmountCalculator($this->source);
         $this->useCase = new UseCase($this->source, $this->totalAmountService, $this->today);
         $this->request = new Request();

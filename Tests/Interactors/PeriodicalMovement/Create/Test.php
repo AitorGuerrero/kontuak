@@ -5,6 +5,7 @@ namespace Kontuak\Tests\Interactors\PeriodicalMovement\Create;
 use Kontuak\Interactors\PeriodicalMovement\Create;
 use Kontuak\Implementation\InMemory;
 use Kontuak\PeriodicalMovement;
+use Kontuak\Implementation;
 
 class Test extends \PHPUnit_Framework_TestCase
 {
@@ -21,7 +22,7 @@ class Test extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->source = new InMemory\PeriodicalMovement\Source();
+        $this->source = new Implementation\PeriodicalMovement\Source\InMemory();
         $this->request = new Create\Request($this->amount, $this->concept, $this->periodType, $this->periodAmount);
         $this->request->amount = $this->amount;
         $this->request->concept = $this->concept;

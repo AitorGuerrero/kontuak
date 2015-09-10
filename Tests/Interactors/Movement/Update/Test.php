@@ -2,14 +2,14 @@
 
 namespace Interactors\Movement\Update;
 
-use Kontuak\Implementation\InMemory\Movement\Source;
+use Kontuak\Implementation\Movement\Source;
 use Kontuak\Movement;
 use Kontuak\Interactors\Movement\Update\UseCase;
 use Kontuak\Interactors\Movement\Update\Request;
 
 class Test extends \PHPUnit_Framework_TestCase
 {
-    /** @var Source */
+    /** @var Source\InMemory */
     public $movementsSource;
     /** @var UseCase */
     public $useCase;
@@ -26,7 +26,7 @@ class Test extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->movementsSource = new Source();
+        $this->movementsSource = new Source\InMemory();
         $this->movementsSource->add(
             new Movement(
                 new Movement\Id(self::MOVEMENT_ID),

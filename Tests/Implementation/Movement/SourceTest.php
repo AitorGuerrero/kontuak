@@ -2,14 +2,15 @@
 
 namespace Kontuak\Tests\Implementation\Movement;
 
-use Kontuak\Implementation\InMemory\Movement\Source;
+
 use Kontuak\Movement;
 use Kontuak\Period\DaysPeriod;
 use Kontuak\PeriodicalMovement;
+use Kontuak\Implementation\Movement\Source;
 
 trait SourceTest
 {
-    /** @var Source */
+    /** @var Source\InMemory */
     private $source;
 
     /**

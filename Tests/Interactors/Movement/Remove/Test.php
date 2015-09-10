@@ -2,7 +2,7 @@
 
 namespace Interactors\Movement\Remove;
 
-use Kontuak\Implementation\InMemory\Movement\Source;
+use Kontuak\Implementation\Movement\Source;
 use Kontuak\Interactors\Movement\Remove\UseCase;
 use Kontuak\Interactors\Movement\Remove\Request;
 use Kontuak\Movement;
@@ -12,9 +12,9 @@ class Test extends \PHPUnit_Framework_TestCase
     const INVALID_ID = 'b12721fc-55a2-406d-8121-86f4c2868866';
     const MALFORMED_ID = 'malformed_id';
     const MOVEMENT_ID = '1782c153-c48f-4cf3-a24a-21f2957461c9';
-    /** @var \Kontuak\Implementation\InMemory\Movement\Source */
-    private $source;
 
+    /** @var Source\InMemory */
+    private $source;
     /** @var \Kontuak\Interactors\Movement\Remove\UseCase */
     private $useCase;
     /** @var \Kontuak\Interactors\Movement\Remove\Request */
@@ -23,7 +23,7 @@ class Test extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->source = new Source();
+        $this->source = new Source\InMemory();
         $this->useCase = new UseCase($this->source);
         $this->request = new Request();
     }

@@ -2,7 +2,7 @@
 
 namespace Kontuak\Tests\Implementation\InMemory\Movement;
 
-use Kontuak\Implementation\InMemory\Movement\Source;
+use Kontuak\Implementation\Movement\Source;
 
 class SourceTest extends \PHPUnit_Framework_TestCase
 {
@@ -10,6 +10,6 @@ class SourceTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->source = new Source();
+        $this->source = new Source\InMemory();
     }
 }
