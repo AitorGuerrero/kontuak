@@ -29,5 +29,6 @@ class UseCase
         $movement->updateAmount($request->amount);
         $movement->updateConcept($request->concept);
         $movement->updateDate(new \DateTime($request->date));
+        $this->source->persist($movement);
     }
 }

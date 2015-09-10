@@ -39,4 +39,12 @@ class Source implements Movement\Source
     {
         unset($this->movements[$movement->id()->serialize()]);
     }
+
+    /**
+     * @param Movement $movement
+     */
+    public function persist(Movement $movement)
+    {
+        $this->movements[$movement->id()->serialize()] = $movement;
+    }
 }
