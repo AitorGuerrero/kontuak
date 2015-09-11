@@ -9,8 +9,8 @@ use Kontuak\Movement;
 
 class Test extends \PHPUnit_Framework_TestCase
 {
-    const INVALID_MOVEMENT_ID = 45;
-    const MOVEMENT_ID_SERIALIZED = 'movement-id';
+    const INVALID_MOVEMENT_ID = '93f6c419-6822-4287-b84a-1cbfca6111f5';
+    const MOVEMENT_ID_SERIALIZED = '082ce378-1736-495c-b821-e010294704ca';
     /** @var Movement */
     private $movement;
     /** @var Source\InMemory */

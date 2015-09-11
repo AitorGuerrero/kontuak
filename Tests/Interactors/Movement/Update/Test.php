@@ -9,6 +9,7 @@ use Kontuak\Interactors\Movement\Update\Request;
 
 class Test extends \PHPUnit_Framework_TestCase
 {
+    const INEXISTENT_ID = '93f6c419-6822-4287-b84a-1cbfca6111f5';
     /** @var Source\InMemory */
     public $movementsSource;
     /** @var UseCase */
@@ -16,7 +17,7 @@ class Test extends \PHPUnit_Framework_TestCase
     /** @var Request */
     public $request;
 
-    const MOVEMENT_ID = 'asda';
+    const MOVEMENT_ID = '082ce378-1736-495c-b821-e010294704ca';
 
     const NEW_AMOUNT = 120;
 
@@ -51,7 +52,7 @@ class Test extends \PHPUnit_Framework_TestCase
     public function whenTheMovementDoesNotExistShouldThrowAnException()
     {
         $this->setExpectedException('\Kontuak\Interactors\MovementDoesNotExistException');
-        $this->request->id = 'inexistentId';
+        $this->request->id = self::INEXISTENT_ID;
 
         $this->useCase->execute($this->request);
     }
