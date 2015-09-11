@@ -2,9 +2,7 @@
 
 namespace Kontuak\PeriodicalMovement;
 
-use Kontuak\Implementation\InMemory\MovementsCollection;
 use Kontuak\Movement;
-use Kontuak\MovementsSource;
 use Kontuak\PeriodicalMovement;
 
 class MovementsGenerator
@@ -13,11 +11,17 @@ class MovementsGenerator
     private $movementsSource;
     /** @var \DateTimeInterface */
     private $timeStamp;
+    /** @var Movement\Id\Generator */
+    private $idGenerator;
 
-    public function __construct(Movement\Source $movementsSource, \DateTimeInterface $timeStamp)
-    {
+    public function __construct(
+        Movement\Source $movementsSource,
+        Movement\Id\Generator $idGenerator,
+        \DateTimeInterface $timeStamp
+    ) {
         $this->movementsSource = $movementsSource;
         $this->timeStamp = $timeStamp;
+        $this->idGenerator = $idGenerator;
     }
 
     public function all(PeriodicalMovement $periodicalMovement)
@@ -37,15 +41,14 @@ class MovementsGenerator
      * @param \DateTimeInterface $date
      * @return Movement
      */
-    public static function atDate(PeriodicalMovement $periodicalMovement, \DateTimeInterface $date)
+    public function atDate(PeriodicalMovement $periodicalMovement, \DateTimeInterface $date)
     {
-        $generator = new Movement\Id\Generator(); // TODO Injection
         $movement = new Movement(
-            $generator->generate(),
+            $this->idGenerator->generate(),
             $periodicalMovement->amount(),
             $periodicalMovement->concept(),
             $date,
-            new \DateTime() // TODO Injection
+            $this->timeStamp
         );
         $movement->assignToPeriodicalMovement($periodicalMovement); // TODO should be private?
 

@@ -2,7 +2,6 @@
 
 namespace Kontuak\Tests\Implementation\Movement;
 
-
 use Kontuak\Movement;
 use Kontuak\Period\DaysPeriod;
 use Kontuak\PeriodicalMovement;
@@ -11,9 +10,11 @@ use Kontuak\Implementation\Movement\Source;
 trait SourceTest
 {
     /** @var  */
-    private $idGenerator;
+    protected $idGenerator;
     /** @var Source\InMemory */
-    private $source;
+    protected $source;
+    /** @var \DateTime */
+    protected $timeStamp;
 
     /**
      * @test
@@ -81,8 +82,11 @@ trait SourceTest
      */
     public function shouldFilterByPeriodicalMovement()
     {
-        // TODO TimeStamp should be literally defined
-        $movementsGenerator = new PeriodicalMovement\MovementsGenerator($this->source, new \DateTime());
+        $movementsGenerator = new PeriodicalMovement\MovementsGenerator(
+            $this->source,
+            new Movement\Id\Generator(),
+            $this->timeStamp
+        );
         $periodicalMovement = new PeriodicalMovement(
             new PeriodicalMovement\Id(),
             100,

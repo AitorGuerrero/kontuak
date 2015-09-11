@@ -12,5 +12,6 @@ class SourceTest extends \PHPUnit_Framework_TestCase
     {
         $this->idGenerator = new \Kontuak\Movement\Id\Generator();
         $this->source = new Source\InMemory();
+        $this->timeStamp = new \DateTime('2015-01-01');
     }
 }

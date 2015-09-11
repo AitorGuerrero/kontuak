@@ -45,7 +45,11 @@ class Test extends \PHPUnit_Framework_TestCase
             $this->movementsSource,
             $this->periodicalMovementsSource,
             $this->timeStamp,
-            new PeriodicalMovement\MovementsGenerator($this->movementsSource, $this->timeStamp)
+            new PeriodicalMovement\MovementsGenerator(
+                $this->movementsSource,
+                new Movement\Id\Generator(),
+                $this->timeStamp
+            )
         );
     }
 
