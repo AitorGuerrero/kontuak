@@ -14,10 +14,14 @@ class Test extends \PHPUnit_Framework_TestCase
 
     const CURRENT_DATE_ISO = '2015-06-01';
 
+    /** @var Movement\Id\Generator */
+    private $movementIdGenerator;
+
     protected function setUp()
     {
         $this->movementsSource = new InMemory();
         $this->useCase = new UseCase($this->movementsSource, new \DateTime(self::CURRENT_DATE_ISO));
+        $this->movementIdGenerator = new Movement\Id\Generator();
     }
 
     /**
@@ -25,24 +29,8 @@ class Test extends \PHPUnit_Framework_TestCase
      */
     public function shouldNotReturnPastMovements()
     {
-        $movementId1 = '5373d7bb-0e42-4e11-830a-a7c5a5113598';
-        $movementId2 = '5373d7bb-0e42-4e11-830a-a7c5a5113599';
-        $movement1 = new Movement(
-            new Movement\Id($movementId1),
-            10,
-            'Concept',
-            new \DateTime('2015-01-01'),
-            new \DateTime('2015-01-01')
-        );
-        $movement2 = new Movement(
-            new Movement\Id($movementId2),
-            10,
-            'Concept',
-            new \DateTime('2015-06-02'),
-            new \DateTime('2015-01-01')
-        );
-        $this->movementsSource->add($movement1);
-        $this->movementsSource->add($movement2);
+        $this->movementsSource->add($this->movementGenerator('2015-01-01'));
+        $this->movementsSource->add($this->movementGenerator('2015-06-02'));
 
         $response = $this->useCase->execute();
 
@@ -54,27 +42,22 @@ class Test extends \PHPUnit_Framework_TestCase
      */
     public function shouldNotReturnCurrentDaysMovements()
     {
-        $movementId1 = '5373d7bb-0e42-4e11-830a-a7c5a5113598';
-        $movementId2 = '5373d7bb-0e42-4e11-830a-a7c5a5113599';
-        $movement1 = new Movement(
-            new Movement\Id($movementId1),
-            10,
-            'Concept',
-            new \DateTime(self::CURRENT_DATE_ISO),
-            new \DateTime('2015-01-01')
-        );
-        $movement2 = new Movement(
-            new Movement\Id($movementId2),
-            10,
-            'Concept',
-            new \DateTime('2015-06-02'),
-            new \DateTime('2015-01-01')
-        );
-        $this->movementsSource->add($movement1);
-        $this->movementsSource->add($movement2);
+        $this->movementsSource->add($this->movementGenerator(self::CURRENT_DATE_ISO));
+        $this->movementsSource->add($this->movementGenerator('2015-06-02'));
 
         $response = $this->useCase->execute();
 
         $this->assertEquals(1, count($response->movements));
+    }
+
+    private function movementGenerator($isoDate = '2015-06-01')
+    {
+        return new Movement(
+            $this->movementIdGenerator->generate(),
+            10,
+            'Concept',
+            new \DateTime($isoDate),
+            new \DateTime('2015-01-01')
+        );
     }
 }
