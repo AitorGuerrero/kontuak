@@ -7,8 +7,13 @@ use Kontuak\Interactors\Movement\History\Request;
 use Kontuak\Interactors\Movement\History\UseCase;
 use Kontuak\Movement;
 
+/**
+ * Class Test
+ * @package Kontuak\Tests\Interactors\Movement\History
+ */
 class Test extends \PHPUnit_Framework_TestCase
 {
+    const TODAY_IDO = '2016-01-01';
     /** @var \DateTime */
     private $today;
     /** @var Movement\Source */
@@ -19,10 +24,13 @@ class Test extends \PHPUnit_Framework_TestCase
     private $request;
     /** @var Movement\TotalAmountCalculator */
     private $totalAmountService;
+    /** @var Movement\Id\Generator */
+    private $idGenerator;
 
     protected function setUp()
     {
-        $this->today = new \DateTime('2016-01-01');
+        $this->idGenerator = new Movement\Id\Generator();
+        $this->today = new \DateTime(self::TODAY_IDO);
         $this->source = new Source\InMemory();
         $this->totalAmountService = new Movement\TotalAmountCalculator($this->source);
         $this->useCase = new UseCase($this->source, $this->totalAmountService, $this->today);
@@ -36,9 +44,9 @@ class Test extends \PHPUnit_Framework_TestCase
      */
     public function shouldReturnMovementsOrderedByDateDesc()
     {
-        $movement1 = new Movement(new Movement\Id(), 30, 'A', new \DateTime('2015-08-01'), new \DateTime('2015-01-01'));
-        $movement2 = new Movement(new Movement\Id(), 100, 'B', new \DateTime('2015-08-05'), new \DateTime('2015-01-01'));
-        $movement3 = new Movement(new Movement\Id(), -50, 'C', new \DateTime('2015-08-04'), new \DateTime('2015-01-01'));
+        $movement1 = $this->generateMovement(30, '2015-08-01');
+        $movement2 = $this->generateMovement(100, '2015-08-05');
+        $movement3 = $this->generateMovement(-50, '2015-08-04');
         $this->source->add($movement1);
         $this->source->add($movement2);
         $this->source->add($movement3);
@@ -58,8 +66,8 @@ class Test extends \PHPUnit_Framework_TestCase
         $amount = 30;
         $concept = 'A';
         $date = '2015-08-01';
-        $entry1 = new Movement(new Movement\Id(), $amount, $concept, new \DateTime($date), new \DateTime('2015-01-01'));
-        $this->source->add($entry1);
+        $movement = $this->generateMovement($amount, $date, $concept);
+        $this->source->add($movement);
         $response = $this->useCase->execute($this->request);
 
         $this->assertEquals($amount, $response->movements[0]['amount']);
@@ -73,7 +81,8 @@ class Test extends \PHPUnit_Framework_TestCase
     public function shouldReturnMovementsBeforeToday()
     {
         $beforeDateStr = '2015-08-01';
-        $this->source->add(new Movement(new Movement\Id(), 100, 'B', new \DateTime($beforeDateStr), new \DateTime('2015-01-01')));
+        $movement = $this->generateMovement(100, $beforeDateStr);
+        $this->source->add($movement);
         $response = $this->useCase->execute($this->request);
 
         $this->assertEquals(1, count($response->movements));
@@ -86,7 +95,8 @@ class Test extends \PHPUnit_Framework_TestCase
     public function shouldNotReturnMovementsAfterToday()
     {
         $beforeDateStr = '2020-08-01';
-        $this->source->add(new Movement(new Movement\Id(), 100, 'B', new \DateTime($beforeDateStr), new \DateTime('2015-01-01')));
+        $movement = $this->generateMovement(100, $beforeDateStr);
+        $this->source->add($movement);
         $response = $this->useCase->execute($this->request);
 
         $this->assertTrue(empty($response->movements));
@@ -97,7 +107,8 @@ class Test extends \PHPUnit_Framework_TestCase
      */
     public function shouldReturnMovementsOfToday()
     {
-        $this->source->add(new Movement(new Movement\Id(), -50, 'C', $this->today, new \DateTime('2015-01-01')));
+        $movement = $this->generateMovement(-50, self::TODAY_IDO);
+        $this->source->add($movement);
         $response = $this->useCase->execute($this->request);
 
         $this->assertEquals(1, count($response->movements));
@@ -109,8 +120,8 @@ class Test extends \PHPUnit_Framework_TestCase
      */
     public function shouldReturnTheMovementsTotalAmount()
     {
-        $this->source->add(new Movement(new Movement\Id(), 30, 'A', new \DateTime('2015-08-01'), new \DateTime('2015-01-01')));
-        $this->source->add(new Movement(new Movement\Id(), -40, 'B', new \DateTime('2015-08-05'), new \DateTime('2015-01-01')));
+        $this->source->add($this->generateMovement(30, '2015-08-01'));
+        $this->source->add($this->generateMovement(-40, '2015-08-05'));
         $response = $this->useCase->execute($this->request);
 
         $this->assertEquals(-10, $response->movements[0]['totalAmount']);
@@ -122,9 +133,9 @@ class Test extends \PHPUnit_Framework_TestCase
      */
     public function whenThereAreMoreMovementsThanLimitShouldGetCorrectTotalAmount()
     {
-        $this->source->add(new Movement(new Movement\Id(), 30, 'A', new \DateTime('2015-08-01'), new \DateTime('2015-01-01')));
-        $this->source->add(new Movement(new Movement\Id(), 100, 'B', new \DateTime('2015-08-05'), new \DateTime('2015-01-01')));
-        $this->source->add(new Movement(new Movement\Id(), -50, 'C', new \DateTime('2015-08-04'), new \DateTime('2015-01-01')));
+        $this->source->add($this->generateMovement(30, '2015-08-01'));
+        $this->source->add($this->generateMovement(100, '2015-08-05'));
+        $this->source->add($this->generateMovement(-50, '2015-08-04'));
         $this->request->limit = 2;
         $response = $this->useCase->execute($this->request);
 
@@ -137,7 +148,7 @@ class Test extends \PHPUnit_Framework_TestCase
      */
     public function shouldReturnRequiredData()
     {
-        $movementId = new Movement\Id();
+        $movementId = $this->idGenerator->generate();
         $amount = -50;
         $concept = 'C';
         $date = new \DateTime('2015-08-04');
@@ -162,6 +173,17 @@ class Test extends \PHPUnit_Framework_TestCase
     {
         $this->request->limit = null;
         $this->useCase->execute($this->request);
+    }
+
+    public function generateMovement($amount = 10, $date = '2015-01-01', $concept = 'Concept')
+    {
+        return new Movement(
+            $this->idGenerator->generate(),
+            $amount,
+            $concept,
+            new \DateTime($date),
+            new \DateTime('2015-01-01')
+        );
     }
 
 }

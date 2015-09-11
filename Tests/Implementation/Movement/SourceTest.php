@@ -10,6 +10,8 @@ use Kontuak\Implementation\Movement\Source;
 
 trait SourceTest
 {
+    /** @var  */
+    private $idGenerator;
     /** @var Source\InMemory */
     private $source;
 
@@ -150,7 +152,7 @@ trait SourceTest
     public function movementGenerator($amount = null, $concept = null, $date = null, $created = null)
     {
         return new Movement(
-            new Movement\Id(),
+            $this->idGenerator->generate(),
             $amount === null ? 300 : $amount,
             $concept === null ? 'Concept' : $concept,
             $date === null ? new \DateTime('2015-05-01') : $date,

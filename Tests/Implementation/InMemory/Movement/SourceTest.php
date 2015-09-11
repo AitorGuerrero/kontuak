@@ -10,6 +10,7 @@ class SourceTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
+        $this->idGenerator = new \Kontuak\Movement\Id\Generator();
         $this->source = new Source\InMemory();
     }
 }

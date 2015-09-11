@@ -5,25 +5,26 @@ namespace Kontuak\Movement;
 class Id
 {
     /** @var string */
-    private $uniqueId;
+    private $serialized;
 
-    public function __construct($id = null)
+    public function __construct($serialized)
     {
-        if($id === null) {
-            $id = uniqid();
-        }
-        $this->uniqueId = $id;
+        $this->serialized = $serialized;
     }
 
     public function serialize()
     {
-        return $this->uniqueId;
+        return $this->serialized;
     }
 
+    /**
+     * @param $string
+     * @return Id
+     * TODO KILL IT!!!
+     */
     public static function fromString($string)
     {
-        $id = new self();
-        $id->uniqueId = $string;
+        $id = new self($string);
         return $id;
     }
 }

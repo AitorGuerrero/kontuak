@@ -44,14 +44,21 @@ class Movement
         return $this->id;
     }
 
+    /**
+     * @param PeriodicalMovement $periodicalMovement
+     * @param \DateTimeInterface $date
+     * @return Movement
+     * @TODO As a service
+     */
     public static function fromPeriodicalMovement(PeriodicalMovement $periodicalMovement, \DateTimeInterface $date)
     {
+        $generator = new Id\Generator(); // TODO Injection
         $movement = new self(
-            new Id(),
+            $generator->generate(),
             $periodicalMovement->amount(),
             $periodicalMovement->concept(),
             $date,
-            new \DateTime()
+            new \DateTime() // TODO Injection
         );
         $movement->assignToPeriodicalMovement($periodicalMovement);
 
