@@ -22,7 +22,7 @@ class UseCase
             $movement = $this
                 ->source
                 ->collection()
-                ->findById(Movement\Id::fromString($response->id));
+                ->findById(new Movement\Id($response->id));
         } catch (Movement\Collection\MovementNotFoundException $e) {
             throw new MovementNotFoundException();
         }

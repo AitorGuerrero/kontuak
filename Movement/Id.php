@@ -20,15 +20,4 @@ class Id
     {
         return $this->serialized;
     }
-
-    /**
-     * @param $string
-     * @return Id
-     * TODO KILL IT!!!
-     */
-    public static function fromString($string)
-    {
-        $id = new self($string);
-        return $id;
-    }
 }

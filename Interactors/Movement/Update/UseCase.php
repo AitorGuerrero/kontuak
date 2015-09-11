@@ -20,7 +20,7 @@ class UseCase
 
     public function execute(Request $request)
     {
-        $movementId = Movement\Id::fromString($request->id);
+        $movementId = new Movement\Id($request->id);
         try {
             $movement = $this->source->collection()->findById($movementId);
         } catch (MovementNotFoundException $e) {

@@ -43,7 +43,7 @@ class Test extends \PHPUnit_Framework_TestCase
      */
     public function shouldRemoveTheMovementFromTheSource()
     {
-        $id = Movement\Id::fromString(self::MOVEMENT_ID);
+        $id = new Movement\Id(self::MOVEMENT_ID);
         $this->source->add(new Movement(
             $id,
             100,

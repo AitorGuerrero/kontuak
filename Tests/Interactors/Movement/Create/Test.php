@@ -93,7 +93,7 @@ class Test extends \PHPUnit_Framework_TestCase
         $createdEntry = $this
             ->source
             ->collection()
-            ->findById(Movement\Id::fromString($this->id));
+            ->findById(new Movement\Id($this->id));
 
         $this->assertEquals($this->id, $createdEntry->id()->serialize());
         $this->assertEquals($this->amount, $createdEntry->amount());

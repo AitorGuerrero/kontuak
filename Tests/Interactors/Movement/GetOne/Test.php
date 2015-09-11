@@ -25,7 +25,7 @@ class Test extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $movementId = Movement\Id::fromString(self::MOVEMENT_ID_SERIALIZED);
+        $movementId = new Movement\Id(self::MOVEMENT_ID_SERIALIZED);
         $this->movement = new Movement(
             $movementId,
             self::AMOUNT,
