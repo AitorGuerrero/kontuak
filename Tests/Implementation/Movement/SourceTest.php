@@ -81,6 +81,8 @@ trait SourceTest
      */
     public function shouldFilterByPeriodicalMovement()
     {
+        // TODO TimeStamp should be literally defined
+        $movementsGenerator = new PeriodicalMovement\MovementsGenerator($this->source, new \DateTime());
         $periodicalMovement = new PeriodicalMovement(
             new PeriodicalMovement\Id(),
             100,
@@ -89,7 +91,7 @@ trait SourceTest
             new DaysPeriod(4)
         );
         $movement1 = $this->movementGenerator();
-        $movement2 = Movement::fromPeriodicalMovement($periodicalMovement, new \DateTime('2015-05-01'));
+        $movement2 = $movementsGenerator->atDate($periodicalMovement, new \DateTime('2015-05-01'));
 
         $this->source->add($movement1);
         $this->source->add($movement2);

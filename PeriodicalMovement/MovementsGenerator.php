@@ -20,16 +20,36 @@ class MovementsGenerator
         $this->timeStamp = $timeStamp;
     }
 
-    public function generate(PeriodicalMovement $periodicalMovement)
+    public function all(PeriodicalMovement $periodicalMovement)
     {
         $date = $this->firstDate($periodicalMovement);
         $toFormatted = $this->timeStamp->format('Y-m-d');
         $movements = [];
         while($date <= $toFormatted) {
-            $movements[] = Movement::fromPeriodicalMovement($periodicalMovement, new \DateTime($date));
+            $movements[] = $this->atDate($periodicalMovement, new \DateTime($date));
             $date = $periodicalMovement->period()->next(new \DateTime($date))->format('Y-m-d');
         }
         return $movements;
+    }
+
+    /**
+     * @param PeriodicalMovement $periodicalMovement
+     * @param \DateTimeInterface $date
+     * @return Movement
+     */
+    public static function atDate(PeriodicalMovement $periodicalMovement, \DateTimeInterface $date)
+    {
+        $generator = new Movement\Id\Generator(); // TODO Injection
+        $movement = new Movement(
+            $generator->generate(),
+            $periodicalMovement->amount(),
+            $periodicalMovement->concept(),
+            $date,
+            new \DateTime() // TODO Injection
+        );
+        $movement->assignToPeriodicalMovement($periodicalMovement); // TODO should be private?
+
+        return $movement;
     }
 
     /**

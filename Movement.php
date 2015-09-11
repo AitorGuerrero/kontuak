@@ -45,27 +45,6 @@ class Movement
     }
 
     /**
-     * @param PeriodicalMovement $periodicalMovement
-     * @param \DateTimeInterface $date
-     * @return Movement
-     * @TODO As a service
-     */
-    public static function fromPeriodicalMovement(PeriodicalMovement $periodicalMovement, \DateTimeInterface $date)
-    {
-        $generator = new Id\Generator(); // TODO Injection
-        $movement = new self(
-            $generator->generate(),
-            $periodicalMovement->amount(),
-            $periodicalMovement->concept(),
-            $date,
-            new \DateTime() // TODO Injection
-        );
-        $movement->assignToPeriodicalMovement($periodicalMovement);
-
-        return $movement;
-    }
-
-    /**
      * @return float
      */
     public function amount()
@@ -122,7 +101,7 @@ class Movement
         return $this->concept;
     }
 
-    private function assignToPeriodicalMovement(PeriodicalMovement $periodicalMovement)
+    public function assignToPeriodicalMovement(PeriodicalMovement $periodicalMovement)
     {
         $this->periodicalMovement = $periodicalMovement;
     }

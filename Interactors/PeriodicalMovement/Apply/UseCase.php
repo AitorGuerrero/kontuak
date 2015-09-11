@@ -32,7 +32,7 @@ class UseCase
     {
         $periodicalMovements = $this->periodicalMovementsSource->collection()->all();
         foreach($periodicalMovements as $periodicalMovement) {
-            foreach($this->movementsGenerator->generate($periodicalMovement) as $movement) {
+            foreach($this->movementsGenerator->all($periodicalMovement) as $movement) {
                 $this->movementsSource->add($movement);
             }
         }
