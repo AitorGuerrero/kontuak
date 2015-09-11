@@ -3,6 +3,7 @@
 namespace Kontuak\Interactors\Movement\Coming;
 
 use Kontuak\Movement\Source;
+use Kontuak\Movement\TotalAmountCalculator;
 
 class UseCase
 {
@@ -10,12 +11,15 @@ class UseCase
     private $movementsSource;
     /** @var \DateTime */
     private $timeStamp;
+    /** @var TotalAmountCalculator */
+    private $totalAmountCalculator;
 
-    public function __construct(Source $movementsSource, \DateTime $timeStamp)
+    public function __construct(Source $movementsSource, \DateTime $timeStamp, TotalAmountCalculator $totalAmountCalculator)
     {
 
         $this->movementsSource = $movementsSource;
         $this->timeStamp = $timeStamp;
+        $this->totalAmountCalculator = $totalAmountCalculator;
     }
 
     public function execute()
@@ -24,7 +28,8 @@ class UseCase
             ->movementsSource
             ->collection()
             ->filterByDateIsPostThan($this->timeStamp)
-            ->orderByDate();
+            ->orderByDateDesc();
+
         $response = new Response();
         /** @var \Kontuak\Movement $movement */
         foreach($movements as $movement) {
@@ -33,6 +38,7 @@ class UseCase
                 'amount' => $movement->amount(),
                 'date' => $movement->date()->format('Y-m-d'),
                 'concept' => $movement->concept(),
+                'total_amount' => $this->totalAmountCalculator->getForAMovement($movement) + $movement->amount(),
             ];
         }
 

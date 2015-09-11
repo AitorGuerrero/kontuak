@@ -8,19 +8,23 @@ use Kontuak\Movement;
 
 class Test extends \PHPUnit_Framework_TestCase
 {
-    private $useCase;
-
-    private $movementsSource;
-
     const CURRENT_DATE_ISO = '2015-06-01';
 
+    /** @var UseCase */
+    private $useCase;
+    /** @var InMemory */
+    private $movementsSource;
     /** @var Movement\Id\Generator */
     private $movementIdGenerator;
 
     protected function setUp()
     {
         $this->movementsSource = new InMemory();
-        $this->useCase = new UseCase($this->movementsSource, new \DateTime(self::CURRENT_DATE_ISO));
+        $this->useCase = new UseCase(
+            $this->movementsSource,
+            new \DateTime(self::CURRENT_DATE_ISO),
+            new Movement\TotalAmountCalculator($this->movementsSource)
+        );
         $this->movementIdGenerator = new Movement\Id\Generator();
     }
 
@@ -50,11 +54,27 @@ class Test extends \PHPUnit_Framework_TestCase
         $this->assertEquals(1, count($response->movements));
     }
 
-    private function movementGenerator($isoDate = '2015-06-01')
+    /**
+     * @test
+     * @group PIS
+     */
+    public function shouldSetCalculatedAmount()
+    {
+        $this->movementsSource->add($this->movementGenerator('2015-05-01', 1));
+        $this->movementsSource->add($this->movementGenerator('2015-06-02', 1));
+        $this->movementsSource->add($this->movementGenerator('2015-06-10', 1));
+
+        $response = $this->useCase->execute();
+
+        $this->assertEquals(3, $response->movements[0]['total_amount']);
+        $this->assertEquals(2, $response->movements[1]['total_amount']);
+    }
+
+    private function movementGenerator($isoDate = '2015-06-01', $amount = 10)
     {
         return new Movement(
             $this->movementIdGenerator->generate(),
-            10,
+            $amount,
             'Concept',
             new \DateTime($isoDate),
             new \DateTime('2015-01-01')
