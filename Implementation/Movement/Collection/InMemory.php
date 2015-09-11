@@ -2,6 +2,7 @@
 
 namespace Kontuak\Implementation\Movement\Collection;
 
+use Kontuak\Movement\Collection;
 use Kontuak\PeriodicalMovement;
 use Kontuak\Movement;
 use Kontuak\Implementation\Movement\Source;
@@ -177,5 +178,19 @@ class InMemory implements Movement\Collection
             throw new Movement\Collection\MovementNotFoundException();
         }
         return $collection[$serializedId];
+    }
+
+    /**
+     * @param \DateTime $timeStamp
+     * @return Collection
+     */
+    public function filterByDateIsPostThan(\DateTime $timeStamp)
+    {
+        $filter = $timeStamp->format('Y-m-d');
+        $this->collection = array_filter($this->collection, function (Movement $a) use ($filter) {
+            return $a->date()->format('Y-m-d') > $filter;
+        });
+
+        return $this;
     }
 }

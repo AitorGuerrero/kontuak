@@ -58,4 +58,10 @@ interface Collection extends \Iterator, \Countable
      * @throws \Kontuak\Movement\Collection\MovementNotFoundException
      */
     public function findById(Id $id);
+
+    /**
+     * @param \DateTime $timeStamp
+     * @return Collection
+     */
+    public function filterByDateIsPostThan(\DateTime $timeStamp);
 }
