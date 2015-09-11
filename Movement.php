@@ -2,6 +2,7 @@
 
 namespace Kontuak;
 
+use Kontuak\Movement\Exception\InvalidAmount;
 use Kontuak\Movement\Id;
 
 class Movement
@@ -67,10 +68,14 @@ class Movement
 
     /**
      * @param float $amount
+     * @throws InvalidAmount
      */
     public function updateAmount($amount)
     {
-        $this->amount = $amount;
+        if (!is_numeric($amount) || 0 == $amount) {
+            throw new InvalidAmount();
+        }
+        $this->amount = (float) $amount;
     }
 
     /**
