@@ -21,25 +21,18 @@ class UseCase
 
     /**
      * @param Request $request
-     * @return Response
      * @throws InvalidArgumentException
      */
     public function execute(Request $request)
     {
         $periodicalMovement = new PeriodicalMovement(
-            new PeriodicalMovement\Id(),
-            abs($request->amount),
+            new PeriodicalMovement\Id($request->id),
+            $request->amount,
             $request->concept,
             new \DateTime($request->starts),
             $this->periodFactory($request->periodType, $request->periodAmount)
         );
         $this->periodicalMovementSource->add($periodicalMovement);
-        $response = new Response();
-        $response->periodicalMovement = [
-            'id' => $periodicalMovement->id()->serialize()
-        ];
-
-        return $response;
     }
 
     /**

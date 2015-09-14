@@ -49,11 +49,11 @@ class PeriodicalMovement
         \DateTimeInterface $starts,
         Period $period
     ) {
+        $this->id = $id;
         $this->amount = $amount;
         $this->concept = $concept;
         $this->period = $period;
         $this->starts = $starts;
-        $this->id = $id;
     }
 
     /**
@@ -78,26 +78,8 @@ class PeriodicalMovement
     }
 
     /**
-     * @param \DateTimeInterface $to
-     * @return Movement[]
+     * @param Period $period
      */
-    public function generateMovements(\DateTimeInterface $to)
-    {
-        $date = $this->starts->format('Y-m-d');
-        $toFormatted = $to->format('Y-m-d');
-        $movements = [];
-        while($date <= $toFormatted) {
-            $movements[] = new Movement(
-                new MovementId(),
-                $this->amount(),
-                $this->concept(),
-                new \DateTime($date)
-            );
-            $date = $this->period->next(new \DateTime($date))->format('Y-m-d');
-        }
-        return $movements;
-    }
-
     public function updatePeriod(Period $period)
     {
         $this->period = $period;

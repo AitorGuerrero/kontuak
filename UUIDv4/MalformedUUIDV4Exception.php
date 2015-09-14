@@ -1,6 +1,6 @@
 <?php
 
-namespace Kontuak\Movement\Id;
+namespace Kontuak\UUIDv4;
 
 use Kontuak\KontuakException;
 

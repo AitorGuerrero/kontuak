@@ -9,6 +9,7 @@ class Request {
     const TYPE_WEEK_DAY = 3;
     const TYPE_MONTH_DAY = 4;
 
+    public $id;
     public $amount;
     public $concept;
     public $periodType;
