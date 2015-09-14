@@ -22,8 +22,10 @@ class Test extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
+        $idGenerator = new PeriodicalMovement\Id\Generator();
         $this->source = new Implementation\PeriodicalMovement\Source\InMemory();
-        $this->request = new Create\Request($this->amount, $this->concept, $this->periodType, $this->periodAmount);
+        $this->request = new Create\Request();
+        $this->request->id = $idGenerator->generate()->serialize();
         $this->request->amount = $this->amount;
         $this->request->concept = $this->concept;
         $this->request->periodType = $this->periodType;
@@ -40,21 +42,5 @@ class Test extends \PHPUnit_Framework_TestCase
     {
         $this->request->periodType = 'Pene';
         $this->useCase->execute($this->request);
-    }
-
-    /**
-     * @test
-     */
-    public function shouldSavePeriodicalMovementCorrectly()
-    {
-        $response = $this->useCase->execute($this->request);
-        $savedMovement = $this->source->collection()->find(
-            PeriodicalMovement\Id::fromString($response->periodicalMovement['id'])
-        );
-
-        $this->assertEquals($this->amount, $savedMovement->amount());
-        $this->assertEquals($this->concept, $savedMovement->concept());
-        $this->assertInstanceOf('\Kontuak\Period\DaysPeriod', $savedMovement->period());
-        $this->assertEquals($this->periodAmount, $savedMovement->period()->amount());
     }
 }

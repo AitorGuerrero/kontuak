@@ -11,7 +11,7 @@ class IdTest extends \PHPUnit_Framework_TestCase
      */
     public function ifTheSerializedIsAMalformedUUIDShouldThrowAnException()
     {
-        $this->setExpectedException('\Kontuak\Movement\Id\MalformedUUIDV4Exception');
+        $this->setExpectedException('\Kontuak\UUIDv4\MalformedUUIDV4Exception');
         $malformedUUID = 'MalformedUUID';
 
         new Id($malformedUUID);
@@ -22,7 +22,7 @@ class IdTest extends \PHPUnit_Framework_TestCase
      */
     public function whenGivenVersionOtherThan4ShouldThrowAnException()
     {
-        $this->setExpectedException('\Kontuak\Movement\Id\MalformedUUIDV4Exception');
+        $this->setExpectedException('\Kontuak\UUIDv4\MalformedUUIDV4Exception');
         $malformedUUID = '082ce378-1736-195c-b821-e010294704ca';
 
         new Id($malformedUUID);

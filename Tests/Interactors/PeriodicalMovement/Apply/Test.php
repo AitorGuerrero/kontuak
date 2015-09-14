@@ -27,10 +27,11 @@ class Test extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
+        $idGenerator = new PeriodicalMovement\Id\Generator();
         $this->starts = '2015-08-01';
         $this->period = new DaysPeriod(3);
         $this->periodicalMovement = new PeriodicalMovement(
-            new PeriodicalMovement\Id(),
+            $idGenerator->generate(),
             10,
             'AA',
             new \DateTime($this->starts),

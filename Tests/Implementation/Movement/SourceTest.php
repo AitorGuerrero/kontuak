@@ -87,8 +87,9 @@ trait SourceTest
             new Movement\Id\Generator(),
             $this->timeStamp
         );
+        $idGenerator = new PeriodicalMovement\Id\Generator();
         $periodicalMovement = new PeriodicalMovement(
-            new PeriodicalMovement\Id(),
+            $idGenerator->generate(),
             100,
             'pus',
             new \DateTime('2015-05-01'),

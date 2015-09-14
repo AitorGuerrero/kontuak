@@ -1,8 +1,8 @@
 <?php
 
-namespace Kontuak\Movement\Id;
+namespace Kontuak\PeriodicalMovement\Id;
 
-use Kontuak\Movement\Id;
+use Kontuak\PeriodicalMovement\Id;
 use Kontuak\UUIDv4\Generator as BaseGenerator;
 
 class Generator extends BaseGenerator
