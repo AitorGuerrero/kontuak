@@ -20,7 +20,7 @@ class Movement
     /** @var \DateTimeInterface */
     protected $created;
     /** @var PeriodicalMovement|null */
-    private $periodicalMovement;
+    protected $periodicalMovement;
 
 
     public function __construct(
