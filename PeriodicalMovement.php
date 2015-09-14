@@ -11,7 +11,7 @@ class PeriodicalMovement
     /** @var string */
     protected $concept;
     /** @var Period */
-    private $period;
+    protected $period;
     /** @var Movement */
     protected $templateMovement;
     /** @var \DateTimeInterface */
