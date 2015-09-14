@@ -9,7 +9,7 @@ class MovementsGenerator
 {
     /** @var Movement\Source */
     private $movementsSource;
-    /** @var \DateTimeInterface */
+    /** @var \DateTime */
     private $timeStamp;
     /** @var Movement\Id\Generator */
     private $idGenerator;
@@ -17,7 +17,7 @@ class MovementsGenerator
     public function __construct(
         Movement\Source $movementsSource,
         Movement\Id\Generator $idGenerator,
-        \DateTimeInterface $timeStamp
+        \DateTime $timeStamp
     ) {
         $this->movementsSource = $movementsSource;
         $this->timeStamp = $timeStamp;
@@ -27,7 +27,9 @@ class MovementsGenerator
     public function all(PeriodicalMovement $periodicalMovement)
     {
         $date = $this->firstDate($periodicalMovement);
-        $toFormatted = $this->timeStamp->format('Y-m-d');
+        $limitDate = clone($this->timeStamp);
+        $limitDate->add(new \DateInterval('P3M'));
+        $toFormatted = $limitDate->format('Y-m-d');
         $movements = [];
         while($date <= $toFormatted) {
             $movements[] = $this->atDate($periodicalMovement, new \DateTime($date));
