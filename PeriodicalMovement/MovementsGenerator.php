@@ -24,11 +24,9 @@ class MovementsGenerator
         $this->idGenerator = $idGenerator;
     }
 
-    public function all(PeriodicalMovement $periodicalMovement)
+    public function toDate(PeriodicalMovement $periodicalMovement, \DateTime $limitDate)
     {
         $date = $this->firstDate($periodicalMovement);
-        $limitDate = clone($this->timeStamp);
-        $limitDate->add(new \DateInterval('P3M'));
         $toFormatted = $limitDate->format('Y-m-d');
         $movements = [];
         while($date <= $toFormatted) {

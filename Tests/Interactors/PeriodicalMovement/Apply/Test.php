@@ -11,6 +11,8 @@ use Kontuak\Implementation;
 
 class Test extends \PHPUnit_Framework_TestCase
 {
+    const LIMIT_ISO_DATE = '2015-11-09';
+    const CURRENT_ISO_DATE = '2015-08-09';
     /** @var Movement\Source */
     private $movementsSource;
     /** @var \Kontuak\Implementation\PeriodicalMovement\Source\InMemory */
@@ -23,7 +25,6 @@ class Test extends \PHPUnit_Framework_TestCase
     private $periodicalMovement;
     /** @var \DateTime */
     private $timeStamp;
-    private $timeStampFormatted;
 
     protected function setUp()
     {
@@ -37,8 +38,7 @@ class Test extends \PHPUnit_Framework_TestCase
             new \DateTime($this->starts),
             $this->period
         );
-        $this->timeStampFormatted = '2015-08-09';
-        $this->timeStamp = new \DateTime('2015-08-09');
+        $this->timeStamp = new \DateTime(self::CURRENT_ISO_DATE);
         $this->movementsSource = new Implementation\Movement\Source\InMemory();
         $this->periodicalMovementsSource = new Implementation\PeriodicalMovement\Source\InMemory();
         $this->periodicalMovementsSource->add($this->periodicalMovement);
@@ -67,17 +67,17 @@ class Test extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
+     * @group PIS
      */
     public function shouldCreateToCurrentDateIncluded()
     {
-        $this->timeStamp->setDate(2015, 8, 10);
         $this->useCase->execute();
         $movements = $this->movementsSource->collection()->orderByDate();
-        $this->assertEquals(4, $movements->count());
-        $movements->next();
-        $movements->next();
-        $movements->next();
-        $this->assertEquals('2015-08-10', $movements->current()->date()->format('Y-m-d'));
+        $this->assertEquals(34, $movements->count());
+        for($i = 1; $i < $movements->count(); $i++) {
+            $movements->next();
+        }
+        $this->assertEquals('2015-11-08', $movements->current()->date()->format('Y-m-d'));
     }
 
     /**
@@ -88,7 +88,7 @@ class Test extends \PHPUnit_Framework_TestCase
         $this->useCase->execute();
 
         $movements = $this->movementsSource->collection()->orderByDate();
-        $this->assertEquals(3, $movements->count());
+        $this->assertEquals(34, $movements->count());
         $this->assertEquals('2015-08-01', $movements->current()->date()->format('Y-m-d'));
         $movements->next();
         $this->assertEquals('2015-08-04', $movements->current()->date()->format('Y-m-d'));
@@ -99,13 +99,13 @@ class Test extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function shouldNorCreateAlreadyCreatedMovements()
+    public function shouldNotCreateAlreadyCreatedMovements()
     {
         $this->useCase->execute();
         $this->timeStamp->setDate(2015, 8, 20);
         $this->useCase->execute();
         $movements = $this->movementsSource->collection()->orderByDate();
 
-        $this->assertEquals(7, $movements->count());
+        $this->assertEquals(38, $movements->count());
     }
 }

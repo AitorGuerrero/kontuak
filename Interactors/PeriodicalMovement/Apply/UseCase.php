@@ -11,7 +11,7 @@ class UseCase
     private $movementsSource;
     /** @var PeriodicalMovement\Source */
     private $periodicalMovementsSource;
-    /** @var \DateTimeInterface */
+    /** @var \DateTime */
     private $timeStamp;
     /** @var PeriodicalMovement\MovementsGenerator */
     private $movementsGenerator;
@@ -19,7 +19,7 @@ class UseCase
     public function __construct(
         Movement\Source $movementsSource,
         PeriodicalMovement\Source $periodicalMovementsSource,
-        \DateTimeInterface $timeStamp,
+        \DateTime $timeStamp,
         PeriodicalMovement\MovementsGenerator $movementsGenerator
     ) {
         $this->movementsSource = $movementsSource;
@@ -30,9 +30,11 @@ class UseCase
 
     public function execute()
     {
+        $limitDate = clone($this->timeStamp);
+        $limitDate->add(new \DateInterval('P3M'));
         $periodicalMovements = $this->periodicalMovementsSource->collection()->all();
         foreach($periodicalMovements as $periodicalMovement) {
-            foreach($this->movementsGenerator->all($periodicalMovement) as $movement) {
+            foreach($this->movementsGenerator->toDate($periodicalMovement, $limitDate) as $movement) {
                 $this->movementsSource->add($movement);
             }
         }
