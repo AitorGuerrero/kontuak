@@ -22,7 +22,7 @@ class UseCase
         $this->totalAmountCalculator = $totalAmountCalculator;
     }
 
-    public function execute()
+    public function execute(Request $request)
     {
         $movements = $this
             ->movementsSource
@@ -32,6 +32,7 @@ class UseCase
 
         $response = new Response();
         /** @var \Kontuak\Movement $movement */
+        $amount = 0;
         foreach($movements as $movement) {
             $response->movements[] = [
                 'id' => $movement->id()->serialize(),
@@ -40,6 +41,10 @@ class UseCase
                 'concept' => $movement->concept(),
                 'total_amount' => $this->totalAmountCalculator->getForAMovement($movement) + $movement->amount(),
             ];
+            $amount++;
+            if($amount > $request->limit) {
+                break;
+            }
         }
 
         return $response;
