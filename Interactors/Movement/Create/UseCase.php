@@ -7,6 +7,7 @@ use Kontuak\Interactors\SystemException;
 use Kontuak\Movement;
 use Kontuak\Period;
 use Kontuak\PeriodicalMovement;
+use Kontuak\PeriodicalMovement\MovementsGenerator;
 
 class UseCase
 {
@@ -22,17 +23,21 @@ class UseCase
         Request::PERIOD_TYPE_DAYS => Period::TYPE_DAY,
         Request::PERIOD_TYPE_MONTHS => Period::TYPE_MONTH_DAY,
     ];
+    /** @var MovementsGenerator */
+    private $movementsGenerator;
 
     public function __construct(
         Movement\Source $movementsSource,
         PeriodicalMovement\Source $periodicalMovementSource,
         PeriodicalMovement\Id\Generator $periodicalMovementGenerator,
+        MovementsGenerator $movementsGenerator,
         \DateTimeInterface $currentDateTime
     ) {
         $this->movementsSource = $movementsSource;
         $this->currentDateTime = $currentDateTime;
         $this->periodicalMovementSource = $periodicalMovementSource;
         $this->periodicalMovementGenerator = $periodicalMovementGenerator;
+        $this->movementsGenerator = $movementsGenerator;
     }
 
     /**
@@ -50,13 +55,22 @@ class UseCase
             $response->periodicalMovementAmount = $periodicalMovement->period()->amount();
             $response->periodicalMovementType = array_flip($this->periodTyopeMapping)
                 [$periodicalMovement->period()->type()];
+            $movement = $this->createMovement($request);
+            $movement->assignToPeriodicalMovement($periodicalMovement);
+            $this->movementsSource->persist($movement);
+            $response->movementId = $movement->id()->serialize();
+            $response->movementAmount = $movement->amount();
+            $response->movementConcept = $movement->concept();
+            $response->movementDate = $movement->date()->format('Y-m-d');
+            $response->movementCreated = $movement->created()->format('Y-m-d H:i:s');
+        } else {
+            $movement = $this->createMovement($request);
+            $response->movementId = $movement->id()->serialize();
+            $response->movementAmount = $movement->amount();
+            $response->movementConcept = $movement->concept();
+            $response->movementDate = $movement->date()->format('Y-m-d');
+            $response->movementCreated = $movement->created()->format('Y-m-d H:i:s');
         }
-        $movement = $this->createMovement($request);
-        $response->movementId = $movement->id()->serialize();
-        $response->movementAmount = $movement->amount();
-        $response->movementConcept = $movement->concept();
-        $response->movementDate = $movement->date()->format('Y-m-d');
-        $response->movementCreated = $movement->created()->format('Y-m-d H:i:s');
 
         return $response;
     }

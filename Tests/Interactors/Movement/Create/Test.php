@@ -11,46 +11,52 @@ use Kontuak\Interactors\SystemException;
 use Kontuak\Movement;
 use Kontuak\Period;
 use Kontuak\PeriodicalMovement\Id\Generator;
+use Kontuak\PeriodicalMovement\MovementsGenerator;
 
 class Test extends \PHPUnit_Framework_TestCase
 {
-    public $generator;
+    const CURRENT_ISO_DATE = '2015-08-01 00:00:00';
+    const ISO_DATE = '2015-08-03';
+    const AMOUNT = 10;
+    const CONCEPT = 'Pis';
+    const ID = '531d52c5-d217-4a94-92f3-3e0f9b603a7a';
+
+    /** @var MovementsGenerator */
+    public $movementsGenerator;
+    /** @var Generator */
+    public $idGenerator;
     /** @var Request */
     private $request;
     /** @var UseCase */
     private $useCase;
     /** @var MovementSource */
     private $source;
-    /** @var int */
-    private $amount = 10;
-    /** @var string */
-    private $concept = 'Pis';
-    /** @var string */
-    private $dateTimeSerialized = '2015-08-03';
-    private $createdSerialized = '2015-08-01 00:00:00';
-    /** @var \DateTime */
-    private $created;
-    private $id = '531d52c5-d217-4a94-92f3-3e0f9b603a7a';
     /** @var PeriodicalMovementSource */
     private $periodicalMovementSource;
 
     protected function setUp()
     {
-        $this->periodicalMovementSource = new PeriodicalMovementSource();
-        $this->created = new \DateTime($this->createdSerialized);
-        $this->request = new Request();
-        $this->request->id = $this->id;
-        $this->request->concept = $this->concept;
-        $this->request->amount = $this->amount;
-        $this->request->date = $this->dateTimeSerialized;
         $this->source = new MovementSource();
-        $this->generator = new Generator();
+        $this->periodicalMovementSource = new PeriodicalMovementSource();
+        $this->idGenerator = new Generator();
+        $this->movementsGenerator = new MovementsGenerator(
+            $this->source,
+            new Movement\Id\Generator(),
+            new \DateTime(self::CURRENT_ISO_DATE)
+        );
         $this->useCase = new UseCase(
             $this->source,
             $this->periodicalMovementSource,
-            $this->generator,
-            $this->created
+            $this->idGenerator,
+            $this->movementsGenerator,
+            new \DateTime(self::CURRENT_ISO_DATE)
         );
+        
+        $this->request = new Request();
+        $this->request->id = self::ID;
+        $this->request->concept = self::CONCEPT;
+        $this->request->amount = self::AMOUNT;
+        $this->request->date = self::ISO_DATE;
     }
 
     /**
@@ -85,8 +91,9 @@ class Test extends \PHPUnit_Framework_TestCase
             $useCase = new UseCase(
                 $entriesCollection,
                 $this->periodicalMovementSource,
-                $this->generator,
-                $this->created
+                $this->idGenerator,
+                $this->movementsGenerator,
+                new \DateTime(self::CURRENT_ISO_DATE)
             );
             $useCase->execute($this->request);
         } catch (SystemException $e) {
@@ -108,13 +115,13 @@ class Test extends \PHPUnit_Framework_TestCase
     public function shouldSaveTheMovement()
     {
         $this->useCase->execute($this->request);
-        $movement = $this->source->byId(new Movement\Id($this->id));
+        $movement = $this->source->byId(new Movement\Id(self::ID));
 
-        $this->assertEquals($this->id, $movement->id()->serialize());
-        $this->assertEquals($this->amount, $movement->amount());
-        $this->assertEquals($this->concept, $movement->concept());
-        $this->assertEquals($this->dateTimeSerialized, $movement->date()->format('Y-m-d'));
-        $this->assertEquals($this->createdSerialized, $movement->created()->format('Y-m-d H:i:s'));
+        $this->assertEquals(self::ID, $movement->id()->serialize());
+        $this->assertEquals(self::AMOUNT, $movement->amount());
+        $this->assertEquals(self::CONCEPT, $movement->concept());
+        $this->assertEquals(self::ISO_DATE, $movement->date()->format('Y-m-d'));
+        $this->assertEquals(self::CURRENT_ISO_DATE, $movement->created()->format('Y-m-d H:i:s'));
     }
 
     /**
@@ -124,11 +131,11 @@ class Test extends \PHPUnit_Framework_TestCase
     {
         $response = $this->useCase->execute($this->request);
 
-        $this->assertEquals($this->id, $response->movementId);
-        $this->assertEquals($this->amount, $response->movementAmount);
-        $this->assertEquals($this->concept, $response->movementConcept);
-        $this->assertEquals($this->dateTimeSerialized, $response->movementDate);
-        $this->assertEquals($this->createdSerialized, $response->movementCreated);
+        $this->assertEquals(self::ID, $response->movementId);
+        $this->assertEquals(self::AMOUNT, $response->movementAmount);
+        $this->assertEquals(self::CONCEPT, $response->movementConcept);
+        $this->assertEquals(self::ISO_DATE, $response->movementDate);
+        $this->assertEquals(self::CURRENT_ISO_DATE, $response->movementCreated);
     }
 
     /**
@@ -159,5 +166,33 @@ class Test extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals(3, $response->periodicalMovementAmount);
         $this->assertEquals(Request::PERIOD_TYPE_MONTHS, $response->periodicalMovementType);
+    }
+
+    /**
+     * @test
+     */
+    public function evenItIsPeriodicalShouldCreateTheMovement()
+    {
+        $this->request->isPeriodical = true;
+        $this->request->periodType = Request::PERIOD_TYPE_MONTHS;
+        $this->request->periodAmount = 3;
+        $this->useCase->execute($this->request);
+
+        $this->assertNotNull($this->source->byId(new Movement\Id(self::ID)));
+    }
+
+    /**
+     * @test
+     */
+    public function whenIsPeriodicalTheMovementShouldBeLinkedToThePeriodicalMovement()
+    {
+        $this->request->isPeriodical = true;
+        $this->request->periodType = Request::PERIOD_TYPE_MONTHS;
+        $this->request->periodAmount = 3;
+        $response = $this->useCase->execute($this->request);
+
+        $movement = $this->source->byId(new Movement\Id(self::ID));
+        $this->assertNotNull($movement->periodicalMovement());
+        $this->assertEquals($response->periodicalMovementId, $movement->periodicalMovement()->id()->serialize());
     }
 }
