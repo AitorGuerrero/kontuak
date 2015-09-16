@@ -2,6 +2,7 @@
 
 namespace Kontuak\Interactors\Movement\Create;
 
+use Kontuak\Implementation\Transformer\Movement as MovementTransformer;
 use Kontuak\Interactors\InvalidArgumentException;
 use Kontuak\Interactors\SystemException;
 use Kontuak\Movement;
@@ -13,38 +14,42 @@ class UseCase
 {
     /** @var Movement\Source */
     private $movementsSource;
-    /** @var \DateTimeInterface */
+    /** @var \DateTime */
     private $currentDateTime;
     /** @var PeriodicalMovement\Source */
     private $periodicalMovementSource;
     /** @var PeriodicalMovement\Id\Generator */
     private $periodicalMovementGenerator;
-    private $periodTyopeMapping = [
+    private $periodTypeMapping = [
         Request::PERIOD_TYPE_DAYS => Period::TYPE_DAY,
         Request::PERIOD_TYPE_MONTHS => Period::TYPE_MONTH_DAY,
     ];
     /** @var MovementsGenerator */
     private $movementsGenerator;
+    /** @var MovementTransformer */
+    private $transformer;
 
     public function __construct(
         Movement\Source $movementsSource,
         PeriodicalMovement\Source $periodicalMovementSource,
         PeriodicalMovement\Id\Generator $periodicalMovementGenerator,
         MovementsGenerator $movementsGenerator,
-        \DateTimeInterface $currentDateTime
+        \DateTime $currentDateTime,
+        MovementTransformer $transformer
     ) {
         $this->movementsSource = $movementsSource;
         $this->currentDateTime = $currentDateTime;
         $this->periodicalMovementSource = $periodicalMovementSource;
         $this->periodicalMovementGenerator = $periodicalMovementGenerator;
         $this->movementsGenerator = $movementsGenerator;
+        $this->transformer = $transformer;
     }
 
     /**
      * @param Request $request
+     * @return mixed
      * @throws InvalidArgumentException
      * @throws SystemException
-     * @return Response
      */
     public function execute(Request $request)
     {
@@ -53,26 +58,16 @@ class UseCase
             $periodicalMovement = $this->createPeriodicalMovement($request);
             $response->periodicalMovementId = $periodicalMovement->id()->serialize();
             $response->periodicalMovementAmount = $periodicalMovement->period()->amount();
-            $response->periodicalMovementType = array_flip($this->periodTyopeMapping)
+            $response->periodicalMovementType = array_flip($this->periodTypeMapping)
                 [$periodicalMovement->period()->type()];
             $movement = $this->createMovement($request);
             $movement->assignToPeriodicalMovement($periodicalMovement);
             $this->movementsSource->persist($movement);
-            $response->movementId = $movement->id()->serialize();
-            $response->movementAmount = $movement->amount();
-            $response->movementConcept = $movement->concept();
-            $response->movementDate = $movement->date()->format('Y-m-d');
-            $response->movementCreated = $movement->created()->format('Y-m-d H:i:s');
         } else {
             $movement = $this->createMovement($request);
-            $response->movementId = $movement->id()->serialize();
-            $response->movementAmount = $movement->amount();
-            $response->movementConcept = $movement->concept();
-            $response->movementDate = $movement->date()->format('Y-m-d');
-            $response->movementCreated = $movement->created()->format('Y-m-d H:i:s');
         }
 
-        return $response;
+        return $this->transformer->toResource($movement);
     }
 
     /**
@@ -86,14 +81,14 @@ class UseCase
             $request->amount,
             $request->concept,
             new \DateTime($request->date),
-            Period::factory($this->periodTyopeMapping[$request->periodType], $request->periodAmount)
+            Period::factory($this->periodTypeMapping[$request->periodType], $request->periodAmount)
         );
         $this->periodicalMovementSource->add($periodicalMovement);
 
         return $periodicalMovement;
     }
 
-    private function createMovement($request)
+    private function createMovement(Request $request)
     {
         try {
             $movement = new Movement(
