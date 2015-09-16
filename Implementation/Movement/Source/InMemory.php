@@ -48,4 +48,9 @@ class InMemory implements Movement\Source
     {
         $this->movements[$movement->id()->serialize()] = $movement;
     }
+
+    public function byId(Movement\Id $id)
+    {
+        return $this->movements[$id->serialize()];
+    }
 }

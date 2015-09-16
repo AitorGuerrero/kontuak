@@ -2,6 +2,9 @@
 
 namespace Kontuak;
 
+use Kontuak\Period\DaysPeriod;
+use Kontuak\Period\MonthDayPeriod;
+
 abstract class Period
 {
     const TYPE_DAY = 'day';
@@ -24,4 +27,14 @@ abstract class Period
      * @return mixed
      */
     abstract function type();
+
+    public static function factory($type, $amount)
+    {
+        switch($type) {
+            case self::TYPE_DAY:
+                return new DaysPeriod($amount);
+            case self::TYPE_MONTH_DAY:
+                return new MonthDayPeriod($amount);
+        }
+    }
 }

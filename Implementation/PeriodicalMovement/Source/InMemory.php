@@ -8,7 +8,7 @@ use Kontuak\Implementation\PeriodicalMovement\Collection;
 class InMemory implements PeriodicalMovement\Source
 {
     /** @var PeriodicalMovement[] */
-    private $collection;
+    private $collection = [];
 
     /**
      * @return Collection\InMemory
@@ -29,5 +29,10 @@ class InMemory implements PeriodicalMovement\Source
     public function toArray()
     {
         return $this->collection;
+    }
+
+    public function byId($periodicalMovementId)
+    {
+        return $this->collection[$periodicalMovementId];
     }
 }

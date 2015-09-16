@@ -15,9 +15,9 @@ class Movement
     protected $amount;
     /** @var string */
     protected $concept;
-    /** @var \DateTimeInterface */
+    /** @var \DateTime */
     protected $date;
-    /** @var \DateTimeInterface */
+    /** @var \DateTime */
     protected $created;
     /** @var PeriodicalMovement|null */
     protected $periodicalMovement;
@@ -27,8 +27,8 @@ class Movement
         Id $movementId,
         $amount,
         $concept,
-        \DateTimeInterface $date,
-        \DateTimeInterface $created)
+        \DateTime $date,
+        \DateTime $created)
     {
         $this->id = $movementId;
         $this->updateAmount($amount);
@@ -61,6 +61,9 @@ class Movement
         return $this->date;
     }
 
+    /**
+     * @return \DateTime
+     */
     public function created()
     {
         return $this->created;
@@ -91,9 +94,9 @@ class Movement
     }
 
     /**
-     * @param \DateTimeInterface $date
+     * @param \DateTime $date
      */
-    public function updateDate(\DateTimeInterface $date)
+    public function updateDate(\DateTime $date)
     {
         $this->date = $date;
     }
