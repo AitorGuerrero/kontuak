@@ -143,9 +143,7 @@ class Test extends \PHPUnit_Framework_TestCase
      */
     public function ifHasPeriodInformationShouldCreateAPeriodicalMovement()
     {
-        $this->request->isPeriodical = true;
-        $this->request->periodType = Request::PERIOD_TYPE_MONTHS;
-        $this->request->periodAmount = 3;
+        $this->addPeriodInfoToRequest();
         $response = $this->useCase->execute($this->request);
 
         $periodicalMovement = $this->periodicalMovementSource->byId($response->periodicalMovementId);
@@ -159,9 +157,7 @@ class Test extends \PHPUnit_Framework_TestCase
      */
     public function ifHasPeriodInformationShouldGivePeriodicalMovementInfo()
     {
-        $this->request->isPeriodical = true;
-        $this->request->periodType = Request::PERIOD_TYPE_MONTHS;
-        $this->request->periodAmount = 3;
+        $this->addPeriodInfoToRequest();
         $response = $this->useCase->execute($this->request);
 
         $this->assertEquals(3, $response->periodicalMovementAmount);
@@ -173,9 +169,7 @@ class Test extends \PHPUnit_Framework_TestCase
      */
     public function evenItIsPeriodicalShouldCreateTheMovement()
     {
-        $this->request->isPeriodical = true;
-        $this->request->periodType = Request::PERIOD_TYPE_MONTHS;
-        $this->request->periodAmount = 3;
+        $this->addPeriodInfoToRequest();
         $this->useCase->execute($this->request);
 
         $this->assertNotNull($this->source->byId(new Movement\Id(self::ID)));
@@ -186,13 +180,18 @@ class Test extends \PHPUnit_Framework_TestCase
      */
     public function whenIsPeriodicalTheMovementShouldBeLinkedToThePeriodicalMovement()
     {
-        $this->request->isPeriodical = true;
-        $this->request->periodType = Request::PERIOD_TYPE_MONTHS;
-        $this->request->periodAmount = 3;
+        $this->addPeriodInfoToRequest();
         $response = $this->useCase->execute($this->request);
 
         $movement = $this->source->byId(new Movement\Id(self::ID));
         $this->assertNotNull($movement->periodicalMovement());
         $this->assertEquals($response->periodicalMovementId, $movement->periodicalMovement()->id()->serialize());
+    }
+
+    private function addPeriodInfoToRequest()
+    {
+        $this->request->isPeriodical = true;
+        $this->request->periodType = Request::PERIOD_TYPE_MONTHS;
+        $this->request->periodAmount = 3;
     }
 }
