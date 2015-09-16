@@ -2,7 +2,7 @@
 
 namespace Kontuak\Interactors\Movement\Create;
 
-use Kontuak\Implementation\Transformer\Movement as MovementTransformer;
+use Kontuak\Movement\Transformer as MovementTransformer;
 use Kontuak\Interactors\InvalidArgumentException;
 use Kontuak\Interactors\SystemException;
 use Kontuak\Movement;
