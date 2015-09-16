@@ -53,19 +53,13 @@ class UseCase
      */
     public function execute(Request $request)
     {
-        $response = new Response();
+        $movement = $this->createMovement($request);
         if ($request->isPeriodical) {
             $periodicalMovement = $this->createPeriodicalMovement($request);
-            $response->periodicalMovementId = $periodicalMovement->id()->serialize();
-            $response->periodicalMovementAmount = $periodicalMovement->period()->amount();
-            $response->periodicalMovementType = array_flip($this->periodTypeMapping)
                 [$periodicalMovement->period()->type()];
-            $movement = $this->createMovement($request);
             $movement->assignToPeriodicalMovement($periodicalMovement);
-            $this->movementsSource->persist($movement);
-        } else {
-            $movement = $this->createMovement($request);
         }
+        $this->movementsSource->persist($movement);
 
         return $this->transformer->toResource($movement);
     }
