@@ -20,33 +20,17 @@ class PeriodicalMovement
     protected $ends;
 
     /**
-     * @return string
-     */
-    public function concept()
-    {
-        return $this->concept;
-    }
-
-    /**
-     * @return Period
-     */
-    public function period()
-    {
-        return $this->period;
-    }
-
-    /**
      * @param PeriodicalMovement\Id $id
      * @param $amount
      * @param $concept
-     * @param \DateTimeInterface $starts
+     * @param \DateTime $starts
      * @param Period $period
      */
-    public function __construct(
+    protected function __construct(
         PeriodicalMovement\Id $id,
         $amount,
         $concept,
-        \DateTimeInterface $starts,
+        \DateTime $starts,
         Period $period
     ) {
         $this->id = $id;
@@ -62,6 +46,22 @@ class PeriodicalMovement
     public function id()
     {
         return $this->id;
+    }
+
+    /**
+     * @return string
+     */
+    public function concept()
+    {
+        return $this->concept;
+    }
+
+    /**
+     * @return Period
+     */
+    public function period()
+    {
+        return $this->period;
     }
 
     public function endsAt(\DateTimeInterface $date)

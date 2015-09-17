@@ -2,6 +2,7 @@
 
 namespace Interactors\Movement\GetOne;
 
+use Kontuak\Implementation\InMemory\Movement\Factory;
 use Kontuak\Interactors\Movement\GetOne\UseCase;
 use Kontuak\Interactors\Movement\GetOne\Request;
 use Kontuak\Implementation\Movement\Source;
@@ -25,8 +26,9 @@ class Test extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
+        $movementFactory = new Factory();
         $movementId = new Movement\Id(self::MOVEMENT_ID_SERIALIZED);
-        $this->movement = new Movement(
+        $this->movement = $movementFactory->make(
             $movementId,
             self::AMOUNT,
             self::CONCEPT,

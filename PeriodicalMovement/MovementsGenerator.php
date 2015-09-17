@@ -13,15 +13,19 @@ class MovementsGenerator
     private $timeStamp;
     /** @var Movement\Id\Generator */
     private $idGenerator;
+    /** @var Movement\Factory */
+    private $movementFactory;
 
     public function __construct(
         Movement\Source $movementsSource,
         Movement\Id\Generator $idGenerator,
+        Movement\Factory $movementFactory,
         \DateTime $timeStamp
     ) {
         $this->movementsSource = $movementsSource;
         $this->timeStamp = $timeStamp;
         $this->idGenerator = $idGenerator;
+        $this->movementFactory = $movementFactory;
     }
 
     public function toDate(PeriodicalMovement $periodicalMovement, \DateTime $limitDate)
@@ -38,12 +42,12 @@ class MovementsGenerator
 
     /**
      * @param PeriodicalMovement $periodicalMovement
-     * @param \DateTimeInterface $date
+     * @param \DateTime|\DateTimeInterface $date
      * @return Movement
      */
-    public function atDate(PeriodicalMovement $periodicalMovement, \DateTimeInterface $date)
+    public function atDate(PeriodicalMovement $periodicalMovement, \DateTime $date)
     {
-        $movement = new Movement(
+        $movement = $this->movementFactory->make(
             $this->idGenerator->generate(),
             $periodicalMovement->amount(),
             $periodicalMovement->concept(),

@@ -23,13 +23,13 @@ class Movement
     protected $periodicalMovement;
 
 
-    public function __construct(
+    protected function __construct(
         Id $movementId,
         $amount,
         $concept,
         \DateTime $date,
-        \DateTime $created)
-    {
+        \DateTime $created
+    ) {
         $this->id = $movementId;
         $this->updateAmount($amount);
         $this->updateConcept($concept);

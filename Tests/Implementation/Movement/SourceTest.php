@@ -2,14 +2,21 @@
 
 namespace Kontuak\Tests\Implementation\Movement;
 
+use Kontuak\Implementation\InMemory\Movement\Factory;
+use Kontuak\Implementation\InMemory\PeriodicalMovement\Factory as PeriodicalMovementFactory;
 use Kontuak\Movement;
+use Kontuak\Movement\Id\Generator;
 use Kontuak\Period\DaysPeriod;
 use Kontuak\PeriodicalMovement;
 use Kontuak\Implementation\Movement\Source;
 
 trait SourceTest
 {
-    /** @var  */
+    /** @var PeriodicalMovement\Id\Generator */
+    private $periodicalMovementIdGenerator;
+    /** @var PeriodicalMovementFactory */
+    private $periodicalMovementFactory;
+    /** @var Generator */
     protected $idGenerator;
     /** @var Source\InMemory */
     protected $source;
@@ -84,12 +91,12 @@ trait SourceTest
     {
         $movementsGenerator = new PeriodicalMovement\MovementsGenerator(
             $this->source,
-            new Movement\Id\Generator(),
+            new Generator(),
+            new Factory(),
             $this->timeStamp
         );
-        $idGenerator = new PeriodicalMovement\Id\Generator();
-        $periodicalMovement = new PeriodicalMovement(
-            $idGenerator->generate(),
+        $periodicalMovement = $this->periodicalMovementFactory->make(
+            $this->periodicalMovementIdGenerator->generate(),
             100,
             'pus',
             new \DateTime('2015-05-01'),
@@ -158,7 +165,8 @@ trait SourceTest
 
     public function movementGenerator($amount = null, $concept = null, $date = null, $created = null)
     {
-        return new Movement(
+        $factory = new Factory();
+        return $factory->make(
             $this->idGenerator->generate(),
             $amount === null ? 300 : $amount,
             $concept === null ? 'Concept' : $concept,

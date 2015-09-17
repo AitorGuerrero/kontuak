@@ -2,6 +2,7 @@
 
 namespace Interactors\Movement\Update;
 
+use Kontuak\Implementation\InMemory\Movement\Factory;
 use Kontuak\Implementation\Movement\Source;
 use Kontuak\Movement;
 use Kontuak\Interactors\Movement\Update\UseCase;
@@ -27,9 +28,10 @@ class Test extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
+        $movementFactory = new Factory();
         $this->movementsSource = new Source\InMemory();
         $this->movementsSource->add(
-            new Movement(
+            $movementFactory->make(
                 new Movement\Id(self::MOVEMENT_ID),
                 100,
                 'Pis',

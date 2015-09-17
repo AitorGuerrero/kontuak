@@ -2,6 +2,7 @@
 
 namespace Interactors\Movement\Remove;
 
+use Kontuak\Implementation\InMemory\Movement\Factory;
 use Kontuak\Implementation\Movement\Source;
 use Kontuak\Interactors\Movement\Remove\UseCase;
 use Kontuak\Interactors\Movement\Remove\Request;
@@ -13,6 +14,8 @@ class Test extends \PHPUnit_Framework_TestCase
     const MALFORMED_ID = 'malformed_id';
     const MOVEMENT_ID = '1782c153-c48f-4cf3-a24a-21f2957461c9';
 
+    /** @var Factory */
+    private $movementFactory;
     /** @var Source\InMemory */
     private $source;
     /** @var \Kontuak\Interactors\Movement\Remove\UseCase */
@@ -26,6 +29,7 @@ class Test extends \PHPUnit_Framework_TestCase
         $this->source = new Source\InMemory();
         $this->useCase = new UseCase($this->source);
         $this->request = new Request();
+        $this->movementFactory = new Factory();
     }
 
     /**
@@ -44,7 +48,7 @@ class Test extends \PHPUnit_Framework_TestCase
     public function shouldRemoveTheMovementFromTheSource()
     {
         $id = new Movement\Id(self::MOVEMENT_ID);
-        $this->source->add(new Movement(
+        $this->source->add($this->movementFactory->make(
             $id,
             100,
             'a',

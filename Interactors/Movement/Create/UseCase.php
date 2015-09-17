@@ -28,6 +28,10 @@ class UseCase
     private $movementsGenerator;
     /** @var MovementTransformer */
     private $transformer;
+    /** @var Movement\Factory */
+    private $movementFactory;
+    /** @var PeriodicalMovement\Factory */
+    private $periodicalMovementFactory;
 
     public function __construct(
         Movement\Source $movementsSource,
@@ -35,7 +39,9 @@ class UseCase
         PeriodicalMovement\Id\Generator $periodicalMovementGenerator,
         MovementsGenerator $movementsGenerator,
         \DateTime $currentDateTime,
-        MovementTransformer $transformer
+        MovementTransformer $transformer,
+        Movement\Factory $movementFactory,
+        PeriodicalMovement\Factory $periodicalMovementFactory
     ) {
         $this->movementsSource = $movementsSource;
         $this->currentDateTime = $currentDateTime;
@@ -43,6 +49,8 @@ class UseCase
         $this->periodicalMovementGenerator = $periodicalMovementGenerator;
         $this->movementsGenerator = $movementsGenerator;
         $this->transformer = $transformer;
+        $this->movementFactory = $movementFactory;
+        $this->periodicalMovementFactory = $periodicalMovementFactory;
     }
 
     /**
@@ -70,7 +78,7 @@ class UseCase
      */
     private function createPeriodicalMovement(Request $request)
     {
-        $periodicalMovement = new PeriodicalMovement(
+        $periodicalMovement = $this->periodicalMovementFactory->make(
             $this->periodicalMovementGenerator->generate(),
             $request->amount,
             $request->concept,
@@ -85,7 +93,7 @@ class UseCase
     private function createMovement(Request $request)
     {
         try {
-            $movement = new Movement(
+            $movement = $this->movementFactory->make(
                 new Movement\Id($request->id),
                 $request->amount,
                 $request->concept,

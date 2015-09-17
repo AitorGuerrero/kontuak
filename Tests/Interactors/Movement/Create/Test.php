@@ -2,6 +2,8 @@
 
 namespace kontuak\Tests\Interactors\Movement\Create;
 
+use Kontuak\Implementation\InMemory\Movement\Factory;
+use Kontuak\Implementation\InMemory\PeriodicalMovement\Factory as PeriodicalMovementFactory;
 use Kontuak\Implementation\Movement\Source\InMemory as MovementSource;
 use Kontuak\Implementation\PeriodicalMovement\Source\InMemory as PeriodicalMovementSource;
 use Kontuak\Implementation\Transformer\Movement as MovementTransformer;
@@ -21,7 +23,10 @@ class Test extends \PHPUnit_Framework_TestCase
     const AMOUNT = 10;
     const CONCEPT = 'Pis';
     const ID = '531d52c5-d217-4a94-92f3-3e0f9b603a7a';
+    private $periodicalMovementFactory;
 
+    /** @var Factory */
+    private $movementFactory;
     /** @var MovementsGenerator */
     public $movementsGenerator;
     /** @var Generator */
@@ -40,18 +45,23 @@ class Test extends \PHPUnit_Framework_TestCase
         $this->source = new MovementSource();
         $this->periodicalMovementSource = new PeriodicalMovementSource();
         $this->idGenerator = new Generator();
+        $this->movementFactory = new Factory();
         $this->movementsGenerator = new MovementsGenerator(
             $this->source,
             new Movement\Id\Generator(),
+            $this->movementFactory,
             new \DateTime(self::CURRENT_ISO_DATE)
         );
+        $this->periodicalMovementFactory = new PeriodicalMovementFactory();
         $this->useCase = new UseCase(
             $this->source,
             $this->periodicalMovementSource,
             $this->idGenerator,
             $this->movementsGenerator,
             new \DateTime(self::CURRENT_ISO_DATE),
-            new MovementTransformer()
+            new MovementTransformer(),
+            $this->movementFactory,
+            $this->periodicalMovementFactory
         );
         
         $this->request = new Request();
@@ -96,7 +106,9 @@ class Test extends \PHPUnit_Framework_TestCase
                 $this->idGenerator,
                 $this->movementsGenerator,
                 new \DateTime(self::CURRENT_ISO_DATE),
-                new MovementTransformer()
+                new MovementTransformer(),
+                $this->movementFactory,
+                $this->periodicalMovementFactory
             );
             $useCase->execute($this->request);
         } catch (SystemException $e) {

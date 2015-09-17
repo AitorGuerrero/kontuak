@@ -2,6 +2,7 @@
 
 namespace Kontuak\Tests\Interactors\Movement\Coming;
 
+use Kontuak\Implementation\InMemory\Movement\Factory;
 use Kontuak\Implementation\Movement\Source\InMemory;
 use Kontuak\Interactors\Movement\Coming\Request;
 use Kontuak\Interactors\Movement\Coming\UseCase;
@@ -11,6 +12,8 @@ class Test extends \PHPUnit_Framework_TestCase
 {
     const CURRENT_DATE_ISO = '2015-06-01';
     private $request;
+    /** @var Factory */
+    private $movementFactory;
 
     /** @var UseCase */
     private $useCase;
@@ -24,12 +27,13 @@ class Test extends \PHPUnit_Framework_TestCase
         $this->movementsSource = new InMemory();
         $this->request = new Request();
         $this->request->limit = 100;
+        $this->movementIdGenerator = new Movement\Id\Generator();
+        $this->movementFactory = new Factory();
         $this->useCase = new UseCase(
             $this->movementsSource,
             new \DateTime(self::CURRENT_DATE_ISO),
             new Movement\TotalAmountCalculator($this->movementsSource)
         );
-        $this->movementIdGenerator = new Movement\Id\Generator();
     }
 
     /**
@@ -88,7 +92,7 @@ class Test extends \PHPUnit_Framework_TestCase
 
     private function movementGenerator($isoDate = '2015-06-01', $amount = 10)
     {
-        return new Movement(
+        return $this->movementFactory->make(
             $this->movementIdGenerator->generate(),
             $amount,
             'Concept',

@@ -1,5 +1,6 @@
 <?php
 
+use Kontuak\Implementation\InMemory\Movement\Factory;
 use Kontuak\Movement;
 
 class MovementTest extends PHPUnit_Framework_TestCase
@@ -10,8 +11,8 @@ class MovementTest extends PHPUnit_Framework_TestCase
     protected function setUp()
     {
         $idGenerator = new Movement\Id\Generator();
-
-        $this->movement = new Movement(
+        $movementFactory = new Factory();
+        $this->movement = $movementFactory->make(
             $idGenerator->generate(),
             10,
             'Concept',
