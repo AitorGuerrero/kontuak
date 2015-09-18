@@ -1,13 +1,11 @@
 <?php
 
-namespace Kontuak\Implementation\Movement\Collection;
+namespace Kontuak\Implementation\InMemory\Movement;
 
-use Kontuak\Movement\Collection;
 use Kontuak\PeriodicalMovement;
 use Kontuak\Movement;
-use Kontuak\Implementation\Movement\Source;
 
-class InMemory implements Movement\Collection
+class Collection implements Movement\Collection
 {
 
     const ORDER_DATE = 'date';
@@ -20,13 +18,13 @@ class InMemory implements Movement\Collection
     const FILTER_PERIODICAL_MOVEMENT = 'periodicalMovement';
     /** @var Movement[] */
     private $collection = [];
-    /** @var Source\InMemory */
+    /** @var Source */
     private $source;
 
     /**
-     * @param Source\InMemory $source
+     * @param Source $source
      */
-    public function __construct(Source\InMemory $source)
+    public function __construct(Source $source)
     {
         $this->collection = $source->toArray();
         $this->source = $source;

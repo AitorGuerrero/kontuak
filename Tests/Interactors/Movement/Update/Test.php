@@ -3,7 +3,7 @@
 namespace Interactors\Movement\Update;
 
 use Kontuak\Implementation\InMemory\Movement\Factory;
-use Kontuak\Implementation\Movement\Source;
+use Kontuak\Implementation\InMemory\Movement\Source;
 use Kontuak\Movement;
 use Kontuak\Interactors\Movement\Update\UseCase;
 use Kontuak\Interactors\Movement\Update\Request;
@@ -11,7 +11,7 @@ use Kontuak\Interactors\Movement\Update\Request;
 class Test extends \PHPUnit_Framework_TestCase
 {
     const INEXISTENT_ID = '93f6c419-6822-4287-b84a-1cbfca6111f5';
-    /** @var Source\InMemory */
+    /** @var Source */
     public $movementsSource;
     /** @var UseCase */
     public $useCase;
@@ -29,7 +29,7 @@ class Test extends \PHPUnit_Framework_TestCase
     protected function setUp()
     {
         $movementFactory = new Factory();
-        $this->movementsSource = new Source\InMemory();
+        $this->movementsSource = new Source();
         $this->movementsSource->add(
             $movementFactory->make(
                 new Movement\Id(self::MOVEMENT_ID),

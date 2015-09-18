@@ -4,7 +4,7 @@ namespace kontuak\Tests\Interactors\Movement\Create;
 
 use Kontuak\Implementation\InMemory\Movement\Factory;
 use Kontuak\Implementation\InMemory\PeriodicalMovement\Factory as PeriodicalMovementFactory;
-use Kontuak\Implementation\Movement\Source\InMemory as MovementSource;
+use Kontuak\Implementation\InMemory\Movement\Source as MovementSource;
 use Kontuak\Implementation\PeriodicalMovement\Source\InMemory as PeriodicalMovementSource;
 use Kontuak\Implementation\Transformer\Movement as MovementTransformer;
 use Kontuak\Interactors\Movement\Create\UseCase;

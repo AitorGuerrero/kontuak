@@ -1,22 +1,21 @@
 <?php
 
-namespace Kontuak\Implementation\Movement\Source;
+namespace Kontuak\Implementation\InMemory\Movement;
 
 use Kontuak\Movement;
-use Kontuak\Implementation\Movement\Collection;
 
-class InMemory implements Movement\Source
+class Source implements Movement\Source
 {
     /**
      * @var Movement[]
      */
     private $movements = [];
     /**
-     * @return Collection\InMemory
+     * @return Collection
      */
     public function collection()
     {
-        return new Collection\InMemory($this);
+        return new Collection($this);
     }
 
     public function add(Movement $movement)

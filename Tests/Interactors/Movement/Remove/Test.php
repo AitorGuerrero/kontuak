@@ -3,7 +3,7 @@
 namespace Interactors\Movement\Remove;
 
 use Kontuak\Implementation\InMemory\Movement\Factory;
-use Kontuak\Implementation\Movement\Source;
+use Kontuak\Implementation\InMemory\Movement\Source;
 use Kontuak\Interactors\Movement\Remove\UseCase;
 use Kontuak\Interactors\Movement\Remove\Request;
 use Kontuak\Movement;
@@ -16,7 +16,7 @@ class Test extends \PHPUnit_Framework_TestCase
 
     /** @var Factory */
     private $movementFactory;
-    /** @var Source\InMemory */
+    /** @var Source */
     private $source;
     /** @var \Kontuak\Interactors\Movement\Remove\UseCase */
     private $useCase;
@@ -26,7 +26,7 @@ class Test extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->source = new Source\InMemory();
+        $this->source = new Source();
         $this->useCase = new UseCase($this->source);
         $this->request = new Request();
         $this->movementFactory = new Factory();

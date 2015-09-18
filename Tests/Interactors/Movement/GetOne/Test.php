@@ -3,9 +3,9 @@
 namespace Interactors\Movement\GetOne;
 
 use Kontuak\Implementation\InMemory\Movement\Factory;
+use Kontuak\Implementation\InMemory\Movement\Source;
 use Kontuak\Interactors\Movement\GetOne\UseCase;
 use Kontuak\Interactors\Movement\GetOne\Request;
-use Kontuak\Implementation\Movement\Source;
 use Kontuak\Movement;
 
 class Test extends \PHPUnit_Framework_TestCase
@@ -14,7 +14,7 @@ class Test extends \PHPUnit_Framework_TestCase
     const MOVEMENT_ID_SERIALIZED = '082ce378-1736-495c-b821-e010294704ca';
     /** @var Movement */
     private $movement;
-    /** @var Source\InMemory */
+    /** @var Source */
     private $source;
     /** @var UseCase */
     private $useCase;
@@ -35,7 +35,7 @@ class Test extends \PHPUnit_Framework_TestCase
             new \DateTime(self::DATE_SERIALIZED),
             new \DateTime('2015-01-01 01:23:45')
         );
-        $this->source = new Source\InMemory();
+        $this->source = new Source();
         $this->source->add($this->movement);
         $this->useCase = new UseCase($this->source, new \Kontuak\Implementation\Transformer\Movement());
         $this->request = new Request();

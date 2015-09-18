@@ -3,6 +3,7 @@
 namespace Kontuak\Tests\Interactors\PeriodicalMovement\Apply;
 
 use Kontuak\Implementation\InMemory;
+use Kontuak\Implementation\InMemory\Movement\Source;
 use Kontuak\Interactors\PeriodicalMovement\Apply;
 use Kontuak\Period\DaysPeriod;
 use Kontuak\PeriodicalMovement;
@@ -41,7 +42,7 @@ class Test extends \PHPUnit_Framework_TestCase
             $this->period
         );
         $this->timeStamp = new \DateTime(self::CURRENT_ISO_DATE);
-        $this->movementsSource = new Implementation\Movement\Source\InMemory();
+        $this->movementsSource = new Source();
         $this->periodicalMovementsSource = new Implementation\PeriodicalMovement\Source\InMemory();
         $this->periodicalMovementsSource->add($this->periodicalMovement);
         $this->useCase = new Apply\UseCase(

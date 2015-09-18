@@ -3,7 +3,7 @@
 namespace Kontuak\Tests\Movement;
 
 use Kontuak\Implementation\InMemory\Movement\Factory;
-use Kontuak\Implementation\Movement\Source\InMemory;
+use Kontuak\Implementation\InMemory\Movement\Source;
 use Kontuak\Movement;
 use Kontuak\Movement\TotalAmountCalculator;
 
@@ -24,7 +24,7 @@ class TotalAmountCalculatorTest extends \PHPUnit_Framework_TestCase
     public function shouldNotIncludeMovementsAmount()
     {
         $this->movementIdGenerator = new Movement\Id\Generator();
-        $source = new InMemory();
+        $source = new Source();
         $movement = $this->movementGenerator('2015-01-01', 1);
         $source->add($movement);
         $calculator = new TotalAmountCalculator($source);
@@ -38,7 +38,7 @@ class TotalAmountCalculatorTest extends \PHPUnit_Framework_TestCase
     public function shouldNotIncludePosteriorMovements()
     {
         $this->movementIdGenerator = new Movement\Id\Generator();
-        $source = new InMemory();
+        $source = new Source();
         $movement = $this->movementGenerator('2015-01-01', 1);
         $source->add($movement);
         $source->add($this->movementGenerator('2015-01-02', 1));
@@ -53,7 +53,7 @@ class TotalAmountCalculatorTest extends \PHPUnit_Framework_TestCase
     public function shouldIncludePreviusMovements()
     {
         $this->movementIdGenerator = new Movement\Id\Generator();
-        $source = new InMemory();
+        $source = new Source();
         $movement = $this->movementGenerator('2015-01-01', 1);
         $source->add($movement);
         $source->add($this->movementGenerator('2014-01-01', 1));

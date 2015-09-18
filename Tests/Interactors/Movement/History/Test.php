@@ -3,7 +3,7 @@
 namespace Kontuak\Tests\Interactors\Movement\History;
 
 use Kontuak\Implementation\InMemory\Movement\Factory;
-use Kontuak\Implementation\Movement\Source;
+use Kontuak\Implementation\InMemory\Movement\Source;
 use Kontuak\Interactors\Movement\History\Request;
 use Kontuak\Interactors\Movement\History\UseCase;
 use Kontuak\Movement;
@@ -34,7 +34,7 @@ class Test extends \PHPUnit_Framework_TestCase
     {
         $this->idGenerator = new Movement\Id\Generator();
         $this->today = new \DateTime(self::TODAY_IDO);
-        $this->source = new Source\InMemory();
+        $this->source = new Source();
         $this->totalAmountService = new Movement\TotalAmountCalculator($this->source);
         $this->useCase = new UseCase(
             new Movement\History($this->source, $this->totalAmountService),

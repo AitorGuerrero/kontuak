@@ -3,14 +3,14 @@
 namespace Interactors\Movement\GetAll;
 
 use Kontuak\Implementation\InMemory\Movement\Factory;
-use Kontuak\Implementation\Movement\Source\InMemory;
+use Kontuak\Implementation\InMemory\Movement\Source;
 use Kontuak\Interactors\Movement\GetAll\UseCase;
 use Kontuak\Interactors\Movement\GetAll\Request;
 use Kontuak\Movement\Id\Generator;
 
 class Test extends \PHPUnit_Framework_TestCase
 {
-    /** @var InMemory */
+    /** @var Source */
     private $source;
     /** @var UseCase */
     public $useCase;
@@ -25,7 +25,7 @@ class Test extends \PHPUnit_Framework_TestCase
     {
         $this->factory = new Factory();
         $this->idGenerator = new Generator();
-        $this->source = new InMemory();
+        $this->source = new Source();
         $this->useCase = new UseCase($this->source);
         $this->request = $this->useCase->newRequest();
         $this->request->limit = 20;

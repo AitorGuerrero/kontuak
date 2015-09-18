@@ -3,8 +3,7 @@
 namespace Kontuak\Tests\Interactors\Movement\Coming;
 
 use Kontuak\Implementation\InMemory\Movement\Factory;
-use Kontuak\Implementation\Movement\Source\InMemory;
-use Kontuak\Interactors\Movement\Coming\Request;
+use Kontuak\Implementation\InMemory\Movement\Source;
 use Kontuak\Interactors\Movement\Coming\UseCase;
 use Kontuak\Movement;
 
@@ -17,14 +16,14 @@ class Test extends \PHPUnit_Framework_TestCase
 
     /** @var UseCase */
     private $useCase;
-    /** @var InMemory */
+    /** @var Source */
     private $movementsSource;
     /** @var Movement\Id\Generator */
     private $movementIdGenerator;
 
     protected function setUp()
     {
-        $this->movementsSource = new InMemory();
+        $this->movementsSource = new Source();
         $this->movementIdGenerator = new Movement\Id\Generator();
         $this->movementFactory = new Factory();
         $this->useCase = new UseCase(
