@@ -96,32 +96,19 @@ class Test extends \PHPUnit_Framework_TestCase
             ->getMockBuilder('Kontuak\Movement\Source')
             ->disableOriginalConstructor()
             ->getMock();
-        $thrownException = new \Exception();
-        $entriesCollection->method('add')->willThrowException($thrownException);
+        $entriesCollection->method('add')->willThrowException(new \Exception());
         /** @var Movement\Source $entriesCollection */
-        try {
-            $useCase = new UseCase(
-                $entriesCollection,
-                $this->periodicalMovementSource,
-                $this->idGenerator,
-                $this->movementsGenerator,
-                new \DateTime(self::CURRENT_ISO_DATE),
-                new MovementTransformer(),
-                $this->movementFactory,
-                $this->periodicalMovementFactory
-            );
-            $useCase->execute($this->request);
-        } catch (SystemException $e) {
-            $this->assertEquals(
-                'Persistence Layer failed',
-                $e->getMessage()
-            );
-            $this->assertSame(
-                $thrownException,
-                $e->originalException()
-            );
-            throw $e;
-        }
+        $useCase = new UseCase(
+            $entriesCollection,
+            $this->periodicalMovementSource,
+            $this->idGenerator,
+            $this->movementsGenerator,
+            new \DateTime(self::CURRENT_ISO_DATE),
+            new MovementTransformer(),
+            $this->movementFactory,
+            $this->periodicalMovementFactory
+        );
+        $useCase->execute($this->request);
     }
 
     /**
