@@ -25,16 +25,18 @@ class Test extends \PHPUnit_Framework_TestCase
     protected function setUp()
     {
         $this->movementsSource = new InMemory();
-        $this->request = new Request();
-        $this->request->limit = 100;
         $this->movementIdGenerator = new Movement\Id\Generator();
         $this->movementFactory = new Factory();
         $this->useCase = new UseCase(
-            $this->movementsSource,
-            new \DateTime(self::CURRENT_DATE_ISO),
-            new Movement\TotalAmountCalculator($this->movementsSource),
-            new \Kontuak\Implementation\Transformer\Movement()
+            new Movement\History(
+                $this->movementsSource,
+                new Movement\TotalAmountCalculator($this->movementsSource)
+            ),
+            new \Kontuak\Implementation\Transformer\Movement(),
+            new \DateTime(self::CURRENT_DATE_ISO)
         );
+        $this->request = $this->useCase->newRequest();
+        $this->request->limit = 100;
     }
 
     /**
@@ -75,8 +77,8 @@ class Test extends \PHPUnit_Framework_TestCase
 
         $response = $this->useCase->execute($this->request);
 
-        $this->assertEquals(3, $response->movements[0]['total_amount']);
-        $this->assertEquals(2, $response->movements[1]['total_amount']);
+        $this->assertEquals(3, $response->movements[0]['totalAmount']);
+        $this->assertEquals(2, $response->movements[1]['totalAmount']);
     }
 
     public function whenLimitedShouldReturnOnlydesiredMovements()

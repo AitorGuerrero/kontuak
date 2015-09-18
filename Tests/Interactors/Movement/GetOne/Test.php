@@ -47,7 +47,7 @@ class Test extends \PHPUnit_Framework_TestCase
      */
     public function ifTheUserDoesNotExistsShowThrowAnException()
     {
-        $this->setExpectedException('\Kontuak\Interactors\Movement\GetOne\MovementNotFoundException');
+        $this->setExpectedException('\Kontuak\Interactors\Exception\EntityNotFound');
         $this->request->id = self::INVALID_MOVEMENT_ID;
         $this->useCase->execute($this->request);
     }

@@ -47,4 +47,38 @@ class History
 
         return $totalAmounts;
     }
+
+    public function fromDate(\DateTime $toDate, $limit)
+    {
+        $movements = $this
+            ->source
+            ->collection()
+            ->filterByDateIsPostThan($toDate)
+            ->orderByDate();
+
+        /** @var Movement $movement */
+        $totalAmounts = [];
+        $firstMovement = $movements->current();
+        if(!$firstMovement) {
+            return [];
+        }
+        $totalAmount = $this
+            ->totalAmountCalculator
+            ->getForAMovement($firstMovement);
+
+        $i = 0;
+        foreach($movements as $movement) {
+            $totalAmount += $movement->amount();
+            $totalAmounts[] = [
+                'totalAmount' => $totalAmount,
+                'movement' => $movement
+            ];
+            $i++;
+            if($i >= $limit) {
+                break;
+            }
+        }
+
+        return $totalAmounts;
+    }
 }

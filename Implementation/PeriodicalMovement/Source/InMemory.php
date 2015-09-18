@@ -30,9 +30,4 @@ class InMemory implements PeriodicalMovement\Source
     {
         return $this->collection;
     }
-
-    public function byId($periodicalMovementId)
-    {
-        return $this->collection[$periodicalMovementId];
-    }
 }

@@ -50,9 +50,6 @@ class InMemory implements PeriodicalMovement\Collection
 
     private function applyOrder()
     {
-        if($this->orderDirection === self::ORDER_DIRECTION_DESC) {
-            $this->collection = array_reverse($this->collection);
-        }
     }
 
     private function applyLimit()

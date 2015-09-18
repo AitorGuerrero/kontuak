@@ -2,56 +2,52 @@
 
 namespace Kontuak\Interactors\Movement\Coming;
 
+use Kontuak\Movement\History;
 use Kontuak\Movement\Source;
 use Kontuak\Movement\TotalAmountCalculator;
 use Kontuak\Movement\Transformer;
 
 class UseCase
 {
-    /** @var Source */
-    private $movementsSource;
     /** @var \DateTime */
     private $timeStamp;
-    /** @var TotalAmountCalculator */
-    private $totalAmountCalculator;
     /** @var Transformer */
     private $movementTransformer;
+    /** @var History */
+    private $history;
 
     public function __construct(
-        Source $movementsSource,
-        \DateTime $timeStamp,
-        TotalAmountCalculator $totalAmountCalculator,
-        Transformer $movementTransformer
+        History $history,
+        Transformer $movementTransformer,
+        \DateTime $timeStamp
     ) {
 
-        $this->movementsSource = $movementsSource;
         $this->timeStamp = $timeStamp;
-        $this->totalAmountCalculator = $totalAmountCalculator;
         $this->movementTransformer = $movementTransformer;
+        $this->history = $history;
     }
 
+    /**
+     * @param Request $request
+     * @return Response
+     */
     public function execute(Request $request)
     {
-        $movements = $this
-            ->movementsSource
-            ->collection()
-            ->filterByDateIsPostThan($this->timeStamp)
-            ->orderByDateDesc();
-
         $response = new Response();
-        /** @var \Kontuak\Movement $movement */
-        $amount = 0;
-        foreach($movements as $movement) {
-            $response->movements[] = [
-                'total_amount' => $this->totalAmountCalculator->getForAMovement($movement) + $movement->amount(),
-                'movement' => $this->movementTransformer->toResource($movement),
-            ];
-            $amount++;
-            if($amount > $request->limit) {
-                break;
-            }
+        $amounts = $this->history->fromDate($this->timeStamp, $request->limit);
+        foreach($amounts as $amount) {
+            $amount['movement'] = $this->movementTransformer->toResource($amount['movement']);
         }
+        $response->movements = array_reverse($amounts);
 
         return $response;
+    }
+
+    /**
+     * @return Request
+     */
+    public function newRequest()
+    {
+        return new Request();
     }
 }

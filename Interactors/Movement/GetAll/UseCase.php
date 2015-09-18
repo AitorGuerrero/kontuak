@@ -51,8 +51,11 @@ class UseCase
      */
     private function paginate($page, $limit, $collection)
     {
+        if (!$page) {
+            return;
+        }
         $firstKey = ($page - 1) * $limit;
-        for ($i = 0; $firstKey; $i++) {
+        for ($i = 0; $i < $firstKey; $i++) {
             $collection->next();
         }
     }
