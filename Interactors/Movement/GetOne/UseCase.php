@@ -2,6 +2,7 @@
 
 namespace Kontuak\Interactors\Movement\GetOne;
 
+use Kontuak\Interactors\Exception\EntityNotFoundException;
 use Kontuak\Movement;
 
 class UseCase
@@ -29,7 +30,7 @@ class UseCase
                 ->collection()
                 ->findById(new Movement\Id($response->id));
         } catch (Movement\Collection\MovementNotFoundException $e) {
-            throw new MovementNotFoundException();
+            throw new EntityNotFoundException();
         }
 
         $response = new Response();
