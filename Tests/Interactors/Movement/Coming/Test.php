@@ -32,7 +32,8 @@ class Test extends \PHPUnit_Framework_TestCase
         $this->useCase = new UseCase(
             $this->movementsSource,
             new \DateTime(self::CURRENT_DATE_ISO),
-            new Movement\TotalAmountCalculator($this->movementsSource)
+            new Movement\TotalAmountCalculator($this->movementsSource),
+            new \Kontuak\Implementation\Transformer\Movement()
         );
     }
 
