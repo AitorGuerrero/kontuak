@@ -36,7 +36,11 @@ class Test extends \PHPUnit_Framework_TestCase
         $this->today = new \DateTime(self::TODAY_IDO);
         $this->source = new Source\InMemory();
         $this->totalAmountService = new Movement\TotalAmountCalculator($this->source);
-        $this->useCase = new UseCase($this->source, $this->totalAmountService, $this->today);
+        $this->useCase = new UseCase(
+            new Movement\History($this->source, $this->totalAmountService),
+            new \Kontuak\Implementation\Transformer\Movement(),
+            $this->today
+        );
         $this->request = new Request();
         $this->request->limit = 5;
         $this->movementFactory = new Factory();
@@ -44,7 +48,7 @@ class Test extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     *
+     * @group PIS
      */
     public function shouldReturnMovementsOrderedByDateDesc()
     {
@@ -56,27 +60,10 @@ class Test extends \PHPUnit_Framework_TestCase
         $this->source->add($movement3);
         $response = $this->useCase->execute($this->request);
 
-        $this->assertEquals(3, count($response->movements));
-        $this->assertEquals($movement2->id()->serialize(), $response->movements[0]['id']);
-        $this->assertEquals($movement3->id()->serialize(), $response->movements[1]['id']);
-        $this->assertEquals($movement1->id()->serialize(), $response->movements[2]['id']);
-    }
-
-    /**
-     * @test
-     */
-    public function shouldReturnMovementsMainData()
-    {
-        $amount = 30;
-        $concept = 'A';
-        $date = '2015-08-01';
-        $movement = $this->generateMovement($amount, $date, $concept);
-        $this->source->add($movement);
-        $response = $this->useCase->execute($this->request);
-
-        $this->assertEquals($amount, $response->movements[0]['amount']);
-        $this->assertEquals($concept, $response->movements[0]['concept']);
-        $this->assertEquals($date, $response->movements[0]['date']);
+        $this->assertEquals(3, count($response->amounts));
+        $this->assertEquals($movement2, $response->amounts[0]['movement']);
+        $this->assertEquals($movement3, $response->amounts[1]['movement']);
+        $this->assertEquals($movement1, $response->amounts[2]['movement']);
     }
 
     /**
@@ -89,8 +76,7 @@ class Test extends \PHPUnit_Framework_TestCase
         $this->source->add($movement);
         $response = $this->useCase->execute($this->request);
 
-        $this->assertEquals(1, count($response->movements));
-        $this->assertEquals($beforeDateStr, $response->movements[0]['date']);
+        $this->assertEquals(1, count($response->amounts));
     }
 
     /**
@@ -103,7 +89,7 @@ class Test extends \PHPUnit_Framework_TestCase
         $this->source->add($movement);
         $response = $this->useCase->execute($this->request);
 
-        $this->assertTrue(empty($response->movements));
+        $this->assertTrue(empty($response->amounts));
     }
 
     /**
@@ -115,8 +101,7 @@ class Test extends \PHPUnit_Framework_TestCase
         $this->source->add($movement);
         $response = $this->useCase->execute($this->request);
 
-        $this->assertEquals(1, count($response->movements));
-        $this->assertEquals($this->today->format('Y-m-d'), $response->movements[0]['date']);
+        $this->assertEquals(1, count($response->amounts));
     }
 
     /**
@@ -128,8 +113,8 @@ class Test extends \PHPUnit_Framework_TestCase
         $this->source->add($this->generateMovement(-40, '2015-08-05'));
         $response = $this->useCase->execute($this->request);
 
-        $this->assertEquals(-10, $response->movements[0]['totalAmount']);
-        $this->assertEquals(30, $response->movements[1]['totalAmount']);
+        $this->assertEquals(-10, $response->amounts[0]['totalAmount']);
+        $this->assertEquals(30, $response->amounts[1]['totalAmount']);
     }
 
     /**
@@ -143,30 +128,8 @@ class Test extends \PHPUnit_Framework_TestCase
         $this->request->limit = 2;
         $response = $this->useCase->execute($this->request);
 
-        $this->assertEquals(80, $response->movements[0]['totalAmount']);
-        $this->assertEquals(-20, $response->movements[1]['totalAmount']);
-    }
-
-    /**
-     * @test
-     */
-    public function shouldReturnRequiredData()
-    {
-        $movementId = $this->idGenerator->generate();
-        $amount = -50;
-        $concept = 'C';
-        $date = new \DateTime('2015-08-04');
-        $created = new \DateTime('2015-01-01');
-        $this->source->add($this->movementFactory->make($movementId, $amount, $concept, $date, $created));
-        $this->request->limit = 2;
-        $response = $this->useCase->execute($this->request);
-
-        $this->assertEquals($movementId->serialize(), $response->movements[0]['id']);
-        $this->assertEquals($amount, $response->movements[0]['amount']);
-        $this->assertEquals($concept, $response->movements[0]['concept']);
-        $this->assertEquals($date->format('Y-m-d'), $response->movements[0]['date']);
-        $this->assertEquals($created->format('Y-m-d h:i:s'), $response->movements[0]['created']);
-        $this->assertEquals(-50, $response->movements[0]['totalAmount']);
+        $this->assertEquals(80, $response->amounts[0]['totalAmount']);
+        $this->assertEquals(-20, $response->amounts[1]['totalAmount']);
     }
 
     /**
