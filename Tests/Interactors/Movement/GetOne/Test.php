@@ -37,7 +37,7 @@ class Test extends \PHPUnit_Framework_TestCase
         );
         $this->source = new Source\InMemory();
         $this->source->add($this->movement);
-        $this->useCase = new UseCase($this->source);
+        $this->useCase = new UseCase($this->source, new \Kontuak\Implementation\Transformer\Movement());
         $this->request = new Request();
         $this->request->id = self::MOVEMENT_ID_SERIALIZED;
     }
@@ -59,9 +59,6 @@ class Test extends \PHPUnit_Framework_TestCase
     {
         $response = $this->useCase->execute($this->request);
 
-        $this->assertEquals(self::MOVEMENT_ID_SERIALIZED, $response->movement['id']);
-        $this->assertEquals(self::AMOUNT, $response->movement['amount']);
-        $this->assertEquals(self::CONCEPT, $response->movement['concept']);
-        $this->assertEquals(self::DATE_SERIALIZED, $response->movement['date']);
+        $this->assertEquals($this->movement, $response->movement);
     }
 }
