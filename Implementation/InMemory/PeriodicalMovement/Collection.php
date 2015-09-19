@@ -6,53 +6,14 @@ use Kontuak\PeriodicalMovement;
 
 class Collection implements PeriodicalMovement\Collection
 {
-    const ORDER_DATE = 'date';
-    const ORDER_DIRECTION_ASC = 'asc';
-    const ORDER_DIRECTION_DESC = 'desc';
+    use \Kontuak\Implementation\InMemory\Collection;
+
     /** @var PeriodicalMovement\Source */
     private $source;
-    private $orderDirection;
-    /** @var PeriodicalMovement[] */
-    private $collection = [];
 
-    public function __construct(PeriodicalMovement\Source $source)
+    public function __construct(Source $source)
     {
         $this->source = $source;
-    }
-
-    /**
-     * @param PeriodicalMovement\Id $id
-     * @return PeriodicalMovement
-     */
-    public function find(PeriodicalMovement\Id $id)
-    {
-        return $this->source->toArray()[$id->serialize()];
-    }
-
-    public function all()
-    {
-        return $this->processCollection();
-    }
-
-    private function processCollection()
-    {
         $this->collection = $this->source->toArray();
-        $this->applyFilters();
-        $this->applyOrder();
-        $this->applyLimit();
-
-        return $this->collection = array_values($this->collection);
-    }
-
-    private function applyFilters()
-    {
-    }
-
-    private function applyOrder()
-    {
-    }
-
-    private function applyLimit()
-    {
     }
 }

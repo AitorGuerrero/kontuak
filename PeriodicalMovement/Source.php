@@ -12,6 +12,4 @@ interface Source
     public function collection();
 
     public function add(PeriodicalMovement $movement);
-
-    public function toArray();
 }

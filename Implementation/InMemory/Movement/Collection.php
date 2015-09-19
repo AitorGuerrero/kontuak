@@ -8,6 +8,8 @@ use Kontuak\Movement;
 class Collection implements Movement\Collection
 {
 
+    use \Kontuak\Implementation\InMemory\Collection;
+
     const ORDER_DATE = 'date';
     const ORDER_DIRECTION_ASC = 'asc';
     const ORDER_DIRECTION_DESC = 'desc';
@@ -131,36 +133,6 @@ class Collection implements Movement\Collection
         });
 
         return $this;
-    }
-
-    public function current()
-    {
-        return current($this->collection);
-    }
-
-    public function next()
-    {
-        return next($this->collection);
-    }
-
-    public function key()
-    {
-        return key($this->collection);
-    }
-
-    public function valid()
-    {
-        return isset($this->collection[key($this->collection)]);
-    }
-
-    public function rewind()
-    {
-        reset($this->collection);
-    }
-
-    public function count()
-    {
-        return count($this->collection);
     }
 
     /**

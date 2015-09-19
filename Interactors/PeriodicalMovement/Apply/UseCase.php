@@ -32,7 +32,7 @@ class UseCase
     {
         $limitDate = clone($this->timeStamp);
         $limitDate->add(new \DateInterval('P3M'));
-        $periodicalMovements = $this->periodicalMovementsSource->collection()->all();
+        $periodicalMovements = $this->periodicalMovementsSource->collection();
         foreach($periodicalMovements as $periodicalMovement) {
             foreach($this->movementsGenerator->toDate($periodicalMovement, $limitDate) as $movement) {
                 $this->movementsSource->add($movement);

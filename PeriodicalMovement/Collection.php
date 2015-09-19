@@ -4,10 +4,6 @@ namespace Kontuak\PeriodicalMovement;
 
 use Kontuak\PeriodicalMovement;
 
-interface Collection
+interface Collection extends \Iterator, \Countable
 {
-    /**
-     * @return PeriodicalMovement[]
-     */
-    public function all();
 }
