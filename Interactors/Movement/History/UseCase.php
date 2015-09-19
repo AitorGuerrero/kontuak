@@ -16,7 +16,7 @@ class UseCase
 
     public function __construct(
         Movement\History $history,
-        \Kontuak\Implementation\Transformer\Movement $movementTransformer,
+        Movement\Transformer $movementTransformer,
         \DateTime $today
     ) {
         $this->today = $today;
