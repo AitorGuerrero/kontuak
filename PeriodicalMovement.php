@@ -92,4 +92,19 @@ class PeriodicalMovement
     {
         return $this->starts;
     }
+
+    public function updateConcept($concept)
+    {
+        $this->concept = $concept;
+    }
+
+    public function updateAmount($amount)
+    {
+        $this->amount = $amount;
+    }
+
+    public function updateStarts(\DateTime $starts)
+    {
+        $this->starts = $starts;
+    }
 }

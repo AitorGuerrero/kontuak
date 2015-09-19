@@ -12,4 +12,11 @@ interface Source
     public function collection();
 
     public function add(PeriodicalMovement $movement);
+
+    /**
+     * @param $param
+     * @return PeriodicalMovement
+     * @throws \Kontuak\Exception\Source\EntityNotFound
+     */
+    public function get(Id $param);
 }

@@ -4,9 +4,6 @@ namespace Kontuak\Interactors\PeriodicalMovement\Create;
 
 class Request 
 {
-    const PERIOD_TYPE_DAYS = 'days';
-    const PERIOD_TYPE_MONTHS = 'months';
-
     /** @var string */
     public $id;
     /** @var string */

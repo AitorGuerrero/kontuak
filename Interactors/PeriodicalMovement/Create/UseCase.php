@@ -2,6 +2,7 @@
 
 namespace Kontuak\Interactors\PeriodicalMovement\Create;
 
+use Kontuak\Interactors\Mappings\PeriodicalMovement;
 use Kontuak\Period;
 use Kontuak\PeriodicalMovement\Factory;
 use Kontuak\PeriodicalMovement\Id;
@@ -14,10 +15,6 @@ class UseCase
     private $source;
     /** @var Factory */
     private $factory;
-    private $mapPeriodTypeToDomain = [
-        Request::PERIOD_TYPE_DAYS => Period::TYPE_DAY,
-        Request::PERIOD_TYPE_MONTHS => Period::TYPE_MONTH_DAY,
-    ];
 
     public function __construct(Factory $factory, Source $source)
     {
@@ -45,7 +42,7 @@ class UseCase
                 $request->concept,
                 new \DateTime($request->starts),
                 Period::factory(
-                    $this->mapPeriodTypeToDomain[$request->periodType],
+                    PeriodicalMovement::$mapPeriodTypeToDomain[$request->periodType],
                     $request->periodAmount
                 )
             )

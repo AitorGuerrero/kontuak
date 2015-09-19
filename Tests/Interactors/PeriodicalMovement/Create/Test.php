@@ -4,7 +4,7 @@ namespace Interactors\PeriodicalMovement\Create;
 
 use Kontuak\Implementation\InMemory\PeriodicalMovement\Factory;
 use Kontuak\Implementation\InMemory\PeriodicalMovement\Source;
-use Kontuak\Interactors\PeriodicalMovement\Create\Request;
+use Kontuak\Interactors\Mappings\PeriodicalMovement;
 use Kontuak\Interactors\PeriodicalMovement\Create\UseCase;
 use Kontuak\Period;
 use Kontuak\PeriodicalMovement\Id;
@@ -29,7 +29,7 @@ class Test extends \PHPUnit_Framework_TestCase
         $request->concept = self::CONCEPT;
         $request->amount = self::AMOUNT;
         $request->starts = self::STARTS;
-        $request->periodType = Request::PERIOD_TYPE_DAYS;
+        $request->periodType = PeriodicalMovement::PERIOD_TYPE_DAYS;
         $request->periodAmount = self::PERIOD_AMOUNT;
         $useCase->execute($request);
 

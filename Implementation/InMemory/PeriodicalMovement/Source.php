@@ -2,6 +2,7 @@
 
 namespace Kontuak\Implementation\InMemory\PeriodicalMovement;
 
+use Kontuak\Exception\Source\EntityNotFound;
 use Kontuak\PeriodicalMovement;
 use Kontuak\PeriodicalMovement\Source as SourceInterface;
 
@@ -33,10 +34,15 @@ class Source implements SourceInterface
 
     /**
      * @param PeriodicalMovement\Id $id
+     * @throws EntityNotFound
      * @return PeriodicalMovement
      */
     public function get(PeriodicalMovement\Id $id)
     {
+        if (!isset($this->collection[$id->serialize()])) {
+            throw new EntityNotFound();
+        }
+
         return $this->collection[$id->serialize()];
     }
 }
