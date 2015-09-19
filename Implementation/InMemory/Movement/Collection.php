@@ -136,21 +136,6 @@ class Collection implements Movement\Collection
     }
 
     /**
-     * @param Movement\Id $id
-     * @throws Movement\Collection\MovementNotFoundException
-     * @return Movement
-     */
-    public function findById(Movement\Id $id)
-    {
-        $collection = $this->source->toArray();
-        $serializedId = $id->serialize();
-        if(!isset($collection[$serializedId])) {
-            throw new Movement\Collection\MovementNotFoundException();
-        }
-        return $collection[$serializedId];
-    }
-
-    /**
      * @param \DateTime $timeStamp
      * @return Collection
      */

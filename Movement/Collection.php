@@ -53,13 +53,6 @@ interface Collection extends \Iterator, \Countable
     public function amountSum();
 
     /**
-     * @param Id $id
-     * @return \Kontuak\Movement
-     * @throws \Kontuak\Movement\Collection\MovementNotFoundException
-     */
-    public function findById(Id $id);
-
-    /**
      * @param \DateTime $timeStamp
      * @return Collection
      */

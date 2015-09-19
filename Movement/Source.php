@@ -34,4 +34,11 @@ interface Source
      * @return Movement\Id
      */
     public function newId();
+
+    /**
+     * @param Id $id
+     * @return Movement
+     * @throws \Kontuak\Exception\Source\EntityNotFound
+     */
+    public function get(Id $id);
 }

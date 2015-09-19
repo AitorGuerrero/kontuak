@@ -2,9 +2,9 @@
 
 namespace Kontuak\Interactors\Movement\Update;
 
+use Kontuak\Exception\Source\EntityNotFound;
 use Kontuak\Interactors\MovementDoesNotExistException;
 use Kontuak\Movement;
-use Kontuak\Movement\Collection\MovementNotFoundException;
 
 class UseCase
 {
@@ -22,8 +22,8 @@ class UseCase
     {
         $movementId = new Movement\Id($request->id);
         try {
-            $movement = $this->source->collection()->findById($movementId);
-        } catch (MovementNotFoundException $e) {
+            $movement = $this->source->get($movementId);
+        } catch (EntityNotFound $e) {
             throw new MovementDoesNotExistException();
         }
         $movement->updateAmount($request->amount);

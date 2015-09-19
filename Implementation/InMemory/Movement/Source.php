@@ -2,7 +2,9 @@
 
 namespace Kontuak\Implementation\InMemory\Movement;
 
+use Kontuak\Exception\Source\EntityNotFound;
 use Kontuak\Movement;
+use Kontuak\Movement\Id;
 
 class Source implements Movement\Source
 {
@@ -59,5 +61,19 @@ class Source implements Movement\Source
     public function newId()
     {
         return new Movement\Id(uniqid('movement_id'));
+    }
+
+    /**
+     * @param Id $id
+     * @return Movement
+     * @throws \Kontuak\Exception\Source\EntityNotFound
+     */
+    public function get(Id $id)
+    {
+        if(!isset($this->movements[$id->serialize()])) {
+            throw new EntityNotFound();
+        }
+
+        return $this->movements[$id->serialize()];
     }
 }

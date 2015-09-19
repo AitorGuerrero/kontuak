@@ -25,11 +25,8 @@ class UseCase
     public function execute(Request $response)
     {
         try {
-            $movement = $this
-                ->source
-                ->collection()
-                ->findById(new Movement\Id($response->id));
-        } catch (Movement\Collection\MovementNotFoundException $e) {
+            $movement = $this->source->get(new Movement\Id($response->id));
+        } catch (\Kontuak\Exception\Source\EntityNotFound $e) {
             throw new EntityNotFound();
         }
 

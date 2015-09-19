@@ -2,6 +2,7 @@
 
 namespace Kontuak\Interactors\Movement\Remove;
 
+use Kontuak\Exception\Source\EntityNotFound;
 use Kontuak\Movement;
 
 class UseCase
@@ -17,8 +18,8 @@ class UseCase
     {
         $id = new Movement\Id($request->id);
         try {
-            $movement = $this->source->collection()->findById($id);
-        } catch (Movement\Collection\MovementNotFoundException $e) {
+            $movement = $this->source->get($id);
+        } catch (EntityNotFound $e) {
             throw new MovementDoesNotExistsException($id);
         }
         $this->source->remove($movement);

@@ -2,6 +2,7 @@
 
 namespace Interactors\Movement\Remove;
 
+use Kontuak\Exception\Source\EntityNotFound;
 use Kontuak\Implementation\InMemory\Movement\Factory;
 use Kontuak\Implementation\InMemory\Movement\Source;
 use Kontuak\Interactors\Movement\Remove\UseCase;
@@ -59,9 +60,9 @@ class Test extends \PHPUnit_Framework_TestCase
         $this->useCase->execute($this->request);
 
         try {
-            $this->source->collection()->findById($id);
+            $this->source->get($id);
             $this->assertTrue(false);
-        } catch (Movement\Collection\MovementNotFoundException $e) {
+        } catch (EntityNotFound $e) {
             $this->assertTrue(true);
         }
     }

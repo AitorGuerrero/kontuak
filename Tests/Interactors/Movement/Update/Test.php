@@ -66,7 +66,7 @@ class Test extends \PHPUnit_Framework_TestCase
     {
         $this->useCase->execute($this->request);
 
-        $movement = $this->movementsSource->collection()->findById(new Movement\Id(self::MOVEMENT_ID));
+        $movement = $this->movementsSource->get(new Movement\Id(self::MOVEMENT_ID));
 
         $this->assertEquals(self::NEW_AMOUNT, $movement->amount());
         $this->assertEquals(self::NEW_CONCEPT, $movement->concept());
