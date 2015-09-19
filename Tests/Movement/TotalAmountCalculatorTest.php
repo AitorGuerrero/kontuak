@@ -23,7 +23,6 @@ class TotalAmountCalculatorTest extends \PHPUnit_Framework_TestCase
      */
     public function shouldNotIncludeMovementsAmount()
     {
-        $this->movementIdGenerator = new Movement\Id\Generator();
         $source = new Source();
         $movement = $this->movementGenerator('2015-01-01', 1);
         $source->add($movement);
@@ -37,7 +36,6 @@ class TotalAmountCalculatorTest extends \PHPUnit_Framework_TestCase
      */
     public function shouldNotIncludePosteriorMovements()
     {
-        $this->movementIdGenerator = new Movement\Id\Generator();
         $source = new Source();
         $movement = $this->movementGenerator('2015-01-01', 1);
         $source->add($movement);
@@ -52,7 +50,6 @@ class TotalAmountCalculatorTest extends \PHPUnit_Framework_TestCase
      */
     public function shouldIncludePreviusMovements()
     {
-        $this->movementIdGenerator = new Movement\Id\Generator();
         $source = new Source();
         $movement = $this->movementGenerator('2015-01-01', 1);
         $source->add($movement);
@@ -65,7 +62,7 @@ class TotalAmountCalculatorTest extends \PHPUnit_Framework_TestCase
     private function movementGenerator($isoDate = '2015-06-01', $amount = 10)
     {
         return $this->movementFactory->make(
-            $this->movementIdGenerator->generate(),
+            new Movement\Id(uniqid()),
             $amount,
             'Concept',
             new \DateTime($isoDate),

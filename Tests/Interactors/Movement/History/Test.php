@@ -27,12 +27,9 @@ class Test extends \PHPUnit_Framework_TestCase
     private $request;
     /** @var Movement\TotalAmountCalculator */
     private $totalAmountService;
-    /** @var Movement\Id\Generator */
-    private $idGenerator;
 
     protected function setUp()
     {
-        $this->idGenerator = new Movement\Id\Generator();
         $this->today = new \DateTime(self::TODAY_IDO);
         $this->source = new Source();
         $this->totalAmountService = new Movement\TotalAmountCalculator($this->source);
@@ -145,7 +142,7 @@ class Test extends \PHPUnit_Framework_TestCase
     public function generateMovement($amount = 10, $date = '2015-01-01', $concept = 'Concept')
     {
         return $this->movementFactory->make(
-            $this->idGenerator->generate(),
+            $this->source->newId(),
             $amount,
             $concept,
             new \DateTime($date),

@@ -18,13 +18,10 @@ class Test extends \PHPUnit_Framework_TestCase
     private $request;
     /** @var Factory */
     private $factory;
-    /** @var Generator */
-    private $idGenerator;
 
     public function setUp()
     {
         $this->factory = new Factory();
-        $this->idGenerator = new Generator();
         $this->source = new Source();
         $this->useCase = new UseCase($this->source);
         $this->request = $this->useCase->newRequest();
@@ -94,7 +91,7 @@ class Test extends \PHPUnit_Framework_TestCase
     public function generateMovement()
     {
         $movement = $this->factory->make(
-            $this->idGenerator->generate(),
+            $this->source->newId(),
             1,
             'a',
             new \DateTime('2015-01-01'),

@@ -11,6 +11,11 @@ interface Source
      */
     public function collection();
 
+    /**
+     * @param PeriodicalMovement $movement
+     * @throws \Kontuak\Exception\Source\DuplicatedId
+     * @throws \Kontuak\Exception\Source\MalformedId
+     */
     public function add(PeriodicalMovement $movement);
 
     /**

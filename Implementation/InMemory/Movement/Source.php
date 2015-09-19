@@ -52,4 +52,12 @@ class Source implements Movement\Source
     {
         return $this->movements[$id->serialize()];
     }
+
+    /**
+     * @return Movement\Id
+     */
+    public function newId()
+    {
+        return new Movement\Id(uniqid('movement_id'));
+    }
 }

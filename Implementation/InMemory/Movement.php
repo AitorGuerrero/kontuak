@@ -7,12 +7,12 @@ use Kontuak\Movement\Id;
 class Movement extends \Kontuak\Movement
 {
     public function __construct(
-        Id $movementId,
+        Id $id,
         $amount,
         $concept,
         \DateTime $date,
         \DateTime $created
     ) {
-        parent::__construct($movementId, $amount, $concept, $date, $created);
+        parent::__construct($id, $amount, $concept, $date, $created);
     }
 }

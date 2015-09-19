@@ -5,20 +5,15 @@ namespace Kontuak\Tests\Implementation\Movement;
 use Kontuak\Implementation\InMemory\Movement\Factory;
 use Kontuak\Implementation\InMemory\PeriodicalMovement\Factory as PeriodicalMovementFactory;
 use Kontuak\Movement;
-use Kontuak\Movement\Id\Generator;
 use Kontuak\Period\DaysPeriod;
 use Kontuak\PeriodicalMovement;
-use Kontuak\Implementation\Movement\Source;
+use Kontuak\Implementation\InMemory\Movement\Source;
 
 trait SourceTest
 {
-    /** @var PeriodicalMovement\Id\Generator */
-    private $periodicalMovementIdGenerator;
     /** @var PeriodicalMovementFactory */
     private $periodicalMovementFactory;
-    /** @var Generator */
-    protected $idGenerator;
-    /** @var Source\InMemory */
+    /** @var Source */
     protected $source;
     /** @var \DateTime */
     protected $timeStamp;
@@ -91,12 +86,11 @@ trait SourceTest
     {
         $movementsGenerator = new PeriodicalMovement\MovementsGenerator(
             $this->source,
-            new Generator(),
             new Factory(),
             $this->timeStamp
         );
         $periodicalMovement = $this->periodicalMovementFactory->make(
-            $this->periodicalMovementIdGenerator->generate(),
+            new PeriodicalMovement\Id(uniqid()),
             100,
             'pus',
             new \DateTime('2015-05-01'),
@@ -167,7 +161,7 @@ trait SourceTest
     {
         $factory = new Factory();
         return $factory->make(
-            $this->idGenerator->generate(),
+            new Movement\Id(uniqid()),
             $amount === null ? 300 : $amount,
             $concept === null ? 'Concept' : $concept,
             $date === null ? new \DateTime('2015-05-01') : $date,

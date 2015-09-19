@@ -29,4 +29,9 @@ interface Source
      * @param Movement $movement
      */
     public function persist(Movement $movement);
+
+    /**
+     * @return Movement\Id
+     */
+    public function newId();
 }

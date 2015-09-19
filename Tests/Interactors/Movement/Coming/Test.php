@@ -18,13 +18,10 @@ class Test extends \PHPUnit_Framework_TestCase
     private $useCase;
     /** @var Source */
     private $movementsSource;
-    /** @var Movement\Id\Generator */
-    private $movementIdGenerator;
 
     protected function setUp()
     {
         $this->movementsSource = new Source();
-        $this->movementIdGenerator = new Movement\Id\Generator();
         $this->movementFactory = new Factory();
         $this->useCase = new UseCase(
             new Movement\History(
@@ -95,7 +92,7 @@ class Test extends \PHPUnit_Framework_TestCase
     private function movementGenerator($isoDate = '2015-06-01', $amount = 10)
     {
         return $this->movementFactory->make(
-            $this->movementIdGenerator->generate(),
+            $this->movementsSource->newId(),
             $amount,
             'Concept',
             new \DateTime($isoDate),

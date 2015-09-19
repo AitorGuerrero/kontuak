@@ -32,11 +32,10 @@ class Test extends \PHPUnit_Framework_TestCase
     {
         $movementFactory = new InMemory\Movement\Factory();
         $periodicalMovementFactory = new InMemory\PeriodicalMovement\Factory();
-        $idGenerator = new PeriodicalMovement\Id\Generator();
         $this->starts = '2015-08-01';
         $this->period = new DaysPeriod(3);
         $this->periodicalMovement = $periodicalMovementFactory->make(
-            $idGenerator->generate(),
+            new PeriodicalMovement\Id(uniqid()),
             10,
             'AA',
             new \DateTime($this->starts),
@@ -52,7 +51,6 @@ class Test extends \PHPUnit_Framework_TestCase
             $this->timeStamp,
             new PeriodicalMovement\MovementsGenerator(
                 $this->movementsSource,
-                new Movement\Id\Generator(),
                 $movementFactory,
                 $this->timeStamp
             )

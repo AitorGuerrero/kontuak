@@ -3,13 +3,13 @@
 namespace Kontuak;
 
 use Kontuak\Movement\Exception\InvalidAmount;
-use Kontuak\Movement\Id;
+use Kontuak\Movement\Id as MovementId;
 
 class Movement
 {
     private $emptyConceptMessage = '"concept" should not be blank';
 
-    /** @var Id */
+    /** @var MovementId */
     protected $id;
     /** @var float */
     protected $amount;
@@ -24,13 +24,13 @@ class Movement
 
 
     protected function __construct(
-        Id $movementId,
+        MovementId $id,
         $amount,
         $concept,
         \DateTime $date,
         \DateTime $created
     ) {
-        $this->id = $movementId;
+        $this->id = $id;
         $this->updateAmount($amount);
         $this->updateConcept($concept);
         $this->updateDate($date);
@@ -38,7 +38,7 @@ class Movement
     }
 
     /**
-     * @return Movement\Id
+     * @return MovementId
      */
     public function id()
     {

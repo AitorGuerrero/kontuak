@@ -10,10 +10,9 @@ class MovementTest extends PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $idGenerator = new Movement\Id\Generator();
         $movementFactory = new Factory();
         $this->movement = $movementFactory->make(
-            $idGenerator->generate(),
+            new Movement\Id(uniqid()),
             10,
             'Concept',
             new DateTime('2015-01-01'),
