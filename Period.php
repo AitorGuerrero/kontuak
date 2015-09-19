@@ -3,6 +3,7 @@
 namespace Kontuak;
 
 use Kontuak\Period\DaysPeriod;
+use Kontuak\Period\Exception\IncorrectType;
 use Kontuak\Period\MonthDayPeriod;
 
 abstract class Period
@@ -36,5 +37,7 @@ abstract class Period
             case self::TYPE_MONTH_DAY:
                 return new MonthDayPeriod($amount);
         }
+
+        throw new IncorrectType();
     }
 }

@@ -2,6 +2,7 @@
 
 namespace Kontuak\Tests\Period;
 
+use Kontuak\Period;
 use Kontuak\Period\MonthDayPeriod;
 
 class Test extends \PHPUnit_Framework_TestCase
@@ -30,5 +31,14 @@ class Test extends \PHPUnit_Framework_TestCase
         $nextDate = $period->next($dateFrom);
 
         $this->assertEquals('2016-01-15', $nextDate->format('Y-m-d'));
+    }
+
+    /**
+     * @test
+     */
+    public function whenCreatingIfTheTypeIsIncorrectShouldThrowAnException()
+    {
+        $this->setExpectedException('\Kontuak\Period\Exception\IncorrectType');
+        Period::factory('inexistent type', 10);
     }
 }

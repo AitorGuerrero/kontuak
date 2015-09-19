@@ -30,4 +30,13 @@ class Source implements SourceInterface
     {
         return $this->collection;
     }
+
+    /**
+     * @param PeriodicalMovement\Id $id
+     * @return PeriodicalMovement
+     */
+    public function get(PeriodicalMovement\Id $id)
+    {
+        return $this->collection[$id->serialize()];
+    }
 }
