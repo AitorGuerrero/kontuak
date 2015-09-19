@@ -1,10 +1,10 @@
 <?php
 
-namespace Kontuak\Implementation\PeriodicalMovement\Collection;
+namespace kontuak\Implementation\InMemory\PeriodicalMovement;
 
 use Kontuak\PeriodicalMovement;
 
-class InMemory implements PeriodicalMovement\Collection
+class Collection implements PeriodicalMovement\Collection
 {
     const ORDER_DATE = 'date';
     const ORDER_DIRECTION_ASC = 'asc';

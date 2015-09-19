@@ -1,21 +1,21 @@
 <?php
 
-namespace Kontuak\Implementation\PeriodicalMovement\Source;
+namespace Kontuak\Implementation\InMemory\PeriodicalMovement;
 
 use Kontuak\PeriodicalMovement;
-use Kontuak\Implementation\PeriodicalMovement\Collection;
+use Kontuak\PeriodicalMovement\Source as SourceInterface;
 
-class InMemory implements PeriodicalMovement\Source
+class Source implements SourceInterface
 {
     /** @var PeriodicalMovement[] */
     private $collection = [];
 
     /**
-     * @return Collection\InMemory
+     * @return Collection
      */
     public function collection()
     {
-        return new Collection\InMemory($this);
+        return new Collection($this);
     }
 
     public function add(PeriodicalMovement $movement)
