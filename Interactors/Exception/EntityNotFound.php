@@ -2,8 +2,6 @@
 
 namespace Kontuak\Interactors\Exception;
 
-use Kontuak\KontuakException;
-
-class EntityNotFound extends KontuakException
+class EntityNotFound extends interactorException
 {
 }

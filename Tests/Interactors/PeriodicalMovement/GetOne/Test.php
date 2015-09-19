@@ -1,0 +1,63 @@
+<?php
+
+namespace Interactors\PeriodicalMovement\GetOne;
+
+use Kontuak\Implementation\InMemory\PeriodicalMovement\Factory;
+use Kontuak\Implementation\InMemory\PeriodicalMovement\Source;
+use Kontuak\Implementation\Transformer\PeriodicalMovement;
+use Kontuak\Interactors\PeriodicalMovement\GetOne\UseCase;
+use Kontuak\Interactors\PeriodicalMovement\GetOne\Request;
+use Kontuak\Period\DaysPeriod;
+use Kontuak\PeriodicalMovement\Id;
+
+class Test extends \PHPUnit_Framework_TestCase
+{
+    /** @var UseCase */
+    public $useCase;
+    /** @var Request */
+    public $request;
+    /** @var Source */
+    public $source;
+
+    protected function setUp()
+    {
+        $this->source = new Source();
+        $transformer = new PeriodicalMovement();
+        $this->useCase = new UseCase($this->source, $transformer);
+        $this->request = $this->useCase->newRequest();
+    }
+
+    /**
+     * @test
+     * @throws \Kontuak\Interactors\Exception\EntityNotFound
+     */
+    public function whenPeriodicalMovementDoesNotExistsShouldThrowAnException()
+    {
+        $invalidId = '5df09125-7cc0-4686-af55-733765c04103';
+        $this->setExpectedException('\Kontuak\Interactors\Exception\EntityNotFound');
+        $this->request->id = $invalidId;
+        $this->useCase->execute($this->request);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldReturnExpectedPeriodicalMovement()
+    {
+        $id = '5df09125-7cc0-4686-af55-733765c04103';
+        $factory = new Factory();
+        $periodicalMovement = $factory->make(
+            new Id($id),
+            10,
+            'concept',
+            new \DateTime('2015-01-01'),
+            new DaysPeriod(3)
+        );
+        $this->source->add($periodicalMovement);
+
+        $this->request->id = $id;
+        $response = $this->useCase->execute($this->request);
+
+        $this->assertEquals($periodicalMovement, $response->periodicalMovement);
+    }
+}
