@@ -28,7 +28,6 @@ class UseCase
 
     public function execute(Request $request)
     {
-        $this->assertRequest($request);
         $collection = $this->source->collection();
         if(!is_null($request->fromDate)) {
             $collection->filterByDateIsPostThan(new \DateTime($request->fromDate));
@@ -44,16 +43,5 @@ class UseCase
         $response->amounts = array_reverse($amounts);
 
         return $response;
-    }
-
-    /**
-     * @param Request $request
-     * @throws InvalidArgumentException
-     */
-    private function assertRequest(Request $request)
-    {
-        if (gettype($request->limit) !== 'integer') {
-            throw new InvalidArgumentException('Required argument "limit"');
-        }
     }
 }

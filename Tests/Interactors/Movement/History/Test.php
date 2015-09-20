@@ -86,13 +86,17 @@ class Test extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException \Kontuak\Interactors\InvalidArgumentException
      * @test
      */
-    public function whenLimitIsNotANumberShouldThrowAnException()
+    public function whenLimitIsNullShouldNotLimit()
     {
+        $this->source->add($this->generateMovement(30, '2015-08-01'));
+        $this->source->add($this->generateMovement(100, '2015-08-05'));
+        $this->source->add($this->generateMovement(-50, '2015-08-04'));
         $this->request->limit = null;
-        $this->useCase->execute($this->request);
+        $response = $this->useCase->execute($this->request);
+
+        $this->assertEquals(3, count($response->amounts));
     }
 
     /**

@@ -31,6 +31,7 @@ class TotalAmountCalculator
 
     /**
      * @param Collection $collection
+     * @param null $limit
      * @return array
      */
     public function getForACollection(Collection $collection, $limit = null)
@@ -47,7 +48,7 @@ class TotalAmountCalculator
         $i = 0;
         foreach($collection as $movement) {
             $i++;
-            if($i > $limit) {
+            if(!is_null($limit) && $i > $limit) {
                 break;
             }
             $totalAmount += $movement->amount();
