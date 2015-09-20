@@ -9,25 +9,34 @@ class UseCase
 {
     /** @var \DateTime */
     private $today;
-    /** @var Movement\History */
-    private $history;
     /** @var \Kontuak\Implementation\Transformer\Movement */
     private $movementTransformer;
+    /** @var Movement\TotalAmountCalculator */
+    private $calculator;
+    /** @var Movement\Source */
+    private $source;
 
     public function __construct(
-        Movement\History $history,
-        Movement\Transformer $movementTransformer,
-        \DateTime $today
+        Movement\Source $source,
+        Movement\TotalAmountCalculator $calculator,
+        Movement\Transformer $movementTransformer
     ) {
-        $this->today = $today;
-        $this->history = $history;
         $this->movementTransformer = $movementTransformer;
+        $this->calculator = $calculator;
+        $this->source = $source;
     }
 
     public function execute(Request $request)
     {
         $this->assertRequest($request);
-        $amounts = $this->history->toDate($this->today);
+        $collection = $this->source->collection();
+        if(!is_null($request->fromDate)) {
+            $collection->filterByDateIsPostThan(new \DateTime($request->fromDate));
+        }
+        if(!is_null($request->toDate)) {
+            $collection->filterDateLessOrEqualTo(new \DateTime($request->toDate));
+        }
+        $amounts = $this->calculator->getForACollection($collection);
         foreach($amounts as $amount) {
             $amount['movement'] = $this->movementTransformer->toResource($amount['movement']);
         }

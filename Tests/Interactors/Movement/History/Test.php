@@ -14,11 +14,8 @@ use Kontuak\Movement;
  */
 class Test extends \PHPUnit_Framework_TestCase
 {
-    const TODAY_IDO = '2016-01-01';
     /** @var Factory */
     private $movementFactory;
-    /** @var \DateTime */
-    private $today;
     /** @var Movement\Source */
     private $source;
     /** @var UseCase */
@@ -30,13 +27,12 @@ class Test extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->today = new \DateTime(self::TODAY_IDO);
         $this->source = new Source();
         $this->totalAmountService = new Movement\TotalAmountCalculator($this->source);
         $this->useCase = new UseCase(
-            new Movement\History($this->source, $this->totalAmountService),
-            new \Kontuak\Implementation\Transformer\Movement(),
-            $this->today
+            $this->source,
+            $this->totalAmountService,
+            new \Kontuak\Implementation\Transformer\Movement()
         );
         $this->request = new Request();
         $this->request->limit = 5;
@@ -45,7 +41,6 @@ class Test extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @group PIS
      */
     public function shouldReturnMovementsOrderedByDateDesc()
     {
@@ -61,44 +56,6 @@ class Test extends \PHPUnit_Framework_TestCase
         $this->assertEquals($movement2, $response->amounts[0]['movement']);
         $this->assertEquals($movement3, $response->amounts[1]['movement']);
         $this->assertEquals($movement1, $response->amounts[2]['movement']);
-    }
-
-    /**
-     * @test
-     */
-    public function shouldReturnMovementsBeforeToday()
-    {
-        $beforeDateStr = '2015-08-01';
-        $movement = $this->generateMovement(100, $beforeDateStr);
-        $this->source->add($movement);
-        $response = $this->useCase->execute($this->request);
-
-        $this->assertEquals(1, count($response->amounts));
-    }
-
-    /**
-     * @test
-     */
-    public function shouldNotReturnMovementsAfterToday()
-    {
-        $beforeDateStr = '2020-08-01';
-        $movement = $this->generateMovement(100, $beforeDateStr);
-        $this->source->add($movement);
-        $response = $this->useCase->execute($this->request);
-
-        $this->assertTrue(empty($response->amounts));
-    }
-
-    /**
-     * @test
-     */
-    public function shouldReturnMovementsOfToday()
-    {
-        $movement = $this->generateMovement(-50, self::TODAY_IDO);
-        $this->source->add($movement);
-        $response = $this->useCase->execute($this->request);
-
-        $this->assertEquals(1, count($response->amounts));
     }
 
     /**
@@ -137,6 +94,78 @@ class Test extends \PHPUnit_Framework_TestCase
     {
         $this->request->limit = null;
         $this->useCase->execute($this->request);
+    }
+
+    /**
+     * @test
+     */
+    public function whenAskedALimitDateFromShouldNotShowThatMovements()
+    {
+        $this->source->add($this->generateMovement(10, '2015-01-10'));
+        $this->request->fromDate = '2015-06-10';
+        $response = $this->useCase->execute($this->request);
+
+        $this->assertEquals(0, count($response->amounts));
+    }
+
+    /**
+     * @test
+     */
+    public function whenAskedALimitDateFromShouldNotShowThatDatesMovements()
+    {
+        $this->source->add($this->generateMovement(10, '2015-06-10'));
+        $this->request->fromDate = '2015-06-10';
+        $response = $this->useCase->execute($this->request);
+
+        $this->assertEquals(0, count($response->amounts));
+    }
+
+    /**
+     * @test
+     */
+    public function whenAskedALimitDateFromShouldShowPostDatesMovements()
+    {
+        $this->source->add($this->generateMovement(10, '2015-06-11'));
+        $this->request->fromDate = '2015-06-10';
+        $response = $this->useCase->execute($this->request);
+
+        $this->assertEquals(1, count($response->amounts));
+    }
+
+    /**
+     * @test
+     */
+    public function whenAskedALimitDateToShouldShowThatMovements()
+    {
+        $this->source->add($this->generateMovement(10, '2015-01-10'));
+        $this->request->toDate = '2015-06-10';
+        $response = $this->useCase->execute($this->request);
+
+        $this->assertEquals(1, count($response->amounts));
+    }
+
+    /**
+     * @test
+     */
+    public function whenAskedALimitDateToShouldShowThatDatesMovements()
+    {
+        $this->source->add($this->generateMovement(10, '2015-06-10'));
+        $this->request->toDate = '2015-06-10';
+        $response = $this->useCase->execute($this->request);
+
+        $this->assertEquals(1, count($response->amounts));
+    }
+
+    /**
+     * @test
+     */
+    public function whenAskedALimitDateToShouldNotShowPostDatesMovements()
+    {
+        $this->source->add($this->generateMovement(10, '2015-08-11'));
+        $this->request->toDate = '2015-06-10';
+        $response = $this->useCase->execute($this->request);
+
+        $this->assertEquals(0, count($response->amounts));
     }
 
     public function generateMovement($amount = 10, $date = '2015-01-01', $concept = 'Concept')

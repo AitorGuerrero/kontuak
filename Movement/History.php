@@ -4,20 +4,21 @@ namespace Kontuak\Movement;
 
 use Kontuak\Movement;
 
-class History 
+class History
 {
     /** @var Source */
     private $source;
     /** @var TotalAmountCalculator */
     private $totalAmountCalculator;
+    /** @var Collection */
+    private $collection;
 
     public function __construct(
-        Movement\Source $source,
+        Collection $collection,
         Movement\TotalAmountCalculator $totalAmountCalculator
     ) {
-
-        $this->source = $source;
         $this->totalAmountCalculator = $totalAmountCalculator;
+        $this->collection = $collection;
     }
 
     public function toDate(\DateTime $fromDate)

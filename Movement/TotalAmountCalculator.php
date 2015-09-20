@@ -28,4 +28,30 @@ class TotalAmountCalculator
 
         return $previousTotalAmount + $dateAmount;
     }
+
+    /**
+     * @param Collection $collection
+     * @return array
+     */
+    public function getForACollection(Collection $collection)
+    {
+        $collection->orderByDate();
+        /** @var Movement $movement */
+        $totalAmounts = [];
+        $firstMovement = $collection->current();
+        if(!$firstMovement) {
+            return [];
+        }
+        $totalAmount = $this->getForAMovement($firstMovement);
+
+        foreach($collection as $movement) {
+            $totalAmount += $movement->amount();
+            $totalAmounts[] = [
+                'totalAmount' => $totalAmount,
+                'movement' => $movement
+            ];
+        }
+
+        return $totalAmounts;
+    }
 }
