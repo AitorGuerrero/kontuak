@@ -33,7 +33,7 @@ class TotalAmountCalculator
      * @param Collection $collection
      * @return array
      */
-    public function getForACollection(Collection $collection)
+    public function getForACollection(Collection $collection, $limit = null)
     {
         $collection->orderByDate();
         /** @var Movement $movement */
@@ -44,7 +44,12 @@ class TotalAmountCalculator
         }
         $totalAmount = $this->getForAMovement($firstMovement);
 
+        $i = 0;
         foreach($collection as $movement) {
+            $i++;
+            if($i > $limit) {
+                break;
+            }
             $totalAmount += $movement->amount();
             $totalAmounts[] = [
                 'totalAmount' => $totalAmount,

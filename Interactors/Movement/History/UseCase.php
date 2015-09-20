@@ -36,7 +36,7 @@ class UseCase
         if(!is_null($request->toDate)) {
             $collection->filterDateLessOrEqualTo(new \DateTime($request->toDate));
         }
-        $amounts = $this->calculator->getForACollection($collection);
+        $amounts = $this->calculator->getForACollection($collection, $request->limit);
         foreach($amounts as $amount) {
             $amount['movement'] = $this->movementTransformer->toResource($amount['movement']);
         }

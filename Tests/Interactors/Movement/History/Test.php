@@ -82,8 +82,7 @@ class Test extends \PHPUnit_Framework_TestCase
         $this->request->limit = 2;
         $response = $this->useCase->execute($this->request);
 
-        $this->assertEquals(80, $response->amounts[0]['totalAmount']);
-        $this->assertEquals(-20, $response->amounts[1]['totalAmount']);
+        $this->assertEquals(2, count($response->amounts));
     }
 
     /**
