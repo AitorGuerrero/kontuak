@@ -34,7 +34,7 @@ class UseCase
         }
         $amounts = $this->calculator->getForACollection($collection, $request->limit);
         foreach($amounts as $i => $amount) {
-            $amount[$i]['movement'] = $this->movementTransformer->toResource($amount['movement']);
+            $amounts[$i]['movement'] = $this->movementTransformer->toResource($amount['movement']);
         }
         $response = new Response();
         $response->amounts = array_reverse($amounts);
