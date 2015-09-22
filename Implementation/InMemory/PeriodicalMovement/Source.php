@@ -58,4 +58,9 @@ class Source implements SourceInterface
 
         return $this->collection[$id->serialize()];
     }
+
+    public function byId(PeriodicalMovement\Id $id)
+    {
+        return $this->collection[$id->serialize()];
+    }
 }
