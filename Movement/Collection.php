@@ -57,4 +57,10 @@ interface Collection extends \Iterator, \Countable
      * @return Collection
      */
     public function filterByDateIsPostThan(\DateTime $timeStamp);
+
+    /**
+     * @param Id $param
+     * @return Collection
+     */
+    public function byId(Id $param);
 }

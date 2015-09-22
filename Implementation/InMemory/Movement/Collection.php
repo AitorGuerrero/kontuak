@@ -2,6 +2,7 @@
 
 namespace Kontuak\Implementation\InMemory\Movement;
 
+use Kontuak\Movement\Id;
 use Kontuak\PeriodicalMovement;
 use Kontuak\Movement;
 
@@ -144,6 +145,19 @@ class Collection implements Movement\Collection
         $filter = $timeStamp->format('Y-m-d');
         $this->collection = array_filter($this->collection, function (Movement $a) use ($filter) {
             return $a->date()->format('Y-m-d') > $filter;
+        });
+
+        return $this;
+    }
+
+    /**
+     * @param Id $id
+     * @return Collection
+     */
+    public function byId(Id $id)
+    {
+        $this->collection = array_filter($this->collection, function (Movement $a) use ($id) {
+            return $a->id()->serialize() === $id->serialize();
         });
 
         return $this;
