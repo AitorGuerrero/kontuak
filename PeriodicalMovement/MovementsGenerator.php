@@ -23,12 +23,12 @@ class MovementsGenerator
     public function toDate(PeriodicalMovement $periodicalMovement, \DateTime $limitDate)
     {
         $date = $this->firstDate($periodicalMovement);
-        $toFormatted = $limitDate->format('Y-m-d');
         $movements = [];
-        while($date <= $toFormatted) {
+        while($date <= $limitDate->format('Y-m-d')) {
             $movements[] = $this->atDate($periodicalMovement, new \DateTime($date));
             $date = $periodicalMovement->period()->next(new \DateTime($date))->format('Y-m-d');
         }
+
         return $movements;
     }
 
@@ -40,7 +40,7 @@ class MovementsGenerator
     public function atDate(PeriodicalMovement $periodicalMovement, \DateTime $date)
     {
         $movement = new Movement(
-            $this->movementsSource->newId(),
+            Movement\Id::make(),
             $periodicalMovement->amount(),
             $periodicalMovement->concept(),
             $date,

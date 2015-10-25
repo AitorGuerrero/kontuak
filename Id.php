@@ -4,6 +4,9 @@ namespace Kontuak;
 
 abstract class Id
 {
+    /**
+     * @var string
+     */
     private $serialized;
 
     /**

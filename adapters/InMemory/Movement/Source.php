@@ -22,7 +22,7 @@ class Source implements Movement\Source
 
     public function add(Movement $movement)
     {
-        $this->movements[$movement->id()->serialize()] = $movement;
+        $this->movements[$movement->id()->toString()] = $movement;
     }
 
     /**
@@ -39,7 +39,7 @@ class Source implements Movement\Source
      */
     public function remove(Movement $movement)
     {
-        unset($this->movements[$movement->id()->serialize()]);
+        unset($this->movements[$movement->id()->toString()]);
     }
 
     /**
@@ -47,20 +47,12 @@ class Source implements Movement\Source
      */
     public function persist(Movement $movement)
     {
-        $this->movements[$movement->id()->serialize()] = $movement;
+        $this->movements[$movement->id()->toString()] = $movement;
     }
 
     public function byId(Movement\Id $id)
     {
-        return $this->movements[$id->serialize()];
-    }
-
-    /**
-     * @return Movement\Id
-     */
-    public function newId()
-    {
-        return new Movement\Id(uniqid('movement_id'));
+        return $this->movements[$id->toString()];
     }
 
     /**
@@ -70,10 +62,10 @@ class Source implements Movement\Source
      */
     public function get(Id $id)
     {
-        if(!isset($this->movements[$id->serialize()])) {
+        if(!isset($this->movements[$id->toString()])) {
             throw new EntityNotFound();
         }
 
-        return $this->movements[$id->serialize()];
+        return $this->movements[$id->toString()];
     }
 }

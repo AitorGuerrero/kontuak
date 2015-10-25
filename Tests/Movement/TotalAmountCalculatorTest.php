@@ -53,7 +53,7 @@ class TotalAmountCalculatorTest extends \PHPUnit_Framework_TestCase
     private function movementGenerator($isoDate = '2015-06-01', $amount = 10)
     {
         return new Movement(
-            new Movement\Id(uniqid()),
+            Movement\Id::make(),
             $amount,
             'Concept',
             new \DateTime($isoDate),

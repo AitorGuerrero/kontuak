@@ -155,7 +155,7 @@ trait SourceTest
     public function movementGenerator($amount = null, $concept = null, $date = null, $created = null)
     {
         return new Movement(
-            new Movement\Id(uniqid()),
+            Movement\Id::make(),
             $amount === null ? 300 : $amount,
             $concept === null ? 'Concept' : $concept,
             $date === null ? new \DateTime('2015-05-01') : $date,

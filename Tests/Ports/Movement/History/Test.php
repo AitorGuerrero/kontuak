@@ -170,7 +170,7 @@ class Test extends \PHPUnit_Framework_TestCase
     public function generateMovement($amount = 10, $date = '2015-01-01', $concept = 'Concept')
     {
         return new Movement(
-            $this->source->newId(),
+            Movement\Id::make(),
             $amount,
             $concept,
             new \DateTime($date),

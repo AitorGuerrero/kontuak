@@ -9,7 +9,7 @@ class MovementDoesNotExistsException extends PortException
 {
     public function __construct(Movement\Id $movementId)
     {
-        $id = $movementId->serialize();
+        $id = $movementId->toString();
         parent::__construct("Movement with ID '$id' does not exists");
     }
 }

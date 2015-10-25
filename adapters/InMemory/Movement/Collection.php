@@ -157,7 +157,7 @@ class Collection implements Movement\Collection
     public function byId(Id $id)
     {
         $this->collection = array_filter($this->collection, function (Movement $a) use ($id) {
-            return $a->id()->serialize() === $id->serialize();
+            return $a->id()->toString() === $id->toString();
         });
 
         return $this;

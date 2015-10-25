@@ -16,7 +16,7 @@ class UseCase
     }
     public function execute(Request $request)
     {
-        $id = new Movement\Id($request->id);
+        $id = Movement\Id::parse($request->id);
         try {
             $movement = $this->source->get($id);
         } catch (EntityNotFound $e) {

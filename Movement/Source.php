@@ -31,11 +31,6 @@ interface Source
     public function persist(Movement $movement);
 
     /**
-     * @return Movement\Id
-     */
-    public function newId();
-
-    /**
      * @param Id $id
      * @return Movement
      * @throws \Kontuak\Exception\Source\EntityNotFound

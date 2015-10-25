@@ -12,7 +12,7 @@ class MovementTest extends \PHPUnit_Framework_TestCase
     protected function setUp()
     {
         $this->movement = new Movement(
-            new Movement\Id(uniqid()),
+            Movement\Id::make(),
             10,
             'Concept',
             new \DateTime('2015-01-01'),
