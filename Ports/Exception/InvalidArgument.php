@@ -2,9 +2,7 @@
 
 namespace Kontuak\Ports\Exception;
 
-use Kontuak\KontuakException;
-
-class InvalidArgument extends KontuakException
+class InvalidArgument extends PortException
 {
     public function __construct($argumentName)
     {

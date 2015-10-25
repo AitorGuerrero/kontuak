@@ -2,6 +2,6 @@
 
 namespace Kontuak\Ports\Exception;
 
-class EntityNotFound extends interactorException
+class EntityNotFound extends PortException
 {
 }
