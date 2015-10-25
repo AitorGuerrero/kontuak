@@ -87,7 +87,7 @@ class Test extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function shouldSaveTheMovement()
+    public function ifMovementExistsShoulUpdateTheMovement()
     {
         $this->useCase->execute($this->request);
         $movement = $this->source->byId(new Movement\Id(self::ID));
@@ -97,5 +97,22 @@ class Test extends \PHPUnit_Framework_TestCase
         $this->assertEquals(self::CONCEPT, $movement->concept());
         $this->assertEquals(self::ISO_DATE, $movement->date()->format('Y-m-d'));
         $this->assertEquals(self::CURRENT_ISO_DATE, $movement->created()->format('Y-m-d H:i:s'));
+    }
+
+    /**
+     * @test
+     */
+    public function ifMovementDoesNotExistShoulUpdateTheMovement()
+    {
+        $newId = 'c1d74045-e24f-4adb-b707-c45dd86ffc19';
+        $this->useCase->execute(new Request(
+            $newId,
+            self::CONCEPT,
+            self::AMOUNT,
+            self::ISO_DATE
+        ));
+        $movement = $this->source->byId(new Movement\Id($newId));
+
+        $this->assertInstanceOf('\kontuak\Movement', $movement);
     }
 }

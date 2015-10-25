@@ -38,6 +38,7 @@ class UseCase
         if(!$movement) {
             $created = true;
             $movement = $this->makeNewMovement($request);
+            $this->source->add($movement);
         } else {
             $this->updateAMovement($request, $movement);
 

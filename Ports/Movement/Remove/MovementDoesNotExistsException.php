@@ -2,7 +2,7 @@
 
 namespace Kontuak\Ports\Movement\Remove;
 
-use Kontuak\Ports\PortException;
+use Kontuak\Ports\Exception\PortException;
 use Kontuak\Movement;
 
 class MovementDoesNotExistsException extends PortException
