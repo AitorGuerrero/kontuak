@@ -3,7 +3,6 @@
 namespace Ports\Movement\Remove;
 
 use Kontuak\Exception\Source\EntityNotFound;
-use Kontuak\Adapters\InMemory\Movement\Factory;
 use Kontuak\Adapters\InMemory\Movement\Source;
 use Kontuak\Ports\Movement\Remove\UseCase;
 use Kontuak\Ports\Movement\Remove\Request;
@@ -15,8 +14,6 @@ class Test extends \PHPUnit_Framework_TestCase
     const MALFORMED_ID = 'malformed_id';
     const MOVEMENT_ID = '1782c153-c48f-4cf3-a24a-21f2957461c9';
 
-    /** @var Factory */
-    private $movementFactory;
     /** @var Source */
     private $source;
     /** @var \Kontuak\Ports\Movement\Remove\UseCase */
@@ -30,7 +27,6 @@ class Test extends \PHPUnit_Framework_TestCase
         $this->source = new Source();
         $this->useCase = new UseCase($this->source);
         $this->request = new Request();
-        $this->movementFactory = new Factory();
     }
 
     /**
@@ -49,7 +45,7 @@ class Test extends \PHPUnit_Framework_TestCase
     public function shouldRemoveTheMovementFromTheSource()
     {
         $id = new Movement\Id(self::MOVEMENT_ID);
-        $this->source->add($this->movementFactory->make(
+        $this->source->add(new Movement(
             $id,
             100,
             'a',

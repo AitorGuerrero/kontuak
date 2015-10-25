@@ -2,7 +2,7 @@
 
 namespace Kontuak\Ports\Movement\Put;
 
-use Kontuak\Movement\Factory;
+use Kontuak\Movement;
 use Kontuak\Movement\Id;
 use Kontuak\Movement\Source;
 use Kontuak\Movement\Transformer;
@@ -12,17 +12,14 @@ class UseCase
 
     /** @var Source */
     private $source;
-    /** @var Factory */
-    private $factory;
     /** @var \DateTime */
     private $currentTimeStamp;
     /** @var Transformer */
     private $transformer;
 
-    public function __construct(Source $source, Transformer $transformer, Factory $factory, \DateTime $currentTimeStamp)
+    public function __construct(Source $source, Transformer $transformer, \DateTime $currentTimeStamp)
     {
         $this->source = $source;
-        $this->factory = $factory;
         $this->currentTimeStamp = $currentTimeStamp;
         $this->transformer = $transformer;
     }
@@ -56,7 +53,7 @@ class UseCase
      */
     private function makeNewMovement(Request $request)
     {
-        return $movement = $this->factory->make(
+        return $movement = new Movement(
             new Id($request->id()),
             $request->amount(),
             $request->concept(),

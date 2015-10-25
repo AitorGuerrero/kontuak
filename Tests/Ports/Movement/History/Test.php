@@ -2,7 +2,6 @@
 
 namespace Kontuak\Tests\Ports\Movement\History;
 
-use Kontuak\Adapters\InMemory\Movement\Factory;
 use Kontuak\Adapters\InMemory\Movement\Source;
 use Kontuak\Ports\Movement\History\Request;
 use Kontuak\Ports\Movement\History\UseCase;
@@ -14,8 +13,6 @@ use Kontuak\Movement;
  */
 class Test extends \PHPUnit_Framework_TestCase
 {
-    /** @var Factory */
-    private $movementFactory;
     /** @var Movement\Source */
     private $source;
     /** @var UseCase */
@@ -36,7 +33,6 @@ class Test extends \PHPUnit_Framework_TestCase
         );
         $this->request = new Request();
         $this->request->limit = 5;
-        $this->movementFactory = new Factory();
     }
 
     /**
@@ -173,7 +169,7 @@ class Test extends \PHPUnit_Framework_TestCase
 
     public function generateMovement($amount = 10, $date = '2015-01-01', $concept = 'Concept')
     {
-        return $this->movementFactory->make(
+        return new Movement(
             $this->source->newId(),
             $amount,
             $concept,

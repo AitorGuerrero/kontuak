@@ -30,7 +30,6 @@ class Test extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $movementFactory = new InMemory\Movement\Factory();
         $periodicalMovementFactory = new InMemory\PeriodicalMovement\Factory();
         $this->starts = '2015-08-01';
         $this->period = new DaysPeriod(3);
@@ -51,7 +50,6 @@ class Test extends \PHPUnit_Framework_TestCase
             $this->timeStamp,
             new PeriodicalMovement\MovementsGenerator(
                 $this->movementsSource,
-                $movementFactory,
                 $this->timeStamp
             )
         );

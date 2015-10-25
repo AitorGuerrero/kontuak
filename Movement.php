@@ -23,7 +23,7 @@ class Movement
     protected $periodicalMovement;
 
 
-    protected function __construct(
+    public function __construct(
         MovementId $id,
         $amount,
         $concept,

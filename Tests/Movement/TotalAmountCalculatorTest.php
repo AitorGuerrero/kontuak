@@ -2,20 +2,13 @@
 
 namespace Kontuak\Tests\Movement;
 
-use Kontuak\Adapters\InMemory\Movement\Factory;
 use Kontuak\Adapters\InMemory\Movement\Source;
 use Kontuak\Movement;
 use Kontuak\Movement\TotalAmountCalculator;
 
 class TotalAmountCalculatorTest extends \PHPUnit_Framework_TestCase
 {
-    /** @var Factory */
-    private $movementFactory;
 
-    protected function setUp()
-    {
-        $this->movementFactory = new Factory();
-    }
     /**
      * @test
      */
@@ -59,7 +52,7 @@ class TotalAmountCalculatorTest extends \PHPUnit_Framework_TestCase
 
     private function movementGenerator($isoDate = '2015-06-01', $amount = 10)
     {
-        return $this->movementFactory->make(
+        return new Movement(
             new Movement\Id(uniqid()),
             $amount,
             'Concept',

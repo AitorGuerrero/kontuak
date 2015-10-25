@@ -1,22 +1,22 @@
 <?php
 
-use Kontuak\Adapters\InMemory\Movement\Factory;
+namespace Kontuak\Tests;
+
 use Kontuak\Movement;
 
-class MovementTest extends PHPUnit_Framework_TestCase
+class MovementTest extends \PHPUnit_Framework_TestCase
 {
     /** @var Movement */
     private $movement;
 
     protected function setUp()
     {
-        $movementFactory = new Factory();
-        $this->movement = $movementFactory->make(
+        $this->movement = new Movement(
             new Movement\Id(uniqid()),
             10,
             'Concept',
-            new DateTime('2015-01-01'),
-            new DateTime('2015-01-01')
+            new \DateTime('2015-01-01'),
+            new \DateTime('2015-01-01')
         );
     }
 

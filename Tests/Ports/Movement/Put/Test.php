@@ -5,7 +5,6 @@ namespace Ports\Movement\Put;
 use Kontuak\Ports\Movement\Put\Request;
 use Kontuak\Ports\Movement\Put\UseCase;
 use kontuak\Movement;
-use Kontuak\Adapters\InMemory\Movement\Factory;
 use Kontuak\Adapters\InMemory\Movement\Source;
 use Kontuak\Adapters\InMemory\PeriodicalMovement\Factory as PeriodicalMovementFactory;
 use Kontuak\Movement\Id;
@@ -19,8 +18,6 @@ class Test extends \PHPUnit_Framework_TestCase
     const ID = '531d52c5-d217-4a94-92f3-3e0f9b603a7a';
     private $periodicalMovementFactory;
 
-    /** @var Factory */
-    private $movementFactory;
     /** @var Request */
     private $request;
     /** @var UseCase */
@@ -31,16 +28,14 @@ class Test extends \PHPUnit_Framework_TestCase
     protected function setUp()
     {
         $this->source = new Source();
-        $this->movementFactory = new Factory();
         $this->periodicalMovementFactory = new PeriodicalMovementFactory();
         $this->useCase = new UseCase(
             $this->source,
             new \Kontuak\Adapters\Transformer\Movement(),
-            $this->movementFactory,
             new \DateTime(self::CURRENT_ISO_DATE)
         );
 
-        $this->source->add($this->movementFactory->make(
+        $this->source->add(new Movement(
             new Id(self::ID),
             self::AMOUNT,
             self::CONCEPT,

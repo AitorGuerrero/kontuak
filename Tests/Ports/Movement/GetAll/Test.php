@@ -2,8 +2,8 @@
 
 namespace Ports\Movement\GetAll;
 
-use Kontuak\Adapters\InMemory\Movement\Factory;
 use Kontuak\Adapters\InMemory\Movement\Source;
+use Kontuak\Movement;
 use Kontuak\Ports\Movement\GetAll\UseCase;
 use Kontuak\Ports\Movement\GetAll\Request;
 
@@ -15,12 +15,9 @@ class Test extends \PHPUnit_Framework_TestCase
     public $useCase;
     /** @var Request */
     private $request;
-    /** @var Factory */
-    private $factory;
 
     public function setUp()
     {
-        $this->factory = new Factory();
         $this->source = new Source();
         $this->useCase = new UseCase($this->source);
         $this->request = $this->useCase->newRequest();
@@ -89,7 +86,7 @@ class Test extends \PHPUnit_Framework_TestCase
 
     public function generateMovement()
     {
-        $movement = $this->factory->make(
+        $movement = new Movement(
             $this->source->newId(),
             1,
             'a',

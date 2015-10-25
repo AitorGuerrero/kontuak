@@ -2,7 +2,6 @@
 
 namespace Kontuak\Tests\Adapters\Movement;
 
-use Kontuak\Adapters\InMemory\Movement\Factory;
 use Kontuak\Adapters\InMemory\PeriodicalMovement\Factory as PeriodicalMovementFactory;
 use Kontuak\Movement;
 use Kontuak\Period\DaysPeriod;
@@ -86,7 +85,6 @@ trait SourceTest
     {
         $movementsGenerator = new PeriodicalMovement\MovementsGenerator(
             $this->source,
-            new Factory(),
             $this->timeStamp
         );
         $periodicalMovement = $this->periodicalMovementFactory->make(
@@ -159,8 +157,7 @@ trait SourceTest
 
     public function movementGenerator($amount = null, $concept = null, $date = null, $created = null)
     {
-        $factory = new Factory();
-        return $factory->make(
+        return new Movement(
             new Movement\Id(uniqid()),
             $amount === null ? 300 : $amount,
             $concept === null ? 'Concept' : $concept,
