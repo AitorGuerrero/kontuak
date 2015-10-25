@@ -23,7 +23,7 @@ class Test extends \PHPUnit_Framework_TestCase
     public function shouldAddToTheSource()
     {
         $source = new Source();
-        $useCase = new UseCase(new Factory(), $source);
+        $useCase = new UseCase($source);
         $request = $useCase->newRequest();
         $request->id = self::ID;
         $request->concept = self::CONCEPT;

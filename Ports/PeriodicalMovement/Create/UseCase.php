@@ -4,7 +4,6 @@ namespace Kontuak\Ports\PeriodicalMovement\Create;
 
 use Kontuak\Ports\Mappings\PeriodicalMovement;
 use Kontuak\Period;
-use Kontuak\PeriodicalMovement\Factory;
 use Kontuak\PeriodicalMovement\Id;
 use Kontuak\PeriodicalMovement\Source;
 
@@ -13,13 +12,10 @@ class UseCase
 
     /** @var Source */
     private $source;
-    /** @var Factory */
-    private $factory;
 
-    public function __construct(Factory $factory, Source $source)
+    public function __construct(Source $source)
     {
         $this->source = $source;
-        $this->factory = $factory;
     }
 
     /**
@@ -36,7 +32,7 @@ class UseCase
     public function execute(Request $request)
     {
         $this->source->add(
-            $this->factory->make(
+            new \Kontuak\PeriodicalMovement(
                 new Id($request->id),
                 $request->amount,
                 $request->concept,

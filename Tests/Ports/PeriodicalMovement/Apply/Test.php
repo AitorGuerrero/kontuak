@@ -30,10 +30,9 @@ class Test extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $periodicalMovementFactory = new InMemory\PeriodicalMovement\Factory();
         $this->starts = '2015-08-01';
         $this->period = new DaysPeriod(3);
-        $this->periodicalMovement = $periodicalMovementFactory->make(
+        $this->periodicalMovement = new PeriodicalMovement(
             new PeriodicalMovement\Id(uniqid()),
             10,
             'AA',

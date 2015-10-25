@@ -26,7 +26,7 @@ class PeriodicalMovement
      * @param \DateTime $starts
      * @param Period $period
      */
-    protected function __construct(
+    public function __construct(
         PeriodicalMovement\Id $id,
         $amount,
         $concept,

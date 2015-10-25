@@ -15,6 +15,5 @@ class SourceTest extends \PHPUnit_Framework_TestCase
     {
         $this->source = new Source();
         $this->timeStamp = new \DateTime('2015-01-01');
-        $this->periodicalMovementFactory = new Factory();
     }
 }

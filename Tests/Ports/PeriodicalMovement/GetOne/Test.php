@@ -2,7 +2,6 @@
 
 namespace Ports\PeriodicalMovement\GetOne;
 
-use Kontuak\Adapters\InMemory\PeriodicalMovement\Factory;
 use Kontuak\Adapters\InMemory\PeriodicalMovement\Source;
 use Kontuak\Adapters\Transformer\PeriodicalMovement;
 use Kontuak\Ports\PeriodicalMovement\GetOne\UseCase;
@@ -45,8 +44,7 @@ class Test extends \PHPUnit_Framework_TestCase
     public function shouldReturnExpectedPeriodicalMovement()
     {
         $id = '5df09125-7cc0-4686-af55-733765c04103';
-        $factory = new Factory();
-        $periodicalMovement = $factory->make(
+        $periodicalMovement = new \Kontuak\PeriodicalMovement(
             new Id($id),
             10,
             'concept',

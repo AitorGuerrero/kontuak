@@ -4,7 +4,6 @@ namespace Kontuak\Ports\PeriodicalMovement\Put;
 
 use Kontuak\Ports\Mappings\PeriodicalMovement;
 use Kontuak\Period;
-use Kontuak\PeriodicalMovement\Factory;
 use Kontuak\PeriodicalMovement\Id;
 use Kontuak\PeriodicalMovement\Source;
 use Kontuak\PeriodicalMovement\Transformer;
@@ -13,17 +12,14 @@ class UseCase
 {
     /** @var Source */
     private $source;
-    /** @var Factory */
-    private $factory;
     /** @var \DateTime */
     private $currentTimeStamp;
     /** @var Transformer */
     private $transformer;
 
-    public function __construct(Source $source, Transformer $transformer, Factory $factory, \DateTime $currentTimeStamp)
+    public function __construct(Source $source, Transformer $transformer, \DateTime $currentTimeStamp)
     {
         $this->source = $source;
-        $this->factory = $factory;
         $this->currentTimeStamp = $currentTimeStamp;
         $this->transformer = $transformer;
     }
@@ -52,7 +48,7 @@ class UseCase
 
     private function makeNewMovement(Request $request)
     {
-        return $movement = $this->factory->make(
+        return $movement = new \Kontuak\PeriodicalMovement(
             new Id($request->id()),
             $request->amount(),
             $request->concept(),

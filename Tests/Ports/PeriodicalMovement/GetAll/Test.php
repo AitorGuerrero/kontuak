@@ -2,7 +2,6 @@
 
 namespace Ports\PeriodicalMovement\GetAll;
 
-use Kontuak\Adapters\InMemory\PeriodicalMovement\Factory;
 use Kontuak\Adapters\InMemory\PeriodicalMovement\Source;
 use Kontuak\Adapters\Transformer\PeriodicalMovement;
 use Kontuak\Ports\PeriodicalMovement\GetAll\UseCase;
@@ -18,12 +17,9 @@ class Test extends \PHPUnit_Framework_TestCase
     public $useCase;
     /** @var Request */
     public $request;
-    /** @var Factory */
-    public $factory;
 
     protected function setUp()
     {
-        $this->factory = new Factory();
         $this->source = new Source();
         $this->useCase = new UseCase($this->source, new PeriodicalMovement());
         $this->request = $this->useCase->newRequest();
@@ -66,7 +62,7 @@ class Test extends \PHPUnit_Framework_TestCase
      */
     private function makeMovement($id)
     {
-        $movement = $this->factory->make(
+        $movement = new \Kontuak\PeriodicalMovement(
             new Id($id),
             1,
             'concept',

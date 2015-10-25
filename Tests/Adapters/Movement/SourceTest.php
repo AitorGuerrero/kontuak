@@ -2,7 +2,6 @@
 
 namespace Kontuak\Tests\Adapters\Movement;
 
-use Kontuak\Adapters\InMemory\PeriodicalMovement\Factory as PeriodicalMovementFactory;
 use Kontuak\Movement;
 use Kontuak\Period\DaysPeriod;
 use Kontuak\PeriodicalMovement;
@@ -10,8 +9,6 @@ use Kontuak\Adapters\InMemory\Movement\Source;
 
 trait SourceTest
 {
-    /** @var PeriodicalMovementFactory */
-    private $periodicalMovementFactory;
     /** @var Source */
     protected $source;
     /** @var \DateTime */
@@ -87,7 +84,7 @@ trait SourceTest
             $this->source,
             $this->timeStamp
         );
-        $periodicalMovement = $this->periodicalMovementFactory->make(
+        $periodicalMovement = new PeriodicalMovement(
             new PeriodicalMovement\Id(uniqid()),
             100,
             'pus',

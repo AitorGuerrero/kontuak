@@ -2,7 +2,6 @@
 
 namespace Ports\PeriodicalMovement\Update;
 
-use Kontuak\Adapters\InMemory\PeriodicalMovement\Factory;
 use Kontuak\Adapters\InMemory\PeriodicalMovement\Source;
 use Kontuak\Ports\Mappings\PeriodicalMovement;
 use Kontuak\Ports\PeriodicalMovement\Update\Request;
@@ -34,7 +33,6 @@ class Test extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $factory = new Factory();
         $this->source = new Source();
         $this->useCase = new UseCase($this->source);
         $this->request = $this->useCase->newRequest();
@@ -45,7 +43,7 @@ class Test extends \PHPUnit_Framework_TestCase
         $this->request->periodType = self::NEW_PERIOD_TYPE;
         $this->request->periodAmount = self::NEW_PERIOD_AMOUNT;
 
-        $periodicalMovement = $factory->make(
+        $periodicalMovement = new \Kontuak\PeriodicalMovement(
             new Id(self::ID),
             self::AMOUNT,
             self::CONCEPT,

@@ -4,7 +4,6 @@ namespace Ports\PeriodicalMovement\Put;
 
 use Kontuak\Ports\PeriodicalMovement\Put\Request;
 use Kontuak\Ports\PeriodicalMovement\Put\UseCase;
-use Kontuak\Adapters\InMemory\PeriodicalMovement\Factory;
 use Kontuak\Adapters\InMemory\PeriodicalMovement\Source;
 use Kontuak\Period\DaysPeriod;
 use kontuak\PeriodicalMovement;
@@ -20,8 +19,6 @@ class Test extends \PHPUnit_Framework_TestCase
     const PERIOD_TYPE = 'days';
     const PERIOD_AMOUNT = 5;
 
-    /** @var Factory */
-    private $periodicalMovementFactory;
     /** @var Request */
     private $request;
     /** @var UseCase */
@@ -32,15 +29,13 @@ class Test extends \PHPUnit_Framework_TestCase
     protected function setUp()
     {
         $this->source = new Source();
-        $this->periodicalMovementFactory = new Factory();
         $this->useCase = new UseCase(
             $this->source,
             new \Kontuak\Adapters\Transformer\PeriodicalMovement(),
-            $this->periodicalMovementFactory,
             new \DateTime(self::CURRENT_ISO_DATE)
         );
 
-        $this->source->add($this->periodicalMovementFactory->make(
+        $this->source->add(new PeriodicalMovement(
             new Id(self::ID),
             self::AMOUNT,
             self::CONCEPT,
