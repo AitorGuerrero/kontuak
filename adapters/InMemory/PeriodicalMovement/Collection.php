@@ -1,13 +1,13 @@
 <?php
 
-namespace kontuak\Implementation\InMemory\PeriodicalMovement;
+namespace kontuak\Adapters\InMemory\PeriodicalMovement;
 
 use Kontuak\PeriodicalMovement;
 use Kontuak\PeriodicalMovement\Id;
 
 class Collection implements PeriodicalMovement\Collection
 {
-    use \Kontuak\Implementation\InMemory\Collection;
+    use \Kontuak\Adapters\InMemory\Collection;
 
     /** @var PeriodicalMovement\Source */
     private $source;

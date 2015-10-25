@@ -1,8 +1,8 @@
 <?php
 
-namespace Kontuak\Implementation\InMemory\PeriodicalMovement;
+namespace Kontuak\Adapters\InMemory\PeriodicalMovement;
 
-use Kontuak\Implementation\InMemory\PeriodicalMovement;
+use Kontuak\Adapters\InMemory\PeriodicalMovement;
 use Kontuak\Period;
 use Kontuak\PeriodicalMovement\Factory as FactoryInterface;
 use Kontuak\PeriodicalMovement\Id;

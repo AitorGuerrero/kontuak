@@ -1,6 +1,6 @@
 <?php
 
-namespace Kontuak\Implementation\Transformer;
+namespace Kontuak\Adapters\Transformer;
 
 use Kontuak\PeriodicalMovement\Transformer;
 

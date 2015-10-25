@@ -1,15 +1,15 @@
 <?php
 
-namespace Kontuak\Tests\Implementation\InMemory\Movement;
+namespace Kontuak\Tests\Adapters\InMemory\Movement;
 
-use Kontuak\Implementation\InMemory\Movement\Source;
-use Kontuak\Implementation\InMemory\PeriodicalMovement\Factory;
+use Kontuak\Adapters\InMemory\Movement\Source;
+use Kontuak\Adapters\InMemory\PeriodicalMovement\Factory;
 use \Kontuak\PeriodicalMovement;
 use \Kontuak\Movement;
 
 class SourceTest extends \PHPUnit_Framework_TestCase
 {
-    use \Kontuak\Tests\Implementation\Movement\SourceTest;
+    use \Kontuak\Tests\Adapters\Movement\SourceTest;
 
     protected function setUp()
     {

@@ -2,8 +2,8 @@
 
 namespace Interactors\Movement\GetAll;
 
-use Kontuak\Implementation\InMemory\Movement\Factory;
-use Kontuak\Implementation\InMemory\Movement\Source;
+use Kontuak\Adapters\InMemory\Movement\Factory;
+use Kontuak\Adapters\InMemory\Movement\Source;
 use Kontuak\Interactors\Movement\GetAll\UseCase;
 use Kontuak\Interactors\Movement\GetAll\Request;
 use Kontuak\Movement\Id\Generator;

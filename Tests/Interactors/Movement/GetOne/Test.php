@@ -2,8 +2,8 @@
 
 namespace Interactors\Movement\GetOne;
 
-use Kontuak\Implementation\InMemory\Movement\Factory;
-use Kontuak\Implementation\InMemory\Movement\Source;
+use Kontuak\Adapters\InMemory\Movement\Factory;
+use Kontuak\Adapters\InMemory\Movement\Source;
 use Kontuak\Interactors\Movement\GetOne\UseCase;
 use Kontuak\Interactors\Movement\GetOne\Request;
 use Kontuak\Movement;
@@ -37,7 +37,7 @@ class Test extends \PHPUnit_Framework_TestCase
         );
         $this->source = new Source();
         $this->source->add($this->movement);
-        $this->useCase = new UseCase($this->source, new \Kontuak\Implementation\Transformer\Movement());
+        $this->useCase = new UseCase($this->source, new \Kontuak\Adapters\Transformer\Movement());
         $this->request = new Request();
         $this->request->id = self::MOVEMENT_ID_SERIALIZED;
     }

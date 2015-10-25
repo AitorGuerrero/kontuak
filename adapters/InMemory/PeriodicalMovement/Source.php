@@ -1,6 +1,6 @@
 <?php
 
-namespace Kontuak\Implementation\InMemory\PeriodicalMovement;
+namespace Kontuak\Adapters\InMemory\PeriodicalMovement;
 
 use Kontuak\Exception\Source\DuplicatedId;
 use Kontuak\Exception\Source\EntityNotFound;

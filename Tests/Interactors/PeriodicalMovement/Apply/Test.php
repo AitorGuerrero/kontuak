@@ -2,14 +2,14 @@
 
 namespace Kontuak\Tests\Interactors\PeriodicalMovement\Apply;
 
-use Kontuak\Implementation\InMemory;
-use Kontuak\Implementation\InMemory\Movement\Source as MovementSource;
-use Kontuak\Implementation\InMemory\PeriodicalMovement\Source as PeriodicalMovementSource;
+use Kontuak\Adapters\InMemory;
+use Kontuak\Adapters\InMemory\Movement\Source as MovementSource;
+use Kontuak\Adapters\InMemory\PeriodicalMovement\Source as PeriodicalMovementSource;
 use Kontuak\Interactors\PeriodicalMovement\Apply;
 use Kontuak\Period\DaysPeriod;
 use Kontuak\PeriodicalMovement;
 use Kontuak\Movement;
-use Kontuak\Implementation;
+use Kontuak\Adapters;
 
 class Test extends \PHPUnit_Framework_TestCase
 {

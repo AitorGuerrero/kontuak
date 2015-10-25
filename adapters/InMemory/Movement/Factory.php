@@ -1,8 +1,8 @@
 <?php
 
-namespace Kontuak\Implementation\InMemory\Movement;
+namespace Kontuak\Adapters\InMemory\Movement;
 
-use Kontuak\Implementation\InMemory\Movement;
+use Kontuak\Adapters\InMemory\Movement;
 use Kontuak\Movement\Factory as FactoryInterface;
 use Kontuak\Movement\Id;
 

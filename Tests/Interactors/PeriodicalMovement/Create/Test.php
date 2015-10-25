@@ -2,8 +2,8 @@
 
 namespace Interactors\PeriodicalMovement\Create;
 
-use Kontuak\Implementation\InMemory\PeriodicalMovement\Factory;
-use Kontuak\Implementation\InMemory\PeriodicalMovement\Source;
+use Kontuak\Adapters\InMemory\PeriodicalMovement\Factory;
+use Kontuak\Adapters\InMemory\PeriodicalMovement\Source;
 use Kontuak\Interactors\Mappings\PeriodicalMovement;
 use Kontuak\Interactors\PeriodicalMovement\Create\UseCase;
 use Kontuak\Period;

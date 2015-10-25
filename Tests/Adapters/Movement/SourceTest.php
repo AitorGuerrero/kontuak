@@ -1,13 +1,13 @@
 <?php
 
-namespace Kontuak\Tests\Implementation\Movement;
+namespace Kontuak\Tests\Adapters\Movement;
 
-use Kontuak\Implementation\InMemory\Movement\Factory;
-use Kontuak\Implementation\InMemory\PeriodicalMovement\Factory as PeriodicalMovementFactory;
+use Kontuak\Adapters\InMemory\Movement\Factory;
+use Kontuak\Adapters\InMemory\PeriodicalMovement\Factory as PeriodicalMovementFactory;
 use Kontuak\Movement;
 use Kontuak\Period\DaysPeriod;
 use Kontuak\PeriodicalMovement;
-use Kontuak\Implementation\InMemory\Movement\Source;
+use Kontuak\Adapters\InMemory\Movement\Source;
 
 trait SourceTest
 {

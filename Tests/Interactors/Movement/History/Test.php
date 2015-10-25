@@ -2,8 +2,8 @@
 
 namespace Kontuak\Tests\Interactors\Movement\History;
 
-use Kontuak\Implementation\InMemory\Movement\Factory;
-use Kontuak\Implementation\InMemory\Movement\Source;
+use Kontuak\Adapters\InMemory\Movement\Factory;
+use Kontuak\Adapters\InMemory\Movement\Source;
 use Kontuak\Interactors\Movement\History\Request;
 use Kontuak\Interactors\Movement\History\UseCase;
 use Kontuak\Movement;
@@ -32,7 +32,7 @@ class Test extends \PHPUnit_Framework_TestCase
         $this->useCase = new UseCase(
             $this->source,
             $this->totalAmountService,
-            new \Kontuak\Implementation\Transformer\Movement()
+            new \Kontuak\Adapters\Transformer\Movement()
         );
         $this->request = new Request();
         $this->request->limit = 5;

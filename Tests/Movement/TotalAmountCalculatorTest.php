@@ -2,8 +2,8 @@
 
 namespace Kontuak\Tests\Movement;
 
-use Kontuak\Implementation\InMemory\Movement\Factory;
-use Kontuak\Implementation\InMemory\Movement\Source;
+use Kontuak\Adapters\InMemory\Movement\Factory;
+use Kontuak\Adapters\InMemory\Movement\Source;
 use Kontuak\Movement;
 use Kontuak\Movement\TotalAmountCalculator;
 
@@ -11,8 +11,6 @@ class TotalAmountCalculatorTest extends \PHPUnit_Framework_TestCase
 {
     /** @var Factory */
     private $movementFactory;
-    /** @var Movement\Id\Generator */
-    private $movementIdGenerator;
 
     protected function setUp()
     {

@@ -2,9 +2,9 @@
 
 namespace Interactors\PeriodicalMovement\GetAll;
 
-use Kontuak\Implementation\InMemory\PeriodicalMovement\Factory;
-use Kontuak\Implementation\InMemory\PeriodicalMovement\Source;
-use Kontuak\Implementation\Transformer\PeriodicalMovement;
+use Kontuak\Adapters\InMemory\PeriodicalMovement\Factory;
+use Kontuak\Adapters\InMemory\PeriodicalMovement\Source;
+use Kontuak\Adapters\Transformer\PeriodicalMovement;
 use Kontuak\Interactors\PeriodicalMovement\GetAll\UseCase;
 use Kontuak\Interactors\PeriodicalMovement\GetAll\Request;
 use Kontuak\Period\DaysPeriod;

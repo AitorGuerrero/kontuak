@@ -1,6 +1,6 @@
 <?php
 
-namespace Kontuak\Implementation\InMemory\Movement;
+namespace Kontuak\Adapters\InMemory\Movement;
 
 use Kontuak\Exception\Source\EntityNotFound;
 use Kontuak\Movement;

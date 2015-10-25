@@ -5,9 +5,9 @@ namespace Interactors\Movement\Put;
 use Kontuak\Interactors\Movement\Put\Request;
 use Kontuak\Interactors\Movement\Put\UseCase;
 use kontuak\Movement;
-use Kontuak\Implementation\InMemory\Movement\Factory;
-use Kontuak\Implementation\InMemory\Movement\Source;
-use Kontuak\Implementation\InMemory\PeriodicalMovement\Factory as PeriodicalMovementFactory;
+use Kontuak\Adapters\InMemory\Movement\Factory;
+use Kontuak\Adapters\InMemory\Movement\Source;
+use Kontuak\Adapters\InMemory\PeriodicalMovement\Factory as PeriodicalMovementFactory;
 use Kontuak\Movement\Id;
 
 class Test extends \PHPUnit_Framework_TestCase
@@ -35,7 +35,7 @@ class Test extends \PHPUnit_Framework_TestCase
         $this->periodicalMovementFactory = new PeriodicalMovementFactory();
         $this->useCase = new UseCase(
             $this->source,
-            new \Kontuak\Implementation\Transformer\Movement(),
+            new \Kontuak\Adapters\Transformer\Movement(),
             $this->movementFactory,
             new \DateTime(self::CURRENT_ISO_DATE)
         );

@@ -1,6 +1,6 @@
 <?php
 
-namespace Kontuak\Implementation\InMemory;
+namespace Kontuak\Adapters\InMemory;
 
 trait Collection 
 {

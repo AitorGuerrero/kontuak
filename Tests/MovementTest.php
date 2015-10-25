@@ -1,6 +1,6 @@
 <?php
 
-use Kontuak\Implementation\InMemory\Movement\Factory;
+use Kontuak\Adapters\InMemory\Movement\Factory;
 use Kontuak\Movement;
 
 class MovementTest extends PHPUnit_Framework_TestCase

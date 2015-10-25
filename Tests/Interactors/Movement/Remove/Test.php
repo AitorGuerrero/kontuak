@@ -3,8 +3,8 @@
 namespace Interactors\Movement\Remove;
 
 use Kontuak\Exception\Source\EntityNotFound;
-use Kontuak\Implementation\InMemory\Movement\Factory;
-use Kontuak\Implementation\InMemory\Movement\Source;
+use Kontuak\Adapters\InMemory\Movement\Factory;
+use Kontuak\Adapters\InMemory\Movement\Source;
 use Kontuak\Interactors\Movement\Remove\UseCase;
 use Kontuak\Interactors\Movement\Remove\Request;
 use Kontuak\Movement;

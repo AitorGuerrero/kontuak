@@ -1,6 +1,6 @@
 <?php
 
-namespace Kontuak\Implementation\InMemory\Movement;
+namespace Kontuak\Adapters\InMemory\Movement;
 
 use Kontuak\Movement\Id;
 use Kontuak\PeriodicalMovement;
@@ -9,7 +9,7 @@ use Kontuak\Movement;
 class Collection implements Movement\Collection
 {
 
-    use \Kontuak\Implementation\InMemory\Collection;
+    use \Kontuak\Adapters\InMemory\Collection;
 
     const ORDER_DATE = 'date';
     const ORDER_DIRECTION_ASC = 'asc';
