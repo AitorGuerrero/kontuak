@@ -2,7 +2,7 @@
 
 namespace Kontuak\Ports;
 
-class InteractorException extends \Exception
+class PortException extends \Exception
 {
 
 }

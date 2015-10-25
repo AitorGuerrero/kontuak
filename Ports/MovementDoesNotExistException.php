@@ -2,7 +2,7 @@
 
 namespace Kontuak\Ports;
 
-class MovementDoesNotExistException extends InteractorException
+class MovementDoesNotExistException extends PortException
 {
 
 }

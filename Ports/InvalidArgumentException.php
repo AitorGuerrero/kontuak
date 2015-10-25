@@ -2,6 +2,6 @@
 
 namespace Kontuak\Ports;
 
-class InvalidArgumentException extends InteractorException
+class InvalidArgumentException extends PortException
 {
 }

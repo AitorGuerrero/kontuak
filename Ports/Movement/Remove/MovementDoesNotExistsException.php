@@ -2,10 +2,10 @@
 
 namespace Kontuak\Ports\Movement\Remove;
 
-use Kontuak\Ports\InteractorException;
+use Kontuak\Ports\PortException;
 use Kontuak\Movement;
 
-class MovementDoesNotExistsException extends InteractorException
+class MovementDoesNotExistsException extends PortException
 {
     public function __construct(Movement\Id $movementId)
     {

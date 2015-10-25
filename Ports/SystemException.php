@@ -2,7 +2,7 @@
 
 namespace Kontuak\Ports;
 
-class SystemException extends InteractorException
+class SystemException extends PortException
 {
     /** @var int */
     private $originalException;
