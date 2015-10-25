@@ -1,9 +1,9 @@
 <?php
 
-namespace Interactors\PeriodicalMovement\Put;
+namespace Ports\PeriodicalMovement\Put;
 
-use Kontuak\Interactors\PeriodicalMovement\Put\Request;
-use Kontuak\Interactors\PeriodicalMovement\Put\UseCase;
+use Kontuak\Ports\PeriodicalMovement\Put\Request;
+use Kontuak\Ports\PeriodicalMovement\Put\UseCase;
 use Kontuak\Adapters\InMemory\PeriodicalMovement\Factory;
 use Kontuak\Adapters\InMemory\PeriodicalMovement\Source;
 use Kontuak\Period\DaysPeriod;

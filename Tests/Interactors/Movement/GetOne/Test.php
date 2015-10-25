@@ -1,11 +1,11 @@
 <?php
 
-namespace Interactors\Movement\GetOne;
+namespace Ports\Movement\GetOne;
 
 use Kontuak\Adapters\InMemory\Movement\Factory;
 use Kontuak\Adapters\InMemory\Movement\Source;
-use Kontuak\Interactors\Movement\GetOne\UseCase;
-use Kontuak\Interactors\Movement\GetOne\Request;
+use Kontuak\Ports\Movement\GetOne\UseCase;
+use Kontuak\Ports\Movement\GetOne\Request;
 use Kontuak\Movement;
 
 class Test extends \PHPUnit_Framework_TestCase
@@ -47,7 +47,7 @@ class Test extends \PHPUnit_Framework_TestCase
      */
     public function ifTheUserDoesNotExistsShowThrowAnException()
     {
-        $this->setExpectedException('\Kontuak\Interactors\Exception\EntityNotFound');
+        $this->setExpectedException('\Kontuak\Ports\Exception\EntityNotFound');
         $this->request->id = self::INVALID_MOVEMENT_ID;
         $this->useCase->execute($this->request);
     }

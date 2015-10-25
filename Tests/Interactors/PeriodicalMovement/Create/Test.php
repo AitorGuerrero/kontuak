@@ -1,11 +1,11 @@
 <?php
 
-namespace Interactors\PeriodicalMovement\Create;
+namespace Ports\PeriodicalMovement\Create;
 
 use Kontuak\Adapters\InMemory\PeriodicalMovement\Factory;
 use Kontuak\Adapters\InMemory\PeriodicalMovement\Source;
-use Kontuak\Interactors\Mappings\PeriodicalMovement;
-use Kontuak\Interactors\PeriodicalMovement\Create\UseCase;
+use Kontuak\Ports\Mappings\PeriodicalMovement;
+use Kontuak\Ports\PeriodicalMovement\Create\UseCase;
 use Kontuak\Period;
 use Kontuak\PeriodicalMovement\Id;
 

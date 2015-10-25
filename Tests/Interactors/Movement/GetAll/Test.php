@@ -1,12 +1,11 @@
 <?php
 
-namespace Interactors\Movement\GetAll;
+namespace Ports\Movement\GetAll;
 
 use Kontuak\Adapters\InMemory\Movement\Factory;
 use Kontuak\Adapters\InMemory\Movement\Source;
-use Kontuak\Interactors\Movement\GetAll\UseCase;
-use Kontuak\Interactors\Movement\GetAll\Request;
-use Kontuak\Movement\Id\Generator;
+use Kontuak\Ports\Movement\GetAll\UseCase;
+use Kontuak\Ports\Movement\GetAll\Request;
 
 class Test extends \PHPUnit_Framework_TestCase
 {
@@ -44,7 +43,7 @@ class Test extends \PHPUnit_Framework_TestCase
      */
     public function whenNoLimitIsSettedShouldThrowAnException()
     {
-        $this->setExpectedException('Kontuak\Interactors\Exception\InvalidArgument');
+        $this->setExpectedException('Kontuak\Ports\Exception\InvalidArgument');
 
         $request = $this->useCase->newRequest();
         $this->useCase = new UseCase($this->source);

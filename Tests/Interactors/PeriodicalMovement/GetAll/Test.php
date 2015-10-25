@@ -1,12 +1,12 @@
 <?php
 
-namespace Interactors\PeriodicalMovement\GetAll;
+namespace Ports\PeriodicalMovement\GetAll;
 
 use Kontuak\Adapters\InMemory\PeriodicalMovement\Factory;
 use Kontuak\Adapters\InMemory\PeriodicalMovement\Source;
 use Kontuak\Adapters\Transformer\PeriodicalMovement;
-use Kontuak\Interactors\PeriodicalMovement\GetAll\UseCase;
-use Kontuak\Interactors\PeriodicalMovement\GetAll\Request;
+use Kontuak\Ports\PeriodicalMovement\GetAll\UseCase;
+use Kontuak\Ports\PeriodicalMovement\GetAll\Request;
 use Kontuak\Period\DaysPeriod;
 use Kontuak\PeriodicalMovement\Id;
 

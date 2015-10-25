@@ -1,12 +1,12 @@
 <?php
 
-namespace Interactors\Movement\Remove;
+namespace Ports\Movement\Remove;
 
 use Kontuak\Exception\Source\EntityNotFound;
 use Kontuak\Adapters\InMemory\Movement\Factory;
 use Kontuak\Adapters\InMemory\Movement\Source;
-use Kontuak\Interactors\Movement\Remove\UseCase;
-use Kontuak\Interactors\Movement\Remove\Request;
+use Kontuak\Ports\Movement\Remove\UseCase;
+use Kontuak\Ports\Movement\Remove\Request;
 use Kontuak\Movement;
 
 class Test extends \PHPUnit_Framework_TestCase
@@ -19,9 +19,9 @@ class Test extends \PHPUnit_Framework_TestCase
     private $movementFactory;
     /** @var Source */
     private $source;
-    /** @var \Kontuak\Interactors\Movement\Remove\UseCase */
+    /** @var \Kontuak\Ports\Movement\Remove\UseCase */
     private $useCase;
-    /** @var \Kontuak\Interactors\Movement\Remove\Request */
+    /** @var \Kontuak\Ports\Movement\Remove\Request */
     private $request;
 
 
@@ -38,7 +38,7 @@ class Test extends \PHPUnit_Framework_TestCase
      */
     public function whenTheMovementDoesNotExistsShouldThrowAnException()
     {
-        $this->setExpectedException('\Kontuak\Interactors\Movement\Remove\MovementDoesNotExistsException');
+        $this->setExpectedException('\Kontuak\Ports\Movement\Remove\MovementDoesNotExistsException');
         $this->request->id = self::INVALID_ID;
         $this->useCase->execute($this->request);
     }

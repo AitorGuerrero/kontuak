@@ -1,9 +1,9 @@
 <?php
 
-namespace Interactors\Movement\Put;
+namespace Ports\Movement\Put;
 
-use Kontuak\Interactors\Movement\Put\Request;
-use Kontuak\Interactors\Movement\Put\UseCase;
+use Kontuak\Ports\Movement\Put\Request;
+use Kontuak\Ports\Movement\Put\UseCase;
 use kontuak\Movement;
 use Kontuak\Adapters\InMemory\Movement\Factory;
 use Kontuak\Adapters\InMemory\Movement\Source;

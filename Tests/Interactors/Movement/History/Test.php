@@ -1,16 +1,16 @@
 <?php
 
-namespace Kontuak\Tests\Interactors\Movement\History;
+namespace Kontuak\Tests\Ports\Movement\History;
 
 use Kontuak\Adapters\InMemory\Movement\Factory;
 use Kontuak\Adapters\InMemory\Movement\Source;
-use Kontuak\Interactors\Movement\History\Request;
-use Kontuak\Interactors\Movement\History\UseCase;
+use Kontuak\Ports\Movement\History\Request;
+use Kontuak\Ports\Movement\History\UseCase;
 use Kontuak\Movement;
 
 /**
  * Class Test
- * @package Kontuak\Tests\Interactors\Movement\History
+ * @package Kontuak\Tests\Ports\Movement\History
  */
 class Test extends \PHPUnit_Framework_TestCase
 {

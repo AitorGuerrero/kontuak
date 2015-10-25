@@ -1,11 +1,11 @@
 <?php
 
-namespace Kontuak\Tests\Interactors\PeriodicalMovement\Apply;
+namespace Kontuak\Tests\Ports\PeriodicalMovement\Apply;
 
 use Kontuak\Adapters\InMemory;
 use Kontuak\Adapters\InMemory\Movement\Source as MovementSource;
 use Kontuak\Adapters\InMemory\PeriodicalMovement\Source as PeriodicalMovementSource;
-use Kontuak\Interactors\PeriodicalMovement\Apply;
+use Kontuak\Ports\PeriodicalMovement\Apply;
 use Kontuak\Period\DaysPeriod;
 use Kontuak\PeriodicalMovement;
 use Kontuak\Movement;

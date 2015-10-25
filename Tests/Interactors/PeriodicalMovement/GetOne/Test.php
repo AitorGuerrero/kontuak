@@ -1,12 +1,12 @@
 <?php
 
-namespace Interactors\PeriodicalMovement\GetOne;
+namespace Ports\PeriodicalMovement\GetOne;
 
 use Kontuak\Adapters\InMemory\PeriodicalMovement\Factory;
 use Kontuak\Adapters\InMemory\PeriodicalMovement\Source;
 use Kontuak\Adapters\Transformer\PeriodicalMovement;
-use Kontuak\Interactors\PeriodicalMovement\GetOne\UseCase;
-use Kontuak\Interactors\PeriodicalMovement\GetOne\Request;
+use Kontuak\Ports\PeriodicalMovement\GetOne\UseCase;
+use Kontuak\Ports\PeriodicalMovement\GetOne\Request;
 use Kontuak\Period\DaysPeriod;
 use Kontuak\PeriodicalMovement\Id;
 
@@ -29,12 +29,12 @@ class Test extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @throws \Kontuak\Interactors\Exception\EntityNotFound
+     * @throws \Kontuak\Ports\Exception\EntityNotFound
      */
     public function whenPeriodicalMovementDoesNotExistsShouldThrowAnException()
     {
         $invalidId = '5df09125-7cc0-4686-af55-733765c04103';
-        $this->setExpectedException('\Kontuak\Interactors\Exception\EntityNotFound');
+        $this->setExpectedException('\Kontuak\Ports\Exception\EntityNotFound');
         $this->request->id = $invalidId;
         $this->useCase->execute($this->request);
     }

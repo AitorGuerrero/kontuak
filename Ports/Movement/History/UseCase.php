@@ -1,0 +1,44 @@
+<?php
+
+namespace Kontuak\Ports\Movement\History;
+
+use Kontuak\Movement;
+
+class UseCase
+{
+    /** @var \Kontuak\Implementation\Transformer\Movement */
+    private $movementTransformer;
+    /** @var Movement\TotalAmountCalculator */
+    private $calculator;
+    /** @var Movement\Source */
+    private $source;
+
+    public function __construct(
+        Movement\Source $source,
+        Movement\TotalAmountCalculator $calculator,
+        Movement\Transformer $movementTransformer
+    ) {
+        $this->movementTransformer = $movementTransformer;
+        $this->calculator = $calculator;
+        $this->source = $source;
+    }
+
+    public function execute(Request $request)
+    {
+        $collection = $this->source->collection();
+        if(!is_null($request->fromDate)) {
+            $collection->filterByDateIsPostThan(new \DateTime($request->fromDate));
+        }
+        if(!is_null($request->toDate)) {
+            $collection->filterDateLessOrEqualTo(new \DateTime($request->toDate));
+        }
+        $amounts = $this->calculator->getForACollection($collection, $request->limit);
+        foreach($amounts as $i => $amount) {
+            $amounts[$i]['movement'] = $this->movementTransformer->toResource($amount['movement']);
+        }
+        $response = new Response();
+        $response->amounts = array_reverse($amounts);
+
+        return $response;
+    }
+}
