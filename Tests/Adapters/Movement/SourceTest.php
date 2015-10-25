@@ -85,7 +85,7 @@ trait SourceTest
             $this->timeStamp
         );
         $periodicalMovement = new PeriodicalMovement(
-            new PeriodicalMovement\Id(uniqid()),
+            PeriodicalMovement\Id::make(),
             100,
             'pus',
             new \DateTime('2015-05-01'),

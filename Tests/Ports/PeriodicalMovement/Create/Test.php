@@ -33,7 +33,7 @@ class Test extends \PHPUnit_Framework_TestCase
         $request->periodAmount = self::PERIOD_AMOUNT;
         $useCase->execute($request);
 
-        $id = new Id(self::ID);
+        $id = Id::parse(self::ID);
         $period = new Period\DaysPeriod(self::PERIOD_AMOUNT);
         $periodicalMovement = $source->get($id);
         $this->assertEquals(self::CONCEPT, $periodicalMovement->concept());

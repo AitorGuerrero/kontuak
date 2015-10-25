@@ -31,7 +31,7 @@ class UseCase
     public function execute(Request $request)
     {
         $created = false;
-        $movement = $this->source->collection()->byId(new Id($request->id()))->current();
+        $movement = $this->source->collection()->byId(Id::parse($request->id()))->current();
         if(!$movement) {
             $created = true;
             $movement = $this->makeNewMovement($request);
@@ -49,7 +49,7 @@ class UseCase
     private function makeNewMovement(Request $request)
     {
         return $movement = new \Kontuak\PeriodicalMovement(
-            new Id($request->id()),
+            Id::parse($request->id()),
             $request->amount(),
             $request->concept(),
             new \DateTime($request->date()),

@@ -44,7 +44,7 @@ class Test extends \PHPUnit_Framework_TestCase
         $this->request->periodAmount = self::NEW_PERIOD_AMOUNT;
 
         $periodicalMovement = new \Kontuak\PeriodicalMovement(
-            new Id(self::ID),
+            Id::parse(self::ID),
             self::AMOUNT,
             self::CONCEPT,
             new \DateTime(self::STARTS),
@@ -72,7 +72,7 @@ class Test extends \PHPUnit_Framework_TestCase
     {
         $this->useCase->execute($this->request);
 
-        $periodicalMovement = $this->source->get(new Id(self::ID));
+        $periodicalMovement = $this->source->get(Id::parse(self::ID));
 
         $this->assertEquals(self::NEW_CONCEPT, $periodicalMovement->concept());
         $this->assertEquals(self::NEW_AMOUNT, $periodicalMovement->amount());

@@ -24,8 +24,8 @@ class Collection implements PeriodicalMovement\Collection
      */
     public function byId(Id $id)
     {
-        if (isset($this->collection[$id->serialize()])) {
-            $this->collection = [$this->collection[$id->serialize()]];
+        if (isset($this->collection[$id->toString()])) {
+            $this->collection = [$this->collection[$id->toString()]];
         } else {
             $this->collection = [];
         }

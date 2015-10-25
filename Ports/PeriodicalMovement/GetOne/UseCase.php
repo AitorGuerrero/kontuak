@@ -37,7 +37,7 @@ class UseCase
         $response = new Response();
         try {
             $response->periodicalMovement = $this->transformer->toResource(
-                $this->source->get(new Id($request->id))
+                $this->source->get(Id::parse($request->id))
             );
         } catch (EntityNotFound $e) {
             throw new \Kontuak\Ports\Exception\EntityNotFound($e);

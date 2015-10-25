@@ -33,7 +33,7 @@ class UseCase
     {
         $this->source->add(
             new \Kontuak\PeriodicalMovement(
-                new Id($request->id),
+                Id::parse($request->id),
                 $request->amount,
                 $request->concept,
                 new \DateTime($request->starts),

@@ -45,7 +45,7 @@ class Test extends \PHPUnit_Framework_TestCase
     {
         $id = '5df09125-7cc0-4686-af55-733765c04103';
         $periodicalMovement = new \Kontuak\PeriodicalMovement(
-            new Id($id),
+            Id::parse($id),
             10,
             'concept',
             new \DateTime('2015-01-01'),

@@ -6,7 +6,7 @@ use Kontuak\Movement;
 
 class UseCase
 {
-    /** @var \Kontuak\Implementation\Transformer\Movement */
+    /** @var Movement\Transformer */
     private $movementTransformer;
     /** @var Movement\TotalAmountCalculator */
     private $calculator;

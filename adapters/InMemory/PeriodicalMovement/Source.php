@@ -28,13 +28,13 @@ class Source implements SourceInterface
      */
     public function add(PeriodicalMovement $movement)
     {
-        if(empty($movement->id()->serialize())) {
+        if(empty($movement->id()->toString())) {
             throw new MalformedId();
         }
-        if(isset($this->collection[$movement->id()->serialize()])) {
+        if(isset($this->collection[$movement->id()->toString()])) {
             throw new DuplicatedId();
         }
-        $this->collection[$movement->id()->serialize()] = $movement;
+        $this->collection[$movement->id()->toString()] = $movement;
     }
 
     /**
@@ -52,15 +52,15 @@ class Source implements SourceInterface
      */
     public function get(PeriodicalMovement\Id $id)
     {
-        if (!isset($this->collection[$id->serialize()])) {
+        if (!isset($this->collection[$id->toString()])) {
             throw new EntityNotFound();
         }
 
-        return $this->collection[$id->serialize()];
+        return $this->collection[$id->toString()];
     }
 
     public function byId(PeriodicalMovement\Id $id)
     {
-        return $this->collection[$id->serialize()];
+        return $this->collection[$id->toString()];
     }
 }

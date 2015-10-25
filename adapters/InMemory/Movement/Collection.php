@@ -128,9 +128,9 @@ class Collection implements Movement\Collection
      */
     public function filterByPeriodicalMovement(PeriodicalMovement $periodicalMovement)
     {
-        $filter = $periodicalMovement->id()->serialize();
+        $filter = $periodicalMovement->id()->toString();
         $this->collection = array_filter($this->collection, function (Movement $a) use ($filter) {
-            return $a->periodicalMovement() !== null && $a->periodicalMovement()->id()->serialize() === $filter;
+            return $a->periodicalMovement() !== null && $a->periodicalMovement()->id()->toString() === $filter;
         });
 
         return $this;

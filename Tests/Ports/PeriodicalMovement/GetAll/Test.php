@@ -63,7 +63,7 @@ class Test extends \PHPUnit_Framework_TestCase
     private function makeMovement($id)
     {
         $movement = new \Kontuak\PeriodicalMovement(
-            new Id($id),
+            Id::parse($id),
             1,
             'concept',
             new \DateTime('2015-01-01'),
