@@ -2,9 +2,9 @@
 
 namespace Kontuak\Exception\Source;
 
-use Kontuak\KontuakException;
+use Kontuak\Exception;
 
-class EntityNotFound extends KontuakException
+class EntityNotFound extends Exception
 {
 
 }

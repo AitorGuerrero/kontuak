@@ -2,7 +2,7 @@
 
 namespace Kontuak;
 
-class InvalidArgumentException extends KontuakException
+class InvalidArgumentException extends Exception
 {
 
 }

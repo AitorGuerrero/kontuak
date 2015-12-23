@@ -2,8 +2,8 @@
 
 namespace Kontuak\Ports\Exception;
 
-use Kontuak\KontuakException;
+use Kontuak\Exception;
 
-class PortException extends KontuakException
+class PortException extends Exception
 {
 }

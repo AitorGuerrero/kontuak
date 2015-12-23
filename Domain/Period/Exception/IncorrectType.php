@@ -2,9 +2,9 @@
 
 namespace Kontuak\Period\Exception;
 
-use Kontuak\KontuakException;
+use Kontuak\Exception;
 
-class IncorrectType extends KontuakException
+class IncorrectType extends Exception
 {
 
 }

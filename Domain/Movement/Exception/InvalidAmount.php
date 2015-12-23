@@ -2,9 +2,9 @@
 
 namespace Kontuak\Movement\Exception;
 
-use Kontuak\KontuakException;
+use Kontuak\Exception;
 
-class InvalidAmount extends KontuakException
+class InvalidAmount extends Exception
 {
     protected $message = 'Invalid amount';
 }
