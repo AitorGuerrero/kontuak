@@ -1,11 +1,12 @@
 <?php
 
-namespace Kontuak\Ports\Movement\GetAll;
+namespace Kontuak\Ports\Movement;
 
 use Kontuak\Ports\Exception\InvalidArgument;
 use Kontuak\Movement\Source;
+use Kontuak\Ports\Movement\GetAll\Request;
 
-class UseCase
+class GetAll
 {
     /** @var */
     private $source;

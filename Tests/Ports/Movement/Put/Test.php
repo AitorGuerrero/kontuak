@@ -2,6 +2,7 @@
 
 namespace Ports\Movement\Put;
 
+use Kontuak\Ports\Movement\Put;
 use Kontuak\Ports\Movement\Put\Request;
 use Kontuak\Ports\Movement\Put\UseCase;
 use kontuak\Movement;
@@ -26,7 +27,7 @@ class Test extends \PHPUnit_Framework_TestCase
     protected function setUp()
     {
         $this->source = new Source();
-        $this->useCase = new UseCase(
+        $this->useCase = new Put(
             $this->source,
             new \DateTime(self::CURRENT_ISO_DATE)
         );

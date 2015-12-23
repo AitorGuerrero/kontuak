@@ -1,12 +1,13 @@
 <?php
 
-namespace Kontuak\Ports\Movement\Put;
+namespace Kontuak\Ports\Movement;
 
 use Kontuak\Movement;
 use Kontuak\Movement\Id;
 use Kontuak\Movement\Source;
+use Kontuak\Ports\Movement\Put\Request;
 
-class UseCase
+class Put
 {
 
     /** @var Source */
@@ -22,7 +23,6 @@ class UseCase
 
     /**
      * @param Request $request
-     * @return Response
      */
     public function execute(Request $request)
     {

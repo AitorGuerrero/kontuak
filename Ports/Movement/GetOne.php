@@ -1,12 +1,13 @@
 <?php
 
-namespace Kontuak\Ports\Movement\GetOne;
+namespace Kontuak\Ports\Movement;
 
 use Kontuak\Ports\Exception\EntityNotFound;
+use Kontuak\Ports\Movement\GetOne\Request;
 use Kontuak\Ports\Resource;
 use Kontuak\Movement;
 
-class UseCase
+class GetOne
 {
     /** @var Movement\Source */
     private $source;

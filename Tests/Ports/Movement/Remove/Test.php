@@ -4,7 +4,7 @@ namespace Ports\Movement\Remove;
 
 use Kontuak\Exception\Source\EntityNotFound;
 use Kontuak\Adapters\InMemory\Movement\Source;
-use Kontuak\Ports\Movement\Remove\UseCase;
+use Kontuak\Ports\Movement\Remove;
 use Kontuak\Ports\Movement\Remove\Request;
 use Kontuak\Movement;
 
@@ -25,7 +25,7 @@ class Test extends \PHPUnit_Framework_TestCase
     protected function setUp()
     {
         $this->source = new Source();
-        $this->useCase = new UseCase($this->source);
+        $this->useCase = new Remove($this->source);
         $this->request = new Request();
     }
 

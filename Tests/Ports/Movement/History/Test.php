@@ -3,8 +3,8 @@
 namespace Kontuak\Tests\Ports\Movement\History;
 
 use Kontuak\Adapters\InMemory\Movement\Source;
+use Kontuak\Ports\Movement\History;
 use Kontuak\Ports\Movement\History\Request;
-use Kontuak\Ports\Movement\History\UseCase;
 use Kontuak\Movement;
 
 /**
@@ -26,7 +26,7 @@ class Test extends \PHPUnit_Framework_TestCase
     {
         $this->source = new Source();
         $this->totalAmountService = new Movement\TotalAmountCalculator($this->source);
-        $this->useCase = new UseCase(
+        $this->useCase = new History(
             $this->source,
             $this->totalAmountService
         );

@@ -4,6 +4,7 @@ namespace Ports\Movement\GetAll;
 
 use Kontuak\Adapters\InMemory\Movement\Source;
 use Kontuak\Movement;
+use Kontuak\Ports\Movement\GetAll;
 use Kontuak\Ports\Movement\GetAll\UseCase;
 use Kontuak\Ports\Movement\GetAll\Request;
 
@@ -19,7 +20,7 @@ class Test extends \PHPUnit_Framework_TestCase
     public function setUp()
     {
         $this->source = new Source();
-        $this->useCase = new UseCase($this->source);
+        $this->useCase = new GetAll($this->source);
         $this->request = $this->useCase->newRequest();
         $this->request->limit = 20;
     }
@@ -43,7 +44,7 @@ class Test extends \PHPUnit_Framework_TestCase
         $this->setExpectedException('Kontuak\Ports\Exception\InvalidArgument');
 
         $request = $this->useCase->newRequest();
-        $this->useCase = new UseCase($this->source);
+        $this->useCase = new GetAll($this->source);
         $this->useCase->execute($request);
     }
 

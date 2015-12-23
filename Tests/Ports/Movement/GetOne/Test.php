@@ -3,9 +3,10 @@
 namespace Ports\Movement\GetOne;
 
 use Kontuak\Adapters\InMemory\Movement\Source;
-use Kontuak\Ports\Movement\GetOne\UseCase;
+use Kontuak\Ports\Movement\GetOne;
 use Kontuak\Ports\Movement\GetOne\Request;
 use Kontuak\Movement;
+use Kontuak\Ports\Movement\History;
 
 class Test extends \PHPUnit_Framework_TestCase
 {
@@ -35,7 +36,7 @@ class Test extends \PHPUnit_Framework_TestCase
         );
         $this->source = new Source();
         $this->source->add($this->movement);
-        $this->useCase = new UseCase($this->source);
+        $this->useCase = new GetOne($this->source);
         $this->request = new Request();
         $this->request->id = self::MOVEMENT_ID_SERIALIZED;
     }

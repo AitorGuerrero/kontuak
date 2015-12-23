@@ -1,11 +1,13 @@
 <?php
 
-namespace Kontuak\Ports\Movement\Remove;
+namespace Kontuak\Ports\Movement;
 
 use Kontuak\Exception\Source\EntityNotFound;
 use Kontuak\Movement;
+use Kontuak\Ports\Movement\Remove\MovementDoesNotExistsException;
+use Kontuak\Ports\Movement\Remove\Request;
 
-class UseCase
+class Remove
 {
     /** @var Movement\Source */
     private $source;

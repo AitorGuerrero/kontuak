@@ -1,11 +1,12 @@
 <?php
 
-namespace Kontuak\Ports\Movement\History;
+namespace Kontuak\Ports\Movement;
 
 use Kontuak\Movement;
+use Kontuak\Ports\Movement\History\Request;
 use Kontuak\Ports\Resource;
 
-class UseCase
+class History
 {
     /** @var Movement\TotalAmountCalculator */
     private $calculator;

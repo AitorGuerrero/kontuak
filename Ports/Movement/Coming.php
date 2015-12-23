@@ -1,13 +1,13 @@
 <?php
 
-namespace Kontuak\Ports\Movement\Coming;
+namespace Kontuak\Ports\Movement;
 
 use Kontuak\Movement\History;
-use Kontuak\Movement\Source;
-use Kontuak\Movement\TotalAmountCalculator;
 use Kontuak\Movement\Transformer;
+use Kontuak\Ports\Movement\Coming\Request;
+use Kontuak\Ports\Resource\Movement;
 
-class UseCase
+class Coming
 {
     /** @var \DateTime */
     private $timeStamp;
@@ -29,18 +29,17 @@ class UseCase
 
     /**
      * @param Request $request
-     * @return Response
+     * @return Movement[]
      */
     public function execute(Request $request)
     {
-        $response = new Response();
         $amounts = $this->history->fromDate($this->timeStamp, $request->limit);
         foreach($amounts as $amount) {
             $amount['movement'] = $this->movementTransformer->toResource($amount['movement']);
         }
-        $response->movements = array_reverse($amounts);
+        $movements = array_reverse($amounts);
 
-        return $response;
+        return $movements;
     }
 
     /**
