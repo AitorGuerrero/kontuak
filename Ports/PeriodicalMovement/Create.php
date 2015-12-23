@@ -1,13 +1,14 @@
 <?php
 
-namespace Kontuak\Ports\PeriodicalMovement\Create;
+namespace Kontuak\Ports\PeriodicalMovement;
 
+use Kontuak\Ports\PeriodicalMovement\Create\Request;
 use Kontuak\Ports\Mappings\PeriodicalMovement;
 use Kontuak\Period;
 use Kontuak\PeriodicalMovement\Id;
 use Kontuak\PeriodicalMovement\Source;
 
-class UseCase
+class Create
 {
 
     /** @var Source */

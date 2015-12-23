@@ -31,8 +31,8 @@ class Test extends \PHPUnit_Framework_TestCase
     {
         $response = $this->useCase->execute($this->request);
 
-        $this->assertInternalType('array', $response->movements);
-        $this->assertEquals(0, count($response->movements));
+        $this->assertInternalType('array', $response);
+        $this->assertEquals(0, count($response));
     }
 
     /**
@@ -57,7 +57,7 @@ class Test extends \PHPUnit_Framework_TestCase
         $this->request->limit = $limit;
         $response = $this->useCase->execute($this->request);
 
-        $this->assertEquals($limit, count($response->movements));
+        $this->assertEquals($limit, count($response));
     }
 
     /**
@@ -73,8 +73,8 @@ class Test extends \PHPUnit_Framework_TestCase
         $this->request->page = 2;
         $pagedMovements = $this->useCase->execute($this->request);
 
-        $this->assertEquals($pagedMovements->movements[0], $allMovements->movements[2]);
-        $this->assertEquals($pagedMovements->movements[1], $allMovements->movements[3]);
+        $this->assertEquals($pagedMovements[0], $allMovements[2]);
+        $this->assertEquals($pagedMovements[1], $allMovements[3]);
     }
 
     public function generateMovements($amount)

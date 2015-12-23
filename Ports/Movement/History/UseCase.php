@@ -33,9 +33,8 @@ class UseCase
         foreach($amounts as $i => $amount) {
             $amounts[$i]['movement'] = new Resource\Movement($amount['movement']);
         }
-        $response = new Response();
-        $response->amounts = array_reverse($amounts);
+        $amounts = array_reverse($amounts);
 
-        return $response;
+        return $amounts;
     }
 }

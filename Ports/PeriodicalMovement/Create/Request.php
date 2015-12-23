@@ -2,7 +2,7 @@
 
 namespace Kontuak\Ports\PeriodicalMovement\Create;
 
-class Request 
+class Request
 {
     /** @var string */
     public $id;

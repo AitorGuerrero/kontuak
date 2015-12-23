@@ -21,22 +21,23 @@ class UseCase
         if(null === $request->limit) {
             throw new InvalidArgument('limit');
         }
-        $response = new Response();
-        $response->movements = [];
+        $movements = [];
 
         $collection = $this->source->collection();
         $this->paginate($request->page, $request->limit, $collection);
 
         $i = 1;
-        while($movement = $collection->next()) {
-            $response->movements[] = $movement;
+        while($collection->valid()) {
+            $movement = $collection->current();
+            $movements[] = $movement;
             $i++;
             if($i > $request->limit) {
                 break;
             }
+            $collection->next();
         }
 
-        return $response;
+        return $movements;
     }
 
     public function newRequest()

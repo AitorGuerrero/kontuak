@@ -2,10 +2,9 @@
 
 namespace Ports\PeriodicalMovement\Create;
 
-use Kontuak\Adapters\InMemory\PeriodicalMovement\Factory;
 use Kontuak\Adapters\InMemory\PeriodicalMovement\Source;
 use Kontuak\Ports\Mappings\PeriodicalMovement;
-use Kontuak\Ports\PeriodicalMovement\Create\UseCase;
+use Kontuak\Ports\PeriodicalMovement\Create;
 use Kontuak\Period;
 use Kontuak\PeriodicalMovement\Id;
 
@@ -23,7 +22,7 @@ class Test extends \PHPUnit_Framework_TestCase
     public function shouldAddToTheSource()
     {
         $source = new Source();
-        $useCase = new UseCase($source);
+        $useCase = new Create($source);
         $request = $useCase->newRequest();
         $request->id = self::ID;
         $request->concept = self::CONCEPT;
