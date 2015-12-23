@@ -2,43 +2,43 @@
 
 namespace Kontuak;
 
+use DateTime;
 use Kontuak\Movement\Exception\InvalidAmount;
-use Kontuak\Movement\Id as MovementId;
+use Kontuak\Movement\Exception\InvalidConcept;
+use Kontuak\Movement\Id;
 
 class Movement
 {
-    private $emptyConceptMessage = '"concept" should not be blank';
-
-    /** @var MovementId */
+    /** @var Id */
     protected $id;
     /** @var float */
     protected $amount;
     /** @var string */
     protected $concept;
-    /** @var \DateTime */
+    /** @var DateTime */
     protected $date;
-    /** @var \DateTime */
+    /** @var DateTime */
     protected $created;
     /** @var PeriodicalMovement|null */
     protected $periodicalMovement;
 
 
     public function __construct(
-        MovementId $id,
+        Id $id,
         $amount,
         $concept,
-        \DateTime $date,
-        \DateTime $created
+        DateTime $date,
+        DateTime $created
     ) {
         $this->id = $id;
-        $this->updateAmount($amount);
-        $this->updateConcept($concept);
-        $this->updateDate($date);
+        $this->setAmount($amount);
+        $this->setConcept($concept);
+        $this->date = $date;
         $this->created = $created;
     }
 
     /**
-     * @return MovementId
+     * @return Id
      */
     public function id()
     {
@@ -54,7 +54,7 @@ class Movement
     }
 
     /**
-     * @return \DateTime
+     * @return DateTime
      */
     public function date()
     {
@@ -62,7 +62,7 @@ class Movement
     }
 
     /**
-     * @return \DateTime
+     * @return DateTime
      */
     public function created()
     {
@@ -75,10 +75,7 @@ class Movement
      */
     public function updateAmount($amount)
     {
-        if (!is_numeric($amount) || 0 == $amount) {
-            throw new InvalidAmount();
-        }
-        $this->amount = (float) $amount;
+        $this->setAmount($amount);
     }
 
     /**
@@ -87,16 +84,13 @@ class Movement
      */
     public function updateConcept($concept)
     {
-        if(empty($concept)) {
-            throw new InvalidArgumentException($this->emptyConceptMessage);
-        }
-        $this->concept = $concept;
+        $this->setConcept($concept);
     }
 
     /**
-     * @param \DateTime $date
+     * @param DateTime $date
      */
-    public function updateDate(\DateTime $date)
+    public function updateDate(DateTime $date)
     {
         $this->date = $date;
     }
@@ -117,5 +111,39 @@ class Movement
     public function periodicalMovement()
     {
         return $this->periodicalMovement;
+    }
+
+    private function setAmount($amount)
+    {
+        $this->guardFromInvalidAmount($amount);
+        $this->amount = (float) $amount;
+    }
+
+    private function setConcept($concept)
+    {
+        $this->guardFromInvalidConcept($concept);
+        $this->concept = $concept;
+    }
+
+    /**
+     * @param $amount
+     * @throws InvalidAmount
+     */
+    public function guardFromInvalidAmount($amount)
+    {
+        if (!is_numeric($amount) || 0 === $amount) {
+            throw new InvalidAmount();
+        }
+    }
+
+    /**
+     * @param $concept
+     * @throws InvalidConcept
+     */
+    public function guardFromInvalidConcept($concept)
+    {
+        if (empty($concept)) {
+            throw new InvalidConcept();
+        }
     }
 }

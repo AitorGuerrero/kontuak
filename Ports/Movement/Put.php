@@ -5,7 +5,6 @@ namespace Kontuak\Ports\Movement;
 use Kontuak\Movement;
 use Kontuak\Movement\Id;
 use Kontuak\Movement\Source;
-use Kontuak\Ports\Movement\Put\Request;
 
 class Put
 {
@@ -22,47 +21,78 @@ class Put
     }
 
     /**
-     * @param Request $request
+     * @param $id
+     * @param $amount
+     * @param $concept
+     * @param $isoDate
      */
-    public function execute(Request $request)
+    public function execute($id, $amount = null, $concept = null, $isoDate = null)
     {
-        $movement = $this->source->collection()->byId(Id::parse($request->id()))->current();
+        $movement = $this->source->collection()->byId(Id::parse($id))->current();
         if(!$movement) {
-            $this->makeNewMovement($request);
+            $this->source->add(
+                $this->makeNewMovement(
+                    $id,
+                    $amount,
+                    $concept,
+                    $isoDate
+                )
+            );
         } else {
-            $this->updateAMovement($request, $movement);
+            $this->updateAmountIfNotNull($amount, $movement);
+            $this->updateConceptIfNotNull($concept, $movement);
+            $this->updateDateIfNotNull($isoDate, $movement);
         }
     }
 
     /**
-     * @param Request $request
-     * @return \Kontuak\Movement
+     * @param $stringId
+     * @param $amount
+     * @param $concept
+     * @param $isoDate
+     * @return Movement
      */
-    private function makeNewMovement(Request $request)
+    private function makeNewMovement($stringId, $amount, $concept, $isoDate)
     {
-        $movement = new Movement(
-            Id::parse($request->id()),
-            $request->amount(),
-            $request->concept(),
-            new \DateTime($request->date()),
+        return new Movement(
+            Id::parse($stringId),
+            $amount,
+            $concept,
+            new \DateTime($isoDate),
             $this->currentTimeStamp
         );
-        $this->source->add($movement);
-
-        return $movement;
     }
 
     /**
-     * @param Request $request
+     * @param $amount
      * @param $movement
-     * @throws \Kontuak\InvalidArgumentException
-     * @throws \Kontuak\Movement\Exception\InvalidAmount
      */
-    private function updateAMovement(Request $request, $movement)
+    private function updateAmountIfNotNull($amount, Movement $movement)
     {
-        /** @var \Kontuak\Movement $movement */
-        $movement->updateAmount($request->amount());
-        $movement->updateConcept($request->concept());
-        $movement->updateDate(new \DateTime($request->date()));
+        if (!is_null($amount)) {
+            $movement->updateAmount($amount);
+        }
+    }
+
+    /**
+     * @param $concept
+     * @param $movement
+     */
+    private function updateConceptIfNotNull($concept, Movement $movement)
+    {
+        if (!is_null($concept)) {
+            $movement->updateConcept($concept);
+        }
+    }
+
+    /**
+     * @param $isoDate
+     * @param $movement
+     */
+    private function updateDateIfNotNull($isoDate, Movement $movement)
+    {
+        if (!is_null($isoDate)) {
+            $movement->updateDate(new \DateTime($isoDate));
+        }
     }
 }

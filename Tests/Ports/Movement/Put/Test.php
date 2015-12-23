@@ -3,8 +3,6 @@
 namespace Ports\Movement\Put;
 
 use Kontuak\Ports\Movement\Put;
-use Kontuak\Ports\Movement\Put\Request;
-use Kontuak\Ports\Movement\Put\UseCase;
 use kontuak\Movement;
 use Kontuak\Adapters\InMemory\Movement\Source;
 use Kontuak\Movement\Id;
@@ -17,9 +15,7 @@ class Test extends \PHPUnit_Framework_TestCase
     const CONCEPT = 'Pis';
     const ID = '531d52c5-d217-4a94-92f3-3e0f9b603a7a';
 
-    /** @var Request */
-    private $request;
-    /** @var UseCase */
+    /** @var Put */
     private $useCase;
     /** @var Source */
     private $source;
@@ -39,13 +35,6 @@ class Test extends \PHPUnit_Framework_TestCase
             new \DateTime(self::ISO_DATE),
             new \DateTime(self::CURRENT_ISO_DATE)
         ));
-
-        $this->request = new Request(
-            self::ID,
-            self::CONCEPT,
-            self::AMOUNT,
-            self::ISO_DATE
-        );
     }
 
     /**
@@ -53,7 +42,12 @@ class Test extends \PHPUnit_Framework_TestCase
      */
     public function ifMovementExistsShoulUpdateTheMovement()
     {
-        $this->useCase->execute($this->request);
+        $this->useCase->execute(
+            self::ID,
+            self::AMOUNT,
+            self::CONCEPT,
+            self::ISO_DATE
+        );
         $movement = $this->source->byId(Movement\Id::parse(self::ID));
 
         $this->assertEquals(self::ID, $movement->id()->toString());
@@ -69,12 +63,12 @@ class Test extends \PHPUnit_Framework_TestCase
     public function ifMovementDoesNotExistShoulUpdateTheMovement()
     {
         $newId = 'c1d74045-e24f-4adb-b707-c45dd86ffc19';
-        $this->useCase->execute(new Request(
+        $this->useCase->execute(
             $newId,
-            self::CONCEPT,
             self::AMOUNT,
+            self::CONCEPT,
             self::ISO_DATE
-        ));
+        );
         $movement = $this->source->byId(Movement\Id::parse($newId));
 
         $this->assertInstanceOf('\kontuak\Movement', $movement);

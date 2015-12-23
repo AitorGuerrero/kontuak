@@ -2,6 +2,7 @@
 
 namespace Kontuak\Movement;
 
+use Kontuak\Exception\Source\DuplicatedId;
 use Kontuak\Movement;
 
 /**
@@ -19,6 +20,7 @@ interface Source
 
     /**
      * @param Movement $movement
+     * @throws DuplicatedId
      * @return mixed
      */
     public function add(Movement $movement);
