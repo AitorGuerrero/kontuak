@@ -21,8 +21,7 @@ class Test extends \PHPUnit_Framework_TestCase
     protected function setUp()
     {
         $this->source = new Source();
-        $transformer = new PeriodicalMovement();
-        $this->useCase = new UseCase($this->source, $transformer);
+        $this->useCase = new UseCase($this->source);
         $this->request = $this->useCase->newRequest();
     }
 
@@ -56,6 +55,6 @@ class Test extends \PHPUnit_Framework_TestCase
         $this->request->id = $id;
         $response = $this->useCase->execute($this->request);
 
-        $this->assertEquals($periodicalMovement, $response->periodicalMovement);
+        $this->assertEquals($id, $response->id());
     }
 }

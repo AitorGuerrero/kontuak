@@ -3,25 +3,25 @@
 namespace Kontuak\Ports\Movement\GetOne;
 
 use Kontuak\Ports\Exception\EntityNotFound;
+use Kontuak\Ports\Resource;
 use Kontuak\Movement;
 
 class UseCase
 {
-
     /** @var Movement\Source */
     private $source;
-    /** @var \Kontuak\Implementation\Transformer\Movement */
-    private $movementTransformer;
 
     public function __construct(
-        Movement\Source $source,
-        Movement\Transformer $movementTransformer
+        Movement\Source $source
     ) {
-
         $this->source = $source;
-        $this->movementTransformer = $movementTransformer;
     }
 
+    /**
+     * @param Request $response
+     * @return Resource\Movement
+     * @throws EntityNotFound
+     */
     public function execute(Request $response)
     {
         try {
@@ -30,9 +30,6 @@ class UseCase
             throw new EntityNotFound();
         }
 
-        $response = new Response();
-        $response->movement = $this->movementTransformer->toResource($movement);
-
-        return $response;
+        return new Resource\Movement($movement);
     }
 }

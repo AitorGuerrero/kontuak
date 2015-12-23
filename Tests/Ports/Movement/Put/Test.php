@@ -28,7 +28,6 @@ class Test extends \PHPUnit_Framework_TestCase
         $this->source = new Source();
         $this->useCase = new UseCase(
             $this->source,
-            new \Kontuak\Adapters\Transformer\Movement(),
             new \DateTime(self::CURRENT_ISO_DATE)
         );
 
@@ -46,34 +45,6 @@ class Test extends \PHPUnit_Framework_TestCase
             self::AMOUNT,
             self::ISO_DATE
         );
-    }
-
-    /**
-     * @test
-     */
-    public function whenMovementDoesNotExistsShouldReturnCreated()
-    {
-        $response = $this->useCase->execute(new Request(
-            'd7ae6ce8-589f-4b17-97e7-26151cdfc9dc',
-            self::CONCEPT,
-            self::AMOUNT,
-            self::ISO_DATE
-        ));
-        $this->assertTrue($response->isNew());
-    }
-
-    /**
-     * @test
-     */
-    public function whenMovementExistsShouldReturnNotCreated()
-    {
-        $response = $this->useCase->execute(new Request(
-            self::ID,
-            self::CONCEPT,
-            self::AMOUNT,
-            self::ISO_DATE
-        ));
-        $this->assertFalse($response->isNew());
     }
 
     /**

@@ -21,7 +21,7 @@ class Test extends \PHPUnit_Framework_TestCase
     protected function setUp()
     {
         $this->source = new Source();
-        $this->useCase = new UseCase($this->source, new PeriodicalMovement());
+        $this->useCase = new UseCase($this->source);
         $this->request = $this->useCase->newRequest();
     }
 
@@ -30,14 +30,16 @@ class Test extends \PHPUnit_Framework_TestCase
      */
     public function shouldReturnAllPeriodicalMovements()
     {
-        $movementA = $this->makeMovement('5df09125-7cc0-4686-af55-733765c04103');
-        $movementB = $this->makeMovement('5ee44e79-cbc1-4a50-8ba4-bc45026b5e87');
+        $movementAId = '5df09125-7cc0-4686-af55-733765c04103';
+        $movementBId = '5ee44e79-cbc1-4a50-8ba4-bc45026b5e87';
+        $this->makeMovement($movementAId);
+        $this->makeMovement($movementBId);
 
         $response = $this->useCase->execute($this->request);
 
-        $this->assertEquals(2, count($response->periodicalMovements));
-        $this->assertTrue(in_array($movementA, $response->periodicalMovements));
-        $this->assertTrue(in_array($movementB, $response->periodicalMovements));
+        $this->assertEquals(2, count($response));
+        $this->assertEquals($movementAId, $response[0]->id());
+        $this->assertEquals($movementBId, $response[1]->id());
     }
 
     /**
@@ -53,7 +55,7 @@ class Test extends \PHPUnit_Framework_TestCase
 
         $response = $this->useCase->execute($this->request);
 
-        $this->assertEquals(2, count($response->periodicalMovements));
+        $this->assertEquals(2, count($response));
     }
 
     /**

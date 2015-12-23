@@ -3,11 +3,10 @@
 namespace Kontuak\Ports\Movement\History;
 
 use Kontuak\Movement;
+use Kontuak\Ports\Resource;
 
 class UseCase
 {
-    /** @var Movement\Transformer */
-    private $movementTransformer;
     /** @var Movement\TotalAmountCalculator */
     private $calculator;
     /** @var Movement\Source */
@@ -15,10 +14,8 @@ class UseCase
 
     public function __construct(
         Movement\Source $source,
-        Movement\TotalAmountCalculator $calculator,
-        Movement\Transformer $movementTransformer
+        Movement\TotalAmountCalculator $calculator
     ) {
-        $this->movementTransformer = $movementTransformer;
         $this->calculator = $calculator;
         $this->source = $source;
     }
@@ -34,7 +31,7 @@ class UseCase
         }
         $amounts = $this->calculator->getForACollection($collection, $request->limit);
         foreach($amounts as $i => $amount) {
-            $amounts[$i]['movement'] = $this->movementTransformer->toResource($amount['movement']);
+            $amounts[$i]['movement'] = new Resource\Movement($amount['movement']);
         }
         $response = new Response();
         $response->amounts = array_reverse($amounts);

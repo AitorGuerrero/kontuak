@@ -14,14 +14,11 @@ class UseCase
     private $source;
     /** @var \DateTime */
     private $currentTimeStamp;
-    /** @var Transformer */
-    private $transformer;
 
-    public function __construct(Source $source, Transformer $transformer, \DateTime $currentTimeStamp)
+    public function __construct(Source $source, \DateTime $currentTimeStamp)
     {
         $this->source = $source;
         $this->currentTimeStamp = $currentTimeStamp;
-        $this->transformer = $transformer;
     }
 
     /**
@@ -30,20 +27,13 @@ class UseCase
      */
     public function execute(Request $request)
     {
-        $created = false;
         $movement = $this->source->collection()->byId(Id::parse($request->id()))->current();
         if(!$movement) {
-            $created = true;
-            $movement = $this->makeNewMovement($request);
+            $this->makeNewMovement($request);
         } else {
             $this->updateAMovement($request, $movement);
 
         }
-
-        return new Response(
-            $created,
-            $this->transformer->toResource($movement)
-        );
     }
 
     private function makeNewMovement(Request $request)

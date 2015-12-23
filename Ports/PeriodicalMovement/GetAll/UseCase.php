@@ -4,6 +4,7 @@ namespace Kontuak\Ports\PeriodicalMovement\GetAll;
 
 use Kontuak\PeriodicalMovement\Source;
 use Kontuak\PeriodicalMovement\Transformer;
+use Kontuak\Ports\Resource\PeriodicalMovement;
 
 class UseCase
 {
@@ -13,10 +14,9 @@ class UseCase
     /** @var Transformer */
     private $transformer;
 
-    public function __construct(Source $source, Transformer $transformer)
+    public function __construct(Source $source)
     {
         $this->source = $source;
-        $this->transformer = $transformer;
     }
 
     /**
@@ -29,14 +29,14 @@ class UseCase
 
     /**
      * @param Request $request
-     * @return Response
+     * @return PeriodicalMovement[]
      */
     public function execute(Request $request)
     {
-        $response = new Response();
+        $response = [];
         $i = 0;
         foreach($this->source->collection() as $periodicalMovement) {
-            $response->periodicalMovements[] = $this->transformer->toResource($periodicalMovement);
+            $response[] = new PeriodicalMovement($periodicalMovement);
             $i++;
             if(!is_null($request->limit) && $i >= $request->limit) {
                 break;

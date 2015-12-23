@@ -35,7 +35,7 @@ class Test extends \PHPUnit_Framework_TestCase
         );
         $this->source = new Source();
         $this->source->add($this->movement);
-        $this->useCase = new UseCase($this->source, new \Kontuak\Adapters\Transformer\Movement());
+        $this->useCase = new UseCase($this->source);
         $this->request = new Request();
         $this->request->id = self::MOVEMENT_ID_SERIALIZED;
     }
@@ -55,8 +55,11 @@ class Test extends \PHPUnit_Framework_TestCase
      */
     public function shouldReturnRequiredInfo()
     {
-        $response = $this->useCase->execute($this->request);
+        $movementResource = $this->useCase->execute($this->request);
 
-        $this->assertEquals($this->movement, $response->movement);
+        $this->assertEquals(
+            $this->movement->id()->toString(),
+            $movementResource->id()
+        );
     }
 }

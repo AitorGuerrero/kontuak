@@ -28,8 +28,7 @@ class Test extends \PHPUnit_Framework_TestCase
         $this->totalAmountService = new Movement\TotalAmountCalculator($this->source);
         $this->useCase = new UseCase(
             $this->source,
-            $this->totalAmountService,
-            new \Kontuak\Adapters\Transformer\Movement()
+            $this->totalAmountService
         );
         $this->request = new Request();
         $this->request->limit = 5;
@@ -49,9 +48,9 @@ class Test extends \PHPUnit_Framework_TestCase
         $response = $this->useCase->execute($this->request);
 
         $this->assertEquals(3, count($response->amounts));
-        $this->assertEquals($movement2, $response->amounts[0]['movement']);
-        $this->assertEquals($movement3, $response->amounts[1]['movement']);
-        $this->assertEquals($movement1, $response->amounts[2]['movement']);
+        $this->assertEquals($movement2->id()->toString(), $response->amounts[0]['movement']->id());
+        $this->assertEquals($movement3->id()->toString(), $response->amounts[1]['movement']->id());
+        $this->assertEquals($movement1->id()->toString(), $response->amounts[2]['movement']->id());
     }
 
     /**

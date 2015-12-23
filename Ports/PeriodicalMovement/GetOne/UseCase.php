@@ -6,20 +6,17 @@ use Kontuak\Exception\Source\EntityNotFound;
 use Kontuak\PeriodicalMovement\Id;
 use Kontuak\PeriodicalMovement\Source;
 use Kontuak\PeriodicalMovement\Transformer;
+use Kontuak\Ports\Resource\PeriodicalMovement;
 
 class UseCase
 {
 
     /** @var Source */
     private $source;
-    /** @var Transformer */
-    private $transformer;
 
-    public function __construct(Source $source, Transformer $transformer)
+    public function __construct(Source $source)
     {
-
         $this->source = $source;
-        $this->transformer = $transformer;
     }
 
     public function newRequest()
@@ -29,14 +26,13 @@ class UseCase
 
     /**
      * @param Request $request
+     * @return PeriodicalMovement
      * @throws \Kontuak\Ports\Exception\EntityNotFound
-     * @return Response
      */
     public function execute(Request $request)
     {
-        $response = new Response();
         try {
-            $response->periodicalMovement = $this->transformer->toResource(
+            $response = new PeriodicalMovement(
                 $this->source->get(Id::parse($request->id))
             );
         } catch (EntityNotFound $e) {
