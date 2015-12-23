@@ -42,14 +42,6 @@ class Source implements Movement\Source
         unset($this->movements[$movement->id()->toString()]);
     }
 
-    /**
-     * @param Movement $movement
-     */
-    public function persist(Movement $movement)
-    {
-        $this->movements[$movement->id()->toString()] = $movement;
-    }
-
     public function byId(Movement\Id $id)
     {
         return $this->movements[$id->toString()];

@@ -17,6 +17,10 @@ interface Source
      */
     public function collection();
 
+    /**
+     * @param Movement $movement
+     * @return mixed
+     */
     public function add(Movement $movement);
 
     /**
@@ -24,11 +28,6 @@ interface Source
      * @return void
      */
     public function remove(Movement $movement);
-
-    /**
-     * @param Movement $movement
-     */
-    public function persist(Movement $movement);
 
     /**
      * @param Id $id
