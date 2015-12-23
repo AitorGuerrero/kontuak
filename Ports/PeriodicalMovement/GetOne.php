@@ -1,14 +1,14 @@
 <?php
 
-namespace Kontuak\Ports\PeriodicalMovement\GetOne;
+namespace Kontuak\Ports\PeriodicalMovement;
 
 use Kontuak\Exception\Source\EntityNotFound;
 use Kontuak\PeriodicalMovement\Id;
 use Kontuak\PeriodicalMovement\Source;
-use Kontuak\PeriodicalMovement\Transformer;
+use Kontuak\Ports\PeriodicalMovement\GetOne\Request;
 use Kontuak\Ports\Resource\PeriodicalMovement;
 
-class UseCase
+class GetOne
 {
 
     /** @var Source */

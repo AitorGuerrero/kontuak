@@ -2,8 +2,8 @@
 
 namespace Ports\PeriodicalMovement\Put;
 
+use Kontuak\Ports\PeriodicalMovement\Put;
 use Kontuak\Ports\PeriodicalMovement\Put\Request;
-use Kontuak\Ports\PeriodicalMovement\Put\UseCase;
 use Kontuak\Adapters\InMemory\PeriodicalMovement\Source;
 use Kontuak\Period\DaysPeriod;
 use kontuak\PeriodicalMovement;
@@ -29,7 +29,7 @@ class Test extends \PHPUnit_Framework_TestCase
     protected function setUp()
     {
         $this->source = new Source();
-        $this->useCase = new UseCase(
+        $this->useCase = new Put(
             $this->source,
             new \DateTime(self::CURRENT_ISO_DATE)
         );

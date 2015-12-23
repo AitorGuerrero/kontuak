@@ -4,6 +4,7 @@ namespace Ports\PeriodicalMovement\GetOne;
 
 use Kontuak\Adapters\InMemory\PeriodicalMovement\Source;
 use Kontuak\Adapters\Transformer\PeriodicalMovement;
+use Kontuak\Ports\PeriodicalMovement\GetOne;
 use Kontuak\Ports\PeriodicalMovement\GetOne\UseCase;
 use Kontuak\Ports\PeriodicalMovement\GetOne\Request;
 use Kontuak\Period\DaysPeriod;
@@ -21,7 +22,7 @@ class Test extends \PHPUnit_Framework_TestCase
     protected function setUp()
     {
         $this->source = new Source();
-        $this->useCase = new UseCase($this->source);
+        $this->useCase = new GetOne($this->source);
         $this->request = $this->useCase->newRequest();
     }
 

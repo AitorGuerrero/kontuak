@@ -1,14 +1,15 @@
 <?php
 
-namespace Kontuak\Ports\PeriodicalMovement\Update;
+namespace Kontuak\Ports\PeriodicalMovement;
 
 use Kontuak\Ports\Exception\EntityNotFound;
 use Kontuak\Ports\Mappings\PeriodicalMovement;
 use Kontuak\Period;
 use Kontuak\PeriodicalMovement\Id;
 use Kontuak\PeriodicalMovement\Source;
+use Kontuak\Ports\PeriodicalMovement\Update\Request;
 
-class UseCase
+class Update
 {
     /** @var Source */
     private $source;

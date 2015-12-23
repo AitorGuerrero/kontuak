@@ -1,18 +1,16 @@
 <?php
 
-namespace Kontuak\Ports\PeriodicalMovement\GetAll;
+namespace Kontuak\Ports\PeriodicalMovement;
 
 use Kontuak\PeriodicalMovement\Source;
-use Kontuak\PeriodicalMovement\Transformer;
+use Kontuak\Ports\PeriodicalMovement\GetAll\Request;
 use Kontuak\Ports\Resource\PeriodicalMovement;
 
-class UseCase
+class GetAll
 {
 
     /** @var Source */
     private $source;
-    /** @var Transformer */
-    private $transformer;
 
     public function __construct(Source $source)
     {

@@ -1,14 +1,14 @@
 <?php
 
-namespace Kontuak\Ports\PeriodicalMovement\Put;
+namespace Kontuak\Ports\PeriodicalMovement;
 
 use Kontuak\Ports\Mappings\PeriodicalMovement;
 use Kontuak\Period;
 use Kontuak\PeriodicalMovement\Id;
 use Kontuak\PeriodicalMovement\Source;
-use Kontuak\PeriodicalMovement\Transformer;
+use Kontuak\Ports\PeriodicalMovement\Put\Request;
 
-class UseCase
+class Put
 {
     /** @var Source */
     private $source;

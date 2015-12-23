@@ -5,7 +5,7 @@ namespace Ports\PeriodicalMovement\Update;
 use Kontuak\Adapters\InMemory\PeriodicalMovement\Source;
 use Kontuak\Ports\Mappings\PeriodicalMovement;
 use Kontuak\Ports\PeriodicalMovement\Update\Request;
-use Kontuak\Ports\PeriodicalMovement\Update\UseCase;
+use Kontuak\Ports\PeriodicalMovement\Update;
 use Kontuak\Period;
 use Kontuak\PeriodicalMovement\Id;
 
@@ -26,7 +26,7 @@ class Test extends \PHPUnit_Framework_TestCase
 
     /** @var Source */
     public $source;
-    /** @var UseCase */
+    /** @var  */
     public $useCase;
     /** @var Request */
     public $request;
@@ -34,7 +34,7 @@ class Test extends \PHPUnit_Framework_TestCase
     protected function setUp()
     {
         $this->source = new Source();
-        $this->useCase = new UseCase($this->source);
+        $this->useCase = new Update($this->source);
         $this->request = $this->useCase->newRequest();
         $this->request->id = self::ID;
         $this->request->concept = self::NEW_CONCEPT;
