@@ -16,10 +16,8 @@ class Test extends \PHPUnit_Framework_TestCase
     private $movement;
     /** @var Source */
     private $source;
-    /** @var UseCase */
+    /** @var GetOne */
     private $useCase;
-    /** @var Request */
-    private $request;
     const AMOUNT = 100;
     const CONCEPT = 'concept';
     const DATE_SERIALIZED = '2015-02-01';
@@ -37,8 +35,6 @@ class Test extends \PHPUnit_Framework_TestCase
         $this->source = new Source();
         $this->source->add($this->movement);
         $this->useCase = new GetOne($this->source);
-        $this->request = new Request();
-        $this->request->id = self::MOVEMENT_ID_SERIALIZED;
     }
 
     /**
@@ -47,8 +43,7 @@ class Test extends \PHPUnit_Framework_TestCase
     public function ifTheUserDoesNotExistsShowThrowAnException()
     {
         $this->setExpectedException('\Kontuak\Ports\Exception\EntityNotFound');
-        $this->request->id = self::INVALID_MOVEMENT_ID;
-        $this->useCase->execute($this->request);
+        $this->useCase->execute(self::INVALID_MOVEMENT_ID);
     }
 
     /**
@@ -56,7 +51,7 @@ class Test extends \PHPUnit_Framework_TestCase
      */
     public function shouldReturnRequiredInfo()
     {
-        $movementResource = $this->useCase->execute($this->request);
+        $movementResource = $this->useCase->execute(self::MOVEMENT_ID_SERIALIZED);
 
         $this->assertEquals(
             $this->movement->id()->toString(),

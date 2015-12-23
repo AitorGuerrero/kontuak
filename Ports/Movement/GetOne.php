@@ -3,7 +3,6 @@
 namespace Kontuak\Ports\Movement;
 
 use Kontuak\Ports\Exception\EntityNotFound;
-use Kontuak\Ports\Movement\GetOne\Request;
 use Kontuak\Ports\Resource;
 use Kontuak\Movement;
 
@@ -19,14 +18,14 @@ class GetOne
     }
 
     /**
-     * @param Request $response
+     * @param int $id
      * @return Resource\Movement
      * @throws EntityNotFound
      */
-    public function execute(Request $response)
+    public function execute($id)
     {
         try {
-            $movement = $this->source->get(Movement\Id::parse($response->id));
+            $movement = $this->source->get(Movement\Id::parse($id));
         } catch (\Kontuak\Exception\Source\EntityNotFound $e) {
             throw new EntityNotFound();
         }
