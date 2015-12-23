@@ -14,7 +14,11 @@ class ExistsChecker
         $this->source = $source;
     }
 
-    public function isExistingMovementWithId($id)
+    /**
+     * @param Id $id
+     * @return bool
+     */
+    public function isExistingMovementWithId(Id $id)
     {
         try {
             $this->source->get($id);

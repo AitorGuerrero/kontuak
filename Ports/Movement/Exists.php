@@ -3,6 +3,7 @@
 namespace Kontuak\Ports\Movement;
 
 use Kontuak\Movement\ExistsChecker;
+use Kontuak\Movement\Id;
 
 class Exists
 {
@@ -14,8 +15,12 @@ class Exists
         $this->existsChecker = $existsChecker;
     }
 
+    /**
+     * @param string $movementId
+     * @return bool
+     */
     public function execute($movementId)
     {
-        return $this->existsChecker->isExistingMovementWithId($movementId);
+        return $this->existsChecker->isExistingMovementWithId(Id::parse($movementId));
     }
 }
