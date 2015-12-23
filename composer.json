@@ -16,6 +16,11 @@
         "ramsey/uuid-console": "^1.0"
     },
     "autoload": {
-        "psr-4": {"Kontuak\\": "."}
+        "psr-4": {
+            "Kontuak\\": "./Domain",
+            "Kontuak\\Tests\\": "./Tests",
+            "Kontuak\\Ports\\": "./Ports",
+            "Kontuak\\Adapters\\": "./Adapters"
+        }
     }
 }
