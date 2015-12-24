@@ -2,6 +2,7 @@
 
 namespace Kontuak\Ports\PeriodicalMovement;
 
+use Kontuak\IsoDateTime;
 use Kontuak\Ports\PeriodicalMovement\Create\Request;
 use Kontuak\Ports\Mappings\PeriodicalMovement;
 use Kontuak\Period;
@@ -40,7 +41,8 @@ class Create
                 new \DateTime($request->starts),
                 Period\Factory::fromType(
                     PeriodicalMovement::$mapPeriodTypeToDomain[$request->periodType],
-                    $request->periodAmount
+                    $request->periodAmount,
+                    new IsoDateTime($request->starts)
                 )
             )
         );

@@ -2,6 +2,7 @@
 
 namespace Ports\PeriodicalMovement\Put;
 
+use Kontuak\IsoDateTime;
 use Kontuak\Ports\PeriodicalMovement\Put;
 use Kontuak\Ports\PeriodicalMovement\Put\Request;
 use Kontuak\Adapters\InMemory\PeriodicalMovement\Source;
@@ -39,7 +40,7 @@ class Test extends \PHPUnit_Framework_TestCase
             self::AMOUNT,
             self::CONCEPT,
             new \DateTime(self::ISO_DATE),
-            new DaysPeriod(4),
+            new DaysPeriod(4, new IsoDateTime(self::ISO_DATE)),
             new \DateTime(self::CURRENT_ISO_DATE)
         ));
 

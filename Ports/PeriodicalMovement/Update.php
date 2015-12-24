@@ -36,7 +36,8 @@ class Update
         $periodicalMovement->updatePeriod(
             Period\Factory::fromType(
                 PeriodicalMovement::$mapPeriodTypeToDomain[$request->periodType],
-                $request->periodAmount
+                $request->periodAmount,
+                new IsoDateTime($request->starts)
             )
         );
         $periodicalMovement->updateConcept($request->concept);

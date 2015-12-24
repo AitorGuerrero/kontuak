@@ -3,6 +3,7 @@
 namespace Ports\PeriodicalMovement\Create;
 
 use Kontuak\Adapters\InMemory\PeriodicalMovement\Source;
+use Kontuak\IsoDateTime;
 use Kontuak\Ports\Mappings\PeriodicalMovement;
 use Kontuak\Ports\PeriodicalMovement\Create;
 use Kontuak\Period;
@@ -33,7 +34,7 @@ class Test extends \PHPUnit_Framework_TestCase
         $useCase->execute($request);
 
         $id = Id::parse(self::ID);
-        $period = new Period\DaysPeriod(self::PERIOD_AMOUNT);
+        $period = new Period\DaysPeriod(self::PERIOD_AMOUNT, new IsoDateTime(self::STARTS));
         $periodicalMovement = $source->get($id);
         $this->assertEquals(self::CONCEPT, $periodicalMovement->concept());
         $this->assertEquals(self::AMOUNT, $periodicalMovement->amount());

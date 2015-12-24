@@ -11,7 +11,7 @@ abstract class Period
     /** @var IsoDateTime */
     private $endDate;
 
-    public function __construct($amount, IsoDateTime $startDate = null, IsoDateTime $endDate = null)
+    public function __construct($amount, IsoDateTime $startDate, IsoDateTime $endDate = null)
     {
         $this->amount = $amount;
         $this->startDate = $startDate;

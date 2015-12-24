@@ -4,6 +4,7 @@ namespace Ports\PeriodicalMovement\GetAll;
 
 use Kontuak\Adapters\InMemory\PeriodicalMovement\Source;
 use Kontuak\Adapters\Transformer\PeriodicalMovement;
+use Kontuak\IsoDateTime;
 use Kontuak\Ports\PeriodicalMovement\GetAll;
 use Kontuak\Ports\PeriodicalMovement\GetAll\UseCase;
 use Kontuak\Ports\PeriodicalMovement\GetAll\Request;
@@ -70,7 +71,7 @@ class Test extends \PHPUnit_Framework_TestCase
             1,
             'concept',
             new \DateTime('2015-01-01'),
-            new DaysPeriod(2)
+            new DaysPeriod(2, new IsoDateTime('2015-01-01'))
         );
         $this->source->add($movement);
 
