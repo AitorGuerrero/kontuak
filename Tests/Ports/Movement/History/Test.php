@@ -147,7 +147,7 @@ class Test extends \PHPUnit_Framework_TestCase
     {
         $fromIsoDate = '2015-06-10';
         $this->source->add($this->generateMovement(10, '2015-06-10'));
-        $response = $this->useCase->execute($fromIsoDate);
+        $response = $this->useCase->execute(null, $fromIsoDate);
 
         $this->assertEquals(1, count($response));
     }
