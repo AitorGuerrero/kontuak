@@ -21,34 +21,6 @@ class History
         $this->collection = $collection;
     }
 
-    public function toDate(\DateTime $fromDate)
-    {
-        $movements = $this
-            ->source
-            ->collection()
-            ->filterDateLessOrEqualTo($fromDate)
-            ->orderByDate();
-        /** @var Movement $movement */
-        $totalAmounts = [];
-        $firstMovement = $movements->current();
-        if(!$firstMovement) {
-            return [];
-        }
-        $totalAmount = $this
-            ->totalAmountCalculator
-            ->getForAMovement($firstMovement);
-
-        foreach($movements as $movement) {
-            $totalAmount += $movement->amount();
-            $totalAmounts[] = [
-                'totalAmount' => $totalAmount,
-                'movement' => $movement
-            ];
-        }
-
-        return $totalAmounts;
-    }
-
     public function fromDate(\DateTime $toDate, $limit)
     {
         $movements = $this
