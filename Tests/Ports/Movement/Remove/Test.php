@@ -2,6 +2,7 @@
 
 namespace Ports\Movement\Remove;
 
+use Kontuak\DateTime;
 use Kontuak\Exception\Source\EntityNotFound;
 use Kontuak\Adapters\InMemory\Movement\Source;
 use Kontuak\Ports\Movement\Remove;
@@ -49,8 +50,8 @@ class Test extends \PHPUnit_Framework_TestCase
             $id,
             100,
             'a',
-            new \DateTime(),
-            new \DateTime()
+            new DateTime(),
+            new DateTime()
         ));
         $this->request->id = self::MOVEMENT_ID;
         $this->useCase->execute($this->request);

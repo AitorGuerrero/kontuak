@@ -3,6 +3,7 @@
 namespace Ports\Movement\GetOne;
 
 use Kontuak\Adapters\InMemory\Movement\Source;
+use Kontuak\DateTime;
 use Kontuak\Ports\Movement\GetOne;
 use Kontuak\Ports\Movement\GetOne\Request;
 use Kontuak\Movement;
@@ -29,8 +30,8 @@ class Test extends \PHPUnit_Framework_TestCase
             $movementId,
             self::AMOUNT,
             self::CONCEPT,
-            new \DateTime(self::DATE_SERIALIZED),
-            new \DateTime('2015-01-01 01:23:45')
+            new DateTime(self::DATE_SERIALIZED),
+            new DateTime('2015-01-01 01:23:45')
         );
         $this->source = new Source();
         $this->source->add($this->movement);

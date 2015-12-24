@@ -3,6 +3,7 @@
 namespace Ports\Movement\GetAll;
 
 use Kontuak\Adapters\InMemory\Movement\Source;
+use Kontuak\DateTime;
 use Kontuak\Movement;
 use Kontuak\Ports\Movement\GetAll;
 use Kontuak\Ports\Movement\GetAll\UseCase;
@@ -91,8 +92,8 @@ class Test extends \PHPUnit_Framework_TestCase
             Movement\Id::make(),
             1,
             'a',
-            new \DateTime('2015-01-01'),
-            new \DateTime('2015-01-01 00:00:00')
+            new DateTime('2015-01-01'),
+            new DateTime('2015-01-01 00:00:00')
         );
         $this->source->add($movement);
 

@@ -3,6 +3,7 @@
 namespace Kontuak\Tests\Ports\Movement\History;
 
 use Kontuak\Adapters\InMemory\Movement\Source;
+use Kontuak\DateTime;
 use Kontuak\Ports\Movement\History;
 use Kontuak\Ports\Movement\History\Request;
 use Kontuak\Movement;
@@ -171,8 +172,8 @@ class Test extends \PHPUnit_Framework_TestCase
             Movement\Id::make(),
             $amount,
             $concept,
-            new \DateTime($date),
-            new \DateTime('2015-01-01')
+            new DateTime($date),
+            new DateTime('2015-01-01')
         );
     }
 

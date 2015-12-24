@@ -2,6 +2,7 @@
 
 namespace Ports\Movement\Put;
 
+use Kontuak\DateTime;
 use Kontuak\Ports\Movement\Put;
 use kontuak\Movement;
 use Kontuak\Adapters\InMemory\Movement\Source;
@@ -25,15 +26,15 @@ class Test extends \PHPUnit_Framework_TestCase
         $this->source = new Source();
         $this->useCase = new Put(
             $this->source,
-            new \DateTime(self::CURRENT_ISO_DATE)
+            new DateTime(self::CURRENT_ISO_DATE)
         );
 
         $this->source->add(new Movement(
             Id::parse(self::ID),
             self::AMOUNT,
             self::CONCEPT,
-            new \DateTime(self::ISO_DATE),
-            new \DateTime(self::CURRENT_ISO_DATE)
+            new DateTime(self::ISO_DATE),
+            new DateTime(self::CURRENT_ISO_DATE)
         ));
     }
 
@@ -53,8 +54,8 @@ class Test extends \PHPUnit_Framework_TestCase
         $this->assertEquals(self::ID, $movement->id()->toString());
         $this->assertEquals(self::AMOUNT, $movement->amount());
         $this->assertEquals(self::CONCEPT, $movement->concept());
-        $this->assertEquals(self::ISO_DATE, $movement->date()->format('Y-m-d'));
-        $this->assertEquals(self::CURRENT_ISO_DATE, $movement->created()->format('Y-m-d H:i:s'));
+        $this->assertEquals(self::ISO_DATE, $movement->date()->isoDate());
+        $this->assertEquals(self::CURRENT_ISO_DATE, $movement->created()->isoDateTime());
     }
 
     /**

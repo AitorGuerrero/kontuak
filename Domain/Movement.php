@@ -2,10 +2,10 @@
 
 namespace Kontuak;
 
-use DateTime;
 use Kontuak\Movement\Exception\InvalidAmount;
 use Kontuak\Movement\Exception\InvalidConcept;
 use Kontuak\Movement\Id;
+use Kontuak\DateTime;
 
 class Movement
 {

@@ -2,6 +2,7 @@
 
 namespace Kontuak\Tests;
 
+use Kontuak\DateTime;
 use Kontuak\Movement;
 
 class MovementTest extends \PHPUnit_Framework_TestCase
@@ -15,8 +16,8 @@ class MovementTest extends \PHPUnit_Framework_TestCase
             Movement\Id::make(),
             10,
             'Concept',
-            new \DateTime('2015-01-01'),
-            new \DateTime('2015-01-01')
+            new DateTime('2015-01-01'),
+            new DateTime('2015-01-01')
         );
     }
 
