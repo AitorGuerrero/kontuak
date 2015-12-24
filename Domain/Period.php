@@ -39,8 +39,19 @@ abstract class Period
         return clone($this->endDate);
     }
 
+    /**
+     * @param IsoDateTime $starts
+     */
     public function updateStartDate(IsoDateTime $starts)
     {
         $this->startDate = $starts;
+    }
+
+    /**
+     * @param IsoDateTime $endDate
+     */
+    public function endsAt(IsoDateTime $endDate)
+    {
+        $this->endDate = $endDate;
     }
 }

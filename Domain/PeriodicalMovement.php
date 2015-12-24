@@ -17,8 +17,6 @@ class PeriodicalMovement
     protected $period;
     /** @var Movement */
     protected $templateMovement;
-    /** @var \DateTimeInterface */
-    protected $ends;
 
     /**
      * @param PeriodicalMovement\Id $id
@@ -63,9 +61,9 @@ class PeriodicalMovement
         return $this->period;
     }
 
-    public function endsAt(\DateTimeInterface $date)
+    public function endsAt(IsoDateTime $date)
     {
-        $this->ends = $date;
+        $this->period()->endsAt($date);
     }
 
     /**
