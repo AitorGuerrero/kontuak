@@ -18,12 +18,4 @@ class MonthDayPeriod extends Period
 
         return $date;
     }
-
-    /**
-     * @return mixed
-     */
-    function type()
-    {
-        return Period::TYPE_MONTH_DAY;
-    }
 }

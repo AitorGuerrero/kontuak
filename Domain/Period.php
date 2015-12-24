@@ -2,20 +2,20 @@
 
 namespace Kontuak;
 
-use Kontuak\Period\DaysPeriod;
-use Kontuak\Period\Exception\IncorrectType;
-use Kontuak\Period\MonthDayPeriod;
-
 abstract class Period
 {
-    const TYPE_DAY = 'day';
-    const TYPE_MONTH_DAY = 'month_day';
-
+    /** @var int */
     private $amount;
+    /** @var IsoDateTime */
+    private $startDate;
+    /** @var IsoDateTime */
+    private $endDate;
 
-    public function __construct($amount)
+    public function __construct($amount, IsoDateTime $startDate = null, IsoDateTime $endDate = null)
     {
         $this->amount = $amount;
+        $this->startDate = $startDate;
+        $this->endDate = $endDate;
     }
 
     public function amount()
@@ -24,20 +24,18 @@ abstract class Period
     }
 
     /**
-     * Should return a constant TYPE_* defined in this class
-     * @return mixed
+     * @return IsoDateTime
      */
-    abstract function type();
-
-    public static function factory($type, $amount)
+    public function startDate()
     {
-        switch($type) {
-            case self::TYPE_DAY:
-                return new DaysPeriod($amount);
-            case self::TYPE_MONTH_DAY:
-                return new MonthDayPeriod($amount);
-        }
+        return clone($this->startDate);
+    }
 
-        throw new IncorrectType();
+    /**
+     * @return IsoDateTime
+     */
+    public function endDate()
+    {
+        return clone($this->endDate);
     }
 }

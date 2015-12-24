@@ -2,6 +2,7 @@
 
 namespace Kontuak\Ports\PeriodicalMovement;
 
+use Kontuak\IsoDateTime;
 use Kontuak\Ports\Exception\EntityNotFound;
 use Kontuak\Ports\Mappings\PeriodicalMovement;
 use Kontuak\Period;
@@ -33,13 +34,13 @@ class Update
         }
 
         $periodicalMovement->updatePeriod(
-            Period::factory(
+            Period\Factory::fromType(
                 PeriodicalMovement::$mapPeriodTypeToDomain[$request->periodType],
                 $request->periodAmount
             )
         );
         $periodicalMovement->updateConcept($request->concept);
         $periodicalMovement->updateAmount($request->amount);
-        $periodicalMovement->updateStarts(new \DateTime($request->starts));
+        $periodicalMovement->updateStarts(new IsoDateTime($request->starts));
     }
 }

@@ -38,7 +38,7 @@ class Create
                 $request->amount,
                 $request->concept,
                 new \DateTime($request->starts),
-                Period::factory(
+                Period\Factory::fromType(
                     PeriodicalMovement::$mapPeriodTypeToDomain[$request->periodType],
                     $request->periodAmount
                 )

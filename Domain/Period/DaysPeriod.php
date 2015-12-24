@@ -13,13 +13,4 @@ class DaysPeriod extends Period
 
         return $date;
     }
-
-    /**
-     * Should return a constant TYPE_* defined in this class
-     * @return mixed
-     */
-    function type()
-    {
-        return Period::TYPE_DAY;
-    }
 }

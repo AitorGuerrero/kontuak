@@ -39,6 +39,6 @@ class Test extends \PHPUnit_Framework_TestCase
     public function whenCreatingIfTheTypeIsIncorrectShouldThrowAnException()
     {
         $this->setExpectedException('\Kontuak\Period\Exception\IncorrectType');
-        Period::factory('inexistent type', 10);
+        Period\Factory::fromType('inexistent type', 10);
     }
 }
