@@ -82,11 +82,11 @@ class PeriodicalMovement
     }
 
     /**
-     * @return \DateTimeInterface
+     * @return IsoDateTime
      */
     public function starts()
     {
-        return $this->starts;
+        return $this->period()->startDate();
     }
 
     /**
@@ -120,12 +120,10 @@ class PeriodicalMovement
     }
 
     /**
-     * @param \DateTime $starts
+     * @param IsoDateTime $starts
      */
-    public function updateStarts(\DateTime $starts)
+    public function updateStarts(IsoDateTime $starts)
     {
-        $oldValue = $this->starts;
-        $this->starts = $starts;
-        EventPublisher::publish(new Event\StartsDateUpdated($this, $oldValue, $starts));
+        $this->period()->updateStartDate($starts);
     }
 }

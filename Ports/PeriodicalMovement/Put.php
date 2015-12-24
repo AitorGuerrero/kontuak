@@ -2,6 +2,7 @@
 
 namespace Kontuak\Ports\PeriodicalMovement;
 
+use Kontuak\IsoDateTime;
 use Kontuak\Ports\Mappings\PeriodicalMovement;
 use Kontuak\Period;
 use Kontuak\PeriodicalMovement\Id;
@@ -62,6 +63,6 @@ class Put
         /** @var \Kontuak\PeriodicalMovement $movement */
         $movement->updateAmount($request->amount());
         $movement->updateConcept($request->concept());
-        $movement->updateStarts(new \DateTime($request->date()));
+        $movement->updateStarts(new IsoDateTime($request->date()));
     }
 }

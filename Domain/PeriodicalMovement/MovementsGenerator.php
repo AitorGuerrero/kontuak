@@ -65,7 +65,7 @@ class MovementsGenerator
                 ->next($lastGeneratedMovement->date())
                 ->format('Y-m-d');
         } else {
-            $date = $periodicalMovement->starts()->format('Y-m-d');
+            $date = $periodicalMovement->starts()->isoDate();
         }
 
         return $date;

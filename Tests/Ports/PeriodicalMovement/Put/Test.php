@@ -22,7 +22,7 @@ class Test extends \PHPUnit_Framework_TestCase
 
     /** @var Request */
     private $request;
-    /** @var UseCase */
+    /** @var Put */
     private $useCase;
     /** @var Source */
     private $source;
@@ -65,6 +65,6 @@ class Test extends \PHPUnit_Framework_TestCase
         $this->assertEquals(self::ID, $movement->id()->toString());
         $this->assertEquals(self::AMOUNT, $movement->amount());
         $this->assertEquals(self::CONCEPT, $movement->concept());
-        $this->assertEquals(self::ISO_DATE, $movement->starts()->format('Y-m-d'));
+        $this->assertEquals(self::ISO_DATE, $movement->starts()->isoDate());
     }
 }

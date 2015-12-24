@@ -77,7 +77,7 @@ class Test extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals(self::NEW_CONCEPT, $periodicalMovement->concept());
         $this->assertEquals(self::NEW_AMOUNT, $periodicalMovement->amount());
-        $this->assertEquals(self::NEW_START_DATE, $periodicalMovement->starts()->format('Y-m-d'));
+        $this->assertEquals(self::NEW_START_DATE, $periodicalMovement->starts()->isoDate());
         $this->assertEquals(
             new Period\MonthDayPeriod(self::NEW_PERIOD_AMOUNT, $periodicalMovement->starts()),
             $periodicalMovement->period()

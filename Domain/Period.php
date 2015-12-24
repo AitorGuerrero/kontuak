@@ -38,4 +38,9 @@ abstract class Period
     {
         return clone($this->endDate);
     }
+
+    public function updateStartDate(IsoDateTime $starts)
+    {
+        $this->startDate = $starts;
+    }
 }
