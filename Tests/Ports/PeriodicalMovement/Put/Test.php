@@ -64,6 +64,5 @@ class Test extends \PHPUnit_Framework_TestCase
         $this->assertEquals(self::ID, $movement->id()->toString());
         $this->assertEquals(self::AMOUNT, $movement->amount());
         $this->assertEquals(self::CONCEPT, $movement->concept());
-        $this->assertEquals(self::ISO_DATE, $movement->starts()->isoDate());
     }
 }

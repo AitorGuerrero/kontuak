@@ -13,12 +13,11 @@ class Test extends \PHPUnit_Framework_TestCase
      */
     public function ifTheDayIsLargerThanMonthDaysShouldGetTheLastDayOfMonth()
     {
-        $monthsAmount = 1;
         $dateFrom = new IsoDateTime('2015-01-31');
-        $period = new MonthDayPeriod($monthsAmount, $dateFrom);
-        $nextDate = $period->next($dateFrom);
+        $period = new MonthDayPeriod($dateFrom);
+        $period->next();
 
-        $this->assertEquals('2015-02-28', $nextDate->format('Y-m-d'));
+        $this->assertEquals('2015-02-28', $period->current()->isoDate());
     }
 
     /**
@@ -26,12 +25,11 @@ class Test extends \PHPUnit_Framework_TestCase
      */
     public function changesWellTheYear()
     {
-        $monthsAmount = 1;
         $dateFrom = new IsoDateTime('2015-12-15');
-        $period = new MonthDayPeriod($monthsAmount, $dateFrom);
-        $nextDate = $period->next($dateFrom);
+        $period = new MonthDayPeriod($dateFrom);
+        $period->next();
 
-        $this->assertEquals('2016-01-15', $nextDate->format('Y-m-d'));
+        $this->assertEquals('2016-01-15', $period->current()->isoDate());
     }
 
     /**

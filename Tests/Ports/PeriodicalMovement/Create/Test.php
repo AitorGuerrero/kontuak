@@ -39,6 +39,5 @@ class Test extends \PHPUnit_Framework_TestCase
         $this->assertEquals(self::CONCEPT, $periodicalMovement->concept());
         $this->assertEquals(self::AMOUNT, $periodicalMovement->amount());
         $this->assertEquals($period, $periodicalMovement->period());
-        $this->assertEquals(self::STARTS, $periodicalMovement->starts()->isoDate());
     }
 }

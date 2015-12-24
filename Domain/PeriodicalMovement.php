@@ -75,14 +75,6 @@ class PeriodicalMovement
     }
 
     /**
-     * @return IsoDateTime
-     */
-    public function starts()
-    {
-        return $this->period()->startDate();
-    }
-
-    /**
      * @param Period $period
      */
     public function updatePeriod(Period $period)

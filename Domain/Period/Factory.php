@@ -16,7 +16,7 @@ class Factory
             case self::TYPE_DAY:
                 return new DaysPeriod($amount, $startDate, $endDate);
             case self::TYPE_MONTH_DAY:
-                return new MonthDayPeriod($amount, $startDate, $endDate);
+                return new MonthDayPeriod($startDate, $endDate);
         }
 
         throw new IncorrectType($type);

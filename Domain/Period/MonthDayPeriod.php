@@ -6,16 +6,55 @@ use Kontuak\Period;
 
 class MonthDayPeriod extends Period
 {
-    function next(\DateTimeInterface $date)
+    function next()
     {
-        $targetDay = (int) $date->format('d');
-        $date->setDate($date->format('Y'), (int) $date->format('m') + $this->amount(), 1);
-        $targetMonth = (int) $date->format('m');
-        $date->setDate($date->format('Y'), $date->format('m'), $targetDay);
-        if((int) $date->format('m') !== $targetMonth) {
-            $date->setDate($date->format('Y'), $date->format('m'), 0);
-        }
+        $targetDay = $this->targetDay();
+        $this->advanceMonth();
+        $targetMonth = $this->targetMonth();
+        $this->setTargetDay($targetDay);
+        $this->correctMonthChange($targetMonth);
+    }
 
-        return $date;
+    private function advanceMonth()
+    {
+        $this->currentDate->setDate(
+            $this->currentDate->format('Y'),
+            (int)$this->currentDate->format('m') + 1,
+            1
+        );
+    }
+
+    /**
+     * @param $targetDay
+     */
+    private function setTargetDay($targetDay)
+    {
+        $this->currentDate->setDate($this->currentDate->format('Y'), $this->currentDate->format('m'), $targetDay);
+    }
+
+    /**
+     * @param $targetMonth
+     */
+    private function correctMonthChange($targetMonth)
+    {
+        if ($this->targetMonth() !== $targetMonth) {
+            $this->currentDate->setDate($this->currentDate->format('Y'), $this->currentDate->format('m'), 0);
+        }
+    }
+
+    /**
+     * @return int
+     */
+    private function targetDay()
+    {
+        return (int)$this->currentDate->format('d');
+    }
+
+    /**
+     * @return int
+     */
+    private function targetMonth()
+    {
+        return (int)$this->currentDate->format('m');
     }
 }
