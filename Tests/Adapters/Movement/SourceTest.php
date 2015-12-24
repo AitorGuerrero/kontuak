@@ -89,7 +89,6 @@ trait SourceTest
             PeriodicalMovement\Id::make(),
             100,
             'pus',
-            new IsoDateTime('2015-05-01'),
             new DaysPeriod(4, new IsoDateTime('2015-05-01'))
         );
         $movement1 = $this->movementGenerator();

@@ -38,7 +38,6 @@ class Create
                 Id::parse($request->id),
                 $request->amount,
                 $request->concept,
-                new \DateTime($request->starts),
                 Period\Factory::fromType(
                     PeriodicalMovement::$mapPeriodTypeToDomain[$request->periodType],
                     $request->periodAmount,

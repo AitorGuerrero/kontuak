@@ -48,7 +48,6 @@ class Test extends \PHPUnit_Framework_TestCase
             Id::parse(self::ID),
             self::AMOUNT,
             self::CONCEPT,
-            new \DateTime(self::STARTS),
             Period\Factory::fromType(Period\Factory::TYPE_DAY, self::PERIOD_AMOUNT, new IsoDateTime(self::STARTS))
         );
         $this->source->add($periodicalMovement);

@@ -39,7 +39,6 @@ class Test extends \PHPUnit_Framework_TestCase
             Id::parse(self::ID),
             self::AMOUNT,
             self::CONCEPT,
-            new \DateTime(self::ISO_DATE),
             new DaysPeriod(4, new IsoDateTime(self::ISO_DATE)),
             new \DateTime(self::CURRENT_ISO_DATE)
         ));

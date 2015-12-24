@@ -49,7 +49,6 @@ class Test extends \PHPUnit_Framework_TestCase
             Id::parse($id),
             10,
             'concept',
-            new \DateTime('2015-01-01'),
             new DaysPeriod(3, new IsoDateTime('2015-01-01'))
         );
         $this->source->add($periodicalMovement);

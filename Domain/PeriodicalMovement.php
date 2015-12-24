@@ -18,29 +18,24 @@ class PeriodicalMovement
     /** @var Movement */
     protected $templateMovement;
     /** @var \DateTimeInterface */
-    protected $starts;
-    /** @var \DateTimeInterface */
     protected $ends;
 
     /**
      * @param PeriodicalMovement\Id $id
      * @param $amount
      * @param $concept
-     * @param \DateTime $starts
      * @param Period $period
      */
     public function __construct(
         PeriodicalMovement\Id $id,
         $amount,
         $concept,
-        \DateTime $starts,
         Period $period
     ) {
         $this->id = $id;
         $this->amount = $amount;
         $this->concept = $concept;
         $this->period = $period;
-        $this->starts = $starts;
         EventPublisher::publish(new Event\Created($this));
     }
 
