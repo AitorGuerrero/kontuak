@@ -2,9 +2,12 @@
 
 namespace Kontuak;
 
+use Kontuak\EventManagement\EventPublisher;
+use Kontuak\PeriodicalMovement\Event;
+
 class PeriodicalMovement
 {
-    /** @var PeriodicalMovementId */
+    /** @var PeriodicalMovement\Id */
     protected $id;
     /** @var int */
     protected $amount;
@@ -38,6 +41,7 @@ class PeriodicalMovement
         $this->concept = $concept;
         $this->period = $period;
         $this->starts = $starts;
+        EventPublisher::publish(new Event\Created($this));
     }
 
     /**
@@ -78,14 +82,6 @@ class PeriodicalMovement
     }
 
     /**
-     * @param Period $period
-     */
-    public function updatePeriod(Period $period)
-    {
-        $this->period = $period;
-    }
-
-    /**
      * @return \DateTimeInterface
      */
     public function starts()
@@ -93,18 +89,43 @@ class PeriodicalMovement
         return $this->starts;
     }
 
+    /**
+     * @param Period $period
+     */
+    public function updatePeriod(Period $period)
+    {
+        $oldValue = $this->period;
+        $this->period = $period;
+        EventPublisher::publish(new Event\PeriodUpdated($this, $oldValue, $period));
+    }
+
+    /**
+     * @param string $concept
+     */
     public function updateConcept($concept)
     {
+        $oldValue = $this->concept;
         $this->concept = $concept;
+        EventPublisher::publish(new Event\ConceptUpdated($this, $oldValue, $concept));
     }
 
+    /**
+     * @param float $amount
+     */
     public function updateAmount($amount)
     {
+        $oldValue = $this->amount;
         $this->amount = $amount;
+        EventPublisher::publish(new Event\AmountUpdated($this, $oldValue, $amount));
     }
 
+    /**
+     * @param \DateTime $starts
+     */
     public function updateStarts(\DateTime $starts)
     {
+        $oldValue = $this->starts;
         $this->starts = $starts;
+        EventPublisher::publish(new Event\StartsDateUpdated($this, $oldValue, $starts));
     }
 }

@@ -3,7 +3,6 @@
 namespace Kontuak\Ports\Movement;
 
 use Kontuak\Movement;
-use Kontuak\Ports\Movement\History\Request;
 use Kontuak\Ports\Resource;
 
 class History
@@ -21,16 +20,22 @@ class History
         $this->source = $source;
     }
 
-    public function execute(Request $request)
+    /**
+     * @param string|null $fromIsoDate
+     * @param string|null $toIsoDate
+     * @param int|null $limit
+     * @return array
+     */
+    public function execute($fromIsoDate = null, $toIsoDate = null, $limit = null)
     {
         $collection = $this->source->collection();
-        if(!is_null($request->fromDate)) {
-            $collection->filterByDateIsPostThan(new \DateTime($request->fromDate));
+        if(!is_null($fromIsoDate)) {
+            $collection->filterByDateIsPostThan(new \DateTime($fromIsoDate));
         }
-        if(!is_null($request->toDate)) {
-            $collection->filterDateLessOrEqualTo(new \DateTime($request->toDate));
+        if(!is_null($toIsoDate)) {
+            $collection->filterDateLessOrEqualTo(new \DateTime($toIsoDate));
         }
-        $amounts = $this->calculator->getForACollection($collection, $request->limit);
+        $amounts = $this->calculator->getForACollection($collection, $limit);
         foreach($amounts as $i => $amount) {
             $amounts[$i]['movement'] = new Resource\Movement($amount['movement']);
         }
