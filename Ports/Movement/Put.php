@@ -2,7 +2,7 @@
 
 namespace Kontuak\Ports\Movement;
 
-use Kontuak\DateTime;
+use Kontuak\IsoDateTime;
 use Kontuak\Movement;
 use Kontuak\Movement\Id;
 use Kontuak\Movement\Source;
@@ -15,7 +15,7 @@ class Put
     /** @var \DateTime */
     private $currentTimeStamp;
 
-    public function __construct(Source $source, DateTime $currentTimeStamp)
+    public function __construct(Source $source, IsoDateTime $currentTimeStamp)
     {
         $this->source = $source;
         $this->currentTimeStamp = $currentTimeStamp;
@@ -59,7 +59,7 @@ class Put
             Id::parse($stringId),
             $amount,
             $concept,
-            new DateTime($isoDate),
+            new IsoDateTime($isoDate),
             $this->currentTimeStamp
         );
     }
@@ -93,7 +93,7 @@ class Put
     private function updateDateIfNotNull($isoDate, Movement $movement)
     {
         if (!is_null($isoDate)) {
-            $movement->updateDate(new DateTime($isoDate));
+            $movement->updateDate(new IsoDateTime($isoDate));
         }
     }
 }

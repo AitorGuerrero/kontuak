@@ -5,7 +5,6 @@ namespace Kontuak;
 use Kontuak\Movement\Exception\InvalidAmount;
 use Kontuak\Movement\Exception\InvalidConcept;
 use Kontuak\Movement\Id;
-use Kontuak\DateTime;
 
 class Movement
 {
@@ -15,9 +14,9 @@ class Movement
     protected $amount;
     /** @var string */
     protected $concept;
-    /** @var DateTime */
+    /** @var IsoDateTime */
     protected $date;
-    /** @var DateTime */
+    /** @var IsoDateTime */
     protected $created;
     /** @var PeriodicalMovement|null */
     protected $periodicalMovement;
@@ -27,8 +26,8 @@ class Movement
         Id $id,
         $amount,
         $concept,
-        DateTime $date,
-        DateTime $created
+        IsoDateTime $date,
+        IsoDateTime $created
     ) {
         $this->id = $id;
         $this->setAmount($amount);
@@ -54,7 +53,7 @@ class Movement
     }
 
     /**
-     * @return DateTime
+     * @return IsoDateTime
      */
     public function date()
     {
@@ -62,7 +61,7 @@ class Movement
     }
 
     /**
-     * @return DateTime
+     * @return IsoDateTime
      */
     public function created()
     {
@@ -88,9 +87,9 @@ class Movement
     }
 
     /**
-     * @param DateTime $date
+     * @param IsoDateTime $date
      */
-    public function updateDate(DateTime $date)
+    public function updateDate(IsoDateTime $date)
     {
         $this->date = $date;
     }

@@ -4,7 +4,7 @@ namespace Kontuak;
 
 use DateTime as SystemDateTime;
 
-class DateTime extends SystemDateTime
+class IsoDateTime extends SystemDateTime
 {
     const ISO_DATE_FORMAT = 'Y-m-d';
 

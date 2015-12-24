@@ -3,7 +3,7 @@
 namespace Kontuak\Tests\Movement;
 
 use Kontuak\Adapters\InMemory\Movement\Source;
-use Kontuak\DateTime;
+use Kontuak\IsoDateTime;
 use Kontuak\Movement;
 use Kontuak\Movement\TotalAmountCalculator;
 
@@ -57,8 +57,8 @@ class TotalAmountCalculatorTest extends \PHPUnit_Framework_TestCase
             Movement\Id::make(),
             $amount,
             'Concept',
-            new DateTime($isoDate),
-            new DateTime('2015-01-01')
+            new IsoDateTime($isoDate),
+            new IsoDateTime('2015-01-01')
         );
     }
 }

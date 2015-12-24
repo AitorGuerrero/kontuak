@@ -2,7 +2,7 @@
 
 namespace Kontuak\PeriodicalMovement;
 
-use Kontuak\DateTime;
+use Kontuak\IsoDateTime;
 use Kontuak\Movement;
 use Kontuak\PeriodicalMovement;
 
@@ -10,24 +10,24 @@ class MovementsGenerator
 {
     /** @var Movement\Source */
     private $movementsSource;
-    /** @var DateTime */
+    /** @var IsoDateTime */
     private $timeStamp;
 
     public function __construct(
         Movement\Source $movementsSource,
-        DateTime $timeStamp
+        IsoDateTime $timeStamp
     ) {
         $this->movementsSource = $movementsSource;
         $this->timeStamp = $timeStamp;
     }
 
-    public function toDate(PeriodicalMovement $periodicalMovement, DateTime $limitDate)
+    public function toDate(PeriodicalMovement $periodicalMovement, IsoDateTime $limitDate)
     {
         $date = $this->firstDate($periodicalMovement);
         $movements = [];
         while($date <= $limitDate->format('Y-m-d')) {
-            $movements[] = $this->atDate($periodicalMovement, new DateTime($date));
-            $date = $periodicalMovement->period()->next(new DateTime($date))->format('Y-m-d');
+            $movements[] = $this->atDate($periodicalMovement, new IsoDateTime($date));
+            $date = $periodicalMovement->period()->next(new IsoDateTime($date))->format('Y-m-d');
         }
 
         return $movements;
@@ -35,10 +35,10 @@ class MovementsGenerator
 
     /**
      * @param PeriodicalMovement $periodicalMovement
-     * @param DateTime $date
+     * @param IsoDateTime $date
      * @return Movement
      */
-    public function atDate(PeriodicalMovement $periodicalMovement, DateTime $date)
+    public function atDate(PeriodicalMovement $periodicalMovement, IsoDateTime $date)
     {
         $movement = new Movement(
             Movement\Id::make(),

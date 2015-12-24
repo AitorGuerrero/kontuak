@@ -2,7 +2,7 @@
 
 namespace Ports\Movement\Put;
 
-use Kontuak\DateTime;
+use Kontuak\IsoDateTime;
 use Kontuak\Ports\Movement\Put;
 use kontuak\Movement;
 use Kontuak\Adapters\InMemory\Movement\Source;
@@ -26,15 +26,15 @@ class Test extends \PHPUnit_Framework_TestCase
         $this->source = new Source();
         $this->useCase = new Put(
             $this->source,
-            new DateTime(self::CURRENT_ISO_DATE)
+            new IsoDateTime(self::CURRENT_ISO_DATE)
         );
 
         $this->source->add(new Movement(
             Id::parse(self::ID),
             self::AMOUNT,
             self::CONCEPT,
-            new DateTime(self::ISO_DATE),
-            new DateTime(self::CURRENT_ISO_DATE)
+            new IsoDateTime(self::ISO_DATE),
+            new IsoDateTime(self::CURRENT_ISO_DATE)
         ));
     }
 
