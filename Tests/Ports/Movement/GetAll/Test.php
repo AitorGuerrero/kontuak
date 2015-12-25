@@ -6,24 +6,18 @@ use Kontuak\Adapters\InMemory\Movement\Source;
 use Kontuak\IsoDateTime;
 use Kontuak\Movement;
 use Kontuak\Ports\Movement\GetAll;
-use Kontuak\Ports\Movement\GetAll\UseCase;
-use Kontuak\Ports\Movement\GetAll\Request;
 
 class Test extends \PHPUnit_Framework_TestCase
 {
     /** @var Source */
     private $source;
-    /** @var UseCase */
+    /** @var GetAll */
     public $useCase;
-    /** @var Request */
-    private $request;
 
     public function setUp()
     {
         $this->source = new Source();
         $this->useCase = new GetAll($this->source);
-        $this->request = $this->useCase->newRequest();
-        $this->request->limit = 20;
     }
 
     /**
@@ -31,22 +25,10 @@ class Test extends \PHPUnit_Framework_TestCase
      */
     public function whenThereAreNoMovementsShouldReturnEmptyCollection()
     {
-        $response = $this->useCase->execute($this->request);
+        $response = $this->useCase->execute(20, 1);
 
         $this->assertInternalType('array', $response);
         $this->assertEquals(0, count($response));
-    }
-
-    /**
-     * @test
-     */
-    public function whenNoLimitIsSettedShouldThrowAnException()
-    {
-        $this->setExpectedException('Kontuak\Ports\Exception\InvalidArgument');
-
-        $request = $this->useCase->newRequest();
-        $this->useCase = new GetAll($this->source);
-        $this->useCase->execute($request);
     }
 
     /**
@@ -56,8 +38,7 @@ class Test extends \PHPUnit_Framework_TestCase
     {
         $limit = 2;
         $this->generateMovements(3);
-        $this->request->limit = $limit;
-        $response = $this->useCase->execute($this->request);
+        $response = $this->useCase->execute($limit, 1);
 
         $this->assertEquals($limit, count($response));
     }
@@ -68,12 +49,9 @@ class Test extends \PHPUnit_Framework_TestCase
     public function whenPagedShouldReturnAskedPage()
     {
         $this->generateMovements(10);
-        $this->request->limit = 10;
-        $allMovements = $this->useCase->execute($this->request);
+        $allMovements = $this->useCase->execute(10, 1);
 
-        $this->request->limit = 2;
-        $this->request->page = 2;
-        $pagedMovements = $this->useCase->execute($this->request);
+        $pagedMovements = $this->useCase->execute(2, 2);
 
         $this->assertEquals($pagedMovements[0], $allMovements[2]);
         $this->assertEquals($pagedMovements[1], $allMovements[3]);

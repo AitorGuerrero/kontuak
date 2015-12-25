@@ -2,9 +2,8 @@
 
 namespace Kontuak\Ports\Movement;
 
-use Kontuak\Ports\Exception\InvalidArgument;
+use Kontuak\Movement\Collection;
 use Kontuak\Movement\Source;
-use Kontuak\Ports\Movement\GetAll\Request;
 
 class GetAll
 {
@@ -17,33 +16,19 @@ class GetAll
     }
 
     public $resource =[];
-    public function execute(Request $request)
+
+    /**
+     * @param int $limit
+     * @param int $page
+     * @return array
+     */
+    public function execute($limit, $page)
     {
-        if(null === $request->limit) {
-            throw new InvalidArgument('limit');
-        }
-        $movements = [];
-
         $collection = $this->source->collection();
-        $this->paginate($request->page, $request->limit, $collection);
-
-        $i = 1;
-        while($collection->valid()) {
-            $movement = $collection->current();
-            $movements[] = $movement;
-            $i++;
-            if($i > $request->limit) {
-                break;
-            }
-            $collection->next();
-        }
+        $this->goToPage($page, $limit, $collection);
+        $movements = $this->extractOnePage($limit, $collection);
 
         return $movements;
-    }
-
-    public function newRequest()
-    {
-        return new Request();
     }
 
     /**
@@ -51,7 +36,7 @@ class GetAll
      * @param $limit
      * @param $collection
      */
-    private function paginate($page, $limit, $collection)
+    private function goToPage($page, $limit, $collection)
     {
         if (!$page) {
             return;
@@ -60,5 +45,20 @@ class GetAll
         for ($i = 0; $i < $firstKey; $i++) {
             $collection->next();
         }
+    }
+
+    /**
+     * @param $limit
+     * @param $collection
+     * @return array
+     */
+    private function extractOnePage($limit, Collection $collection)
+    {
+        $movements = [];
+        for ($i = 0; $i < $limit && $collection->valid(); $i++, $collection->next()) {
+            $movements[] = $collection->current();
+        }
+
+        return $movements;
     }
 }
