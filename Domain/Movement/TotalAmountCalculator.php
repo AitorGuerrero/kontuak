@@ -32,32 +32,36 @@ class TotalAmountCalculator
     /**
      * @param Collection $collection
      * @param null $limit
-     * @return array
+     * @return Transaction[]
      */
     public function getForACollection(Collection $collection, $limit = null)
     {
-        $collection->orderByDate();
+        $collection = $collection->orderByDate();
         /** @var Movement $movement */
-        $totalAmounts = [];
+        $transactions = [];
+        $collection->rewind();
         $firstMovement = $collection->current();
         if(!$firstMovement) {
             return [];
         }
         $totalAmount = $this->getForAMovement($firstMovement);
-
-        $i = 0;
-        foreach($collection as $movement) {
-            $i++;
-            if(!is_null($limit) && $i > $limit) {
-                break;
+        if (!is_null($limit)) {
+            for ($i = 0; $i < $limit; $i++) {
+                if (!$collection->valid()) {
+                    break;
+                }
+                $movement = $collection->current();
+                $totalAmount += $movement->amount();
+                $transactions[] = new Transaction($movement, $totalAmount);
+                $collection->next();
             }
-            $totalAmount += $movement->amount();
-            $totalAmounts[] = [
-                'totalAmount' => $totalAmount,
-                'movement' => $movement
-            ];
+        } else {
+            foreach($collection as $movement) {
+                $totalAmount += $movement->amount();
+                $transactions[] = new Transaction($movement, $totalAmount);
+            }
         }
 
-        return $totalAmounts;
+        return array_reverse($transactions);
     }
 }

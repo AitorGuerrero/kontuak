@@ -18,7 +18,7 @@ class Source implements SourceInterface
      */
     public function collection()
     {
-        return new Collection($this);
+        return new Collection($this->collection);
     }
 
     /**

@@ -24,23 +24,23 @@ class History
      * @param string|null $fromIsoDate
      * @param string|null $toIsoDate
      * @param int|null $limit
-     * @return array
+     * @return Resource\Movement\Transaction[]
      */
     public function execute($fromIsoDate = null, $toIsoDate = null, $limit = null)
     {
         $collection = $this->source->collection();
         if(!is_null($fromIsoDate)) {
-            $collection->filterByDateIsPostThan(new \DateTime($fromIsoDate));
+            $collection = $collection->filterByDateIsPostThan(new \DateTime($fromIsoDate));
         }
         if(!is_null($toIsoDate)) {
-            $collection->filterDateLessOrEqualTo(new \DateTime($toIsoDate));
+            $collection = $collection->filterDateLessOrEqualTo(new \DateTime($toIsoDate));
         }
-        $amounts = $this->calculator->getForACollection($collection, $limit);
-        foreach($amounts as $i => $amount) {
-            $amounts[$i]['movement'] = new Resource\Movement($amount['movement']);
+        $transactions = $this->calculator->getForACollection($collection, $limit);
+        $output = [];
+        foreach($transactions as $i => $transaction) {
+            $output[] = new Resource\Movement\Transaction($transaction);
         }
-        $amounts = array_reverse($amounts);
 
-        return $amounts;
+        return $output;
     }
 }

@@ -7,26 +7,28 @@ class Request
     private $id;
     private $concept;
     private $amount;
-    private $date;
+    private $startDate;
     private $periodType;
     private $periodAmount;
+    private $endDate;
 
-    public function __construct($id, $concept, $amount, $date, $periodType, $periodAmount)
+    public function __construct($id, $concept, $amount, $startDate, $endDate, $periodType, $periodAmount)
     {
         $this->id = $id;
         $this->concept = $concept;
         $this->amount = $amount;
-        $this->date = $date;
+        $this->startDate = $startDate;
         $this->periodType = $periodType;
         $this->periodAmount = $periodAmount;
+        $this->endDate = $endDate;
     }
 
     /**
      * @return mixed
      */
-    public function date()
+    public function startDate()
     {
-        return $this->date;
+        return $this->startDate;
     }
 
     /**
@@ -67,5 +69,13 @@ class Request
     public function periodType()
     {
         return $this->periodType;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function endDate()
+    {
+        return $this->endDate;
     }
 }

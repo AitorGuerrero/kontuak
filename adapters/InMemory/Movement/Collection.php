@@ -19,18 +19,13 @@ class Collection implements Movement\Collection
     const FILTER_CREATED_IS_LESS_THAN = 'createdIsLessThan';
     const FILTER_DATE_IS = 'dateIs';
     const FILTER_PERIODICAL_MOVEMENT = 'periodicalMovement';
-    /** @var Movement[] */
-    private $collection = [];
-    /** @var Source */
-    private $source;
 
     /**
-     * @param Source $source
+     * @param Movement[] $arrayCollection
      */
-    public function __construct(Source $source)
+    public function __construct($arrayCollection)
     {
-        $this->collection = $source->toArray();
-        $this->source = $source;
+        $this->collection = $arrayCollection;
     }
 
     /**
@@ -46,94 +41,103 @@ class Collection implements Movement\Collection
         return $total;
     }
 
+    /**
+     * @return Collection
+     */
     public function orderByDate()
     {
-        usort($this->collection, function(Movement $a, Movement $b) {
+        $ordered = $this->collection;
+        usort($ordered, function(Movement $a, Movement $b) {
             return $a->date() > $b->date() ? 1 : -1;
         });
 
-        return $this;
+        return new Collection($ordered);
     }
 
     /**
-     * @return $this
+     * @return Collection
      */
     public function orderByDateDesc()
     {
-        $this->orderByDate();
-        $this->collection = array_reverse($this->collection);
+        $output = $this->orderByDate();
+        $output->collection = array_reverse($output->collection);
 
-        return $this;
+        return $output;
     }
 
     /**
      * @param \DateTimeInterface $date
-     * @return Movement\Collection
+     * @return Collection
      */
     public function filterDateLessThan(\DateTimeInterface $date)
     {
         $filter = $date->format('Y-m-d');
-        $this->collection = array_filter($this->collection, function (Movement $a) use ($filter) {
-            return $a->date()->format('Y-m-d') < $filter;
-        });
 
-        return $this;
+        return new Collection(
+            array_filter($this->collection, function (Movement $a) use ($filter) {
+                return $a->date()->format('Y-m-d') < $filter;
+            })
+        );
     }
 
     /**
      * @param \DateTimeInterface $date
-     * @return $this
+     * @return Collection
      */
     public function filterDateLessOrEqualTo(\DateTimeInterface $date)
     {
         $filter = $date->format('Y-m-d');
-        $this->collection = array_filter($this->collection, function (Movement $a) use ($filter) {
-            return $a->date()->format('Y-m-d') <= $filter;
-        });
 
-        return $this;
+        return new Collection(
+            array_filter($this->collection, function (Movement $a) use ($filter) {
+                return $a->date()->format('Y-m-d') <= $filter;
+            })
+        );
     }
 
     /**
      * @param \DateTimeInterface $dateTime
-     * @return Movement\Collection
+     * @return Collection
      */
     public function filterByCreatedIsLessThan(\DateTimeInterface $dateTime)
     {
         $filter = $dateTime->getTimeStamp();
-        $this->collection = array_filter($this->collection, function (Movement $a) use ($filter) {
-            return $a->created()->getTimeStamp() < $filter;
-        });
 
-        return $this;
+        return new Collection(
+            array_filter($this->collection, function (Movement $a) use ($filter) {
+                return $a->created()->getTimeStamp() < $filter;
+            })
+        );
     }
 
     /**
      * @param \DateTimeInterface $date
-     * @return Movement\Collection
+     * @return Collection
      */
     public function filterByDateIs(\DateTimeInterface $date)
     {
         $filter = $date->format('Y-m-d');
-        $this->collection = array_filter($this->collection, function (Movement $a) use ($filter) {
-            return $a->date()->format('Y-m-d') === $filter;
-        });
 
-        return $this;
+        return new Collection(
+            array_filter($this->collection, function (Movement $a) use ($filter) {
+                return $a->date()->format('Y-m-d') === $filter;
+            })
+        );
     }
 
     /**
      * @param PeriodicalMovement $periodicalMovement
-     * @return Movement\Collection
+     * @return Collection
      */
     public function filterByPeriodicalMovement(PeriodicalMovement $periodicalMovement)
     {
         $filter = $periodicalMovement->id()->toString();
-        $this->collection = array_filter($this->collection, function (Movement $a) use ($filter) {
-            return $a->periodicalMovement() !== null && $a->periodicalMovement()->id()->toString() === $filter;
-        });
 
-        return $this;
+        return new Collection(
+            array_filter($this->collection, function (Movement $a) use ($filter) {
+                return $a->periodicalMovement() !== null && $a->periodicalMovement()->id()->toString() === $filter;
+            })
+        );
     }
 
     /**
@@ -143,11 +147,12 @@ class Collection implements Movement\Collection
     public function filterByDateIsPostThan(\DateTime $timeStamp)
     {
         $filter = $timeStamp->format('Y-m-d');
-        $this->collection = array_filter($this->collection, function (Movement $a) use ($filter) {
-            return $a->date()->format('Y-m-d') > $filter;
-        });
 
-        return $this;
+        return new Collection(
+            array_filter($this->collection, function (Movement $a) use ($filter) {
+                return $a->date()->format('Y-m-d') > $filter;
+            })
+        );
     }
 
     /**
@@ -156,10 +161,10 @@ class Collection implements Movement\Collection
      */
     public function byId(Id $id)
     {
-        $this->collection = array_filter($this->collection, function (Movement $a) use ($id) {
-            return $a->id()->toString() === $id->toString();
-        });
-
-        return $this;
+        return new Collection(
+            array_filter($this->collection, function (Movement $a) use ($id) {
+                return $a->id()->toString() === $id->toString();
+            })
+        );
     }
 }

@@ -45,9 +45,9 @@ class Test extends \PHPUnit_Framework_TestCase
         $response = $this->useCase->execute();
 
         $this->assertEquals(3, count($response));
-        $this->assertEquals($movement2->id()->toString(), $response[0]['movement']->id());
-        $this->assertEquals($movement3->id()->toString(), $response[1]['movement']->id());
-        $this->assertEquals($movement1->id()->toString(), $response[2]['movement']->id());
+        $this->assertEquals($movement2->id()->toString(), $response[0]->movement()->id());
+        $this->assertEquals($movement3->id()->toString(), $response[1]->movement()->id());
+        $this->assertEquals($movement1->id()->toString(), $response[2]->movement()->id());
     }
 
     /**
@@ -59,8 +59,8 @@ class Test extends \PHPUnit_Framework_TestCase
         $this->source->add($this->generateMovement(-40, '2015-08-05'));
         $response = $this->useCase->execute();
 
-        $this->assertEquals(-10, $response[0]['totalAmount']);
-        $this->assertEquals(30, $response[1]['totalAmount']);
+        $this->assertEquals(-10, $response[0]->amount());
+        $this->assertEquals(30, $response[1]->amount());
     }
 
     /**

@@ -17,7 +17,8 @@ class Source implements Movement\Source
      */
     public function collection()
     {
-        return new Collection($this);
+        return new Collection($this->movements
+        );
     }
 
     public function add(Movement $movement)

@@ -19,6 +19,7 @@ class Test extends \PHPUnit_Framework_TestCase
     const ID = '531d52c5-d217-4a94-92f3-3e0f9b603a7a';
     const PERIOD_TYPE = 'days';
     const PERIOD_AMOUNT = 5;
+    const END_DATE = null;
 
     /** @var Request */
     private $request;
@@ -48,6 +49,7 @@ class Test extends \PHPUnit_Framework_TestCase
             self::CONCEPT,
             self::AMOUNT,
             self::ISO_DATE,
+            self::END_DATE,
             self::PERIOD_TYPE,
             self::PERIOD_AMOUNT
         );

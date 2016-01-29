@@ -9,13 +9,14 @@ class Collection implements PeriodicalMovement\Collection
 {
     use \Kontuak\Adapters\InMemory\Collection;
 
-    /** @var PeriodicalMovement\Source */
-    private $source;
 
-    public function __construct(Source $source)
+    /**
+     * Collection constructor.
+     * @param PeriodicalMovement[] $arrayCollection
+     */
+    public function __construct($arrayCollection)
     {
-        $this->source = $source;
-        $this->collection = $this->source->toArray();
+        $this->collection = $arrayCollection;
     }
 
     /**
@@ -24,12 +25,8 @@ class Collection implements PeriodicalMovement\Collection
      */
     public function byId(Id $id)
     {
-        if (isset($this->collection[$id->toString()])) {
-            $this->collection = [$this->collection[$id->toString()]];
-        } else {
-            $this->collection = [];
-        }
-
-        return $this;
+        return new Collection(array_filter($this->collection, function(PeriodicalMovement $periodicalMovement) use ($id) {
+            return $periodicalMovement->id() === $id;
+        }));
     }
 }

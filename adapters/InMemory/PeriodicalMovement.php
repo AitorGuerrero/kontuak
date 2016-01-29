@@ -11,9 +11,8 @@ class PeriodicalMovement extends \Kontuak\PeriodicalMovement
         Id $id,
         $amount,
         $concept,
-        \DateTime $starts,
         Period $period
     ) {
-        parent::__construct($id, $amount, $concept, $starts, $period);
+        parent::__construct($id, $amount, $concept, $period);
     }
 }

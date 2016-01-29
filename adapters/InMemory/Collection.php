@@ -2,8 +2,11 @@
 
 namespace Kontuak\Adapters\InMemory;
 
-trait Collection 
+trait Collection
 {
+    /** @var array */
+    protected $collection = [];
+
     public function current()
     {
         return current($this->collection);

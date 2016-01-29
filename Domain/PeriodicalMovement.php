@@ -15,8 +15,6 @@ class PeriodicalMovement
     protected $concept;
     /** @var Period */
     protected $period;
-    /** @var Movement */
-    protected $templateMovement;
 
     /**
      * @param PeriodicalMovement\Id $id
@@ -74,14 +72,29 @@ class PeriodicalMovement
         return $this->amount;
     }
 
-    /**
-     * @param Period $period
-     */
     public function updatePeriod(Period $period)
     {
-        $oldValue = $this->period;
+        $oldValue = $this->period();
         $this->period = $period;
-        EventPublisher::publish(new Event\PeriodUpdated($this, $oldValue, $period));
+        EventPublisher::publish(new Event\PeriodUpdated(
+            $this,
+            $oldValue,
+            $period
+        ));
+    }
+
+    /**
+     * @param int $amount
+     */
+    public function updateAmount($amount)
+    {
+        $oldValue = $this->amount();
+        $this->amount = $amount;
+        EventPublisher::publish(new Event\AmountUpdated(
+            $this,
+            $oldValue,
+            $amount
+        ));
     }
 
     /**
@@ -91,24 +104,10 @@ class PeriodicalMovement
     {
         $oldValue = $this->concept;
         $this->concept = $concept;
-        EventPublisher::publish(new Event\ConceptUpdated($this, $oldValue, $concept));
-    }
-
-    /**
-     * @param float $amount
-     */
-    public function updateAmount($amount)
-    {
-        $oldValue = $this->amount;
-        $this->amount = $amount;
-        EventPublisher::publish(new Event\AmountUpdated($this, $oldValue, $amount));
-    }
-
-    /**
-     * @param IsoDateTime $starts
-     */
-    public function updateStarts(IsoDateTime $starts)
-    {
-        $this->period()->updateStartDate($starts);
+        EventPublisher::publish(new Event\ConceptUpdated(
+            $this,
+            $oldValue,
+            $concept
+        ));
     }
 }

@@ -42,6 +42,5 @@ class Update
         );
         $periodicalMovement->updateConcept($request->concept);
         $periodicalMovement->updateAmount($request->amount);
-        $periodicalMovement->updateStarts(new IsoDateTime($request->starts));
     }
 }

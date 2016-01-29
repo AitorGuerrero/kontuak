@@ -15,7 +15,7 @@ class Test extends \PHPUnit_Framework_TestCase
 {
     /** @var Source */
     public $source;
-    /** @var UseCase */
+    /** @var GetAll */
     public $useCase;
     /** @var Request */
     public $request;

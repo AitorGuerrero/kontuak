@@ -3,50 +3,51 @@
 namespace Kontuak\Ports\PeriodicalMovement;
 
 use Kontuak\IsoDateTime;
-use Kontuak\Ports\Mappings\PeriodicalMovement;
+use Kontuak\Ports\Mappings;
 use Kontuak\Period;
-use Kontuak\PeriodicalMovement\Id;
-use Kontuak\PeriodicalMovement\Source;
+use Kontuak\PeriodicalMovement;
 use Kontuak\Ports\PeriodicalMovement\Put\Request;
 
 class Put
 {
-    /** @var Source */
-    private $source;
+    /** @var PeriodicalMovement\Source */
+    private $periodicalMovementSource;
     /** @var \DateTime */
     private $currentTimeStamp;
 
-    public function __construct(Source $source, \DateTime $currentTimeStamp)
+    public function __construct(PeriodicalMovement\Source $source, \DateTime $currentTimeStamp)
     {
-        $this->source = $source;
+        $this->periodicalMovementSource = $source;
         $this->currentTimeStamp = $currentTimeStamp;
     }
 
     /**
      * @param Request $request
-     * @return Response
      */
     public function execute(Request $request)
     {
-        $movement = $this->source->collection()->byId(Id::parse($request->id()))->current();
-        if(!$movement) {
-            $this->makeNewMovement($request);
+        $periodicalMovement = $this->periodicalMovementSource
+            ->collection()
+            ->byId(PeriodicalMovement\Id::parse($request->id()))
+            ->current();
+        if(!$periodicalMovement) {
+            $this->makeNewPeriodicalMovement($request);
         } else {
-            $this->updateAMovement($request, $movement);
-
+            $this->updateAPeriodicalMovement($request, $periodicalMovement);
         }
     }
 
-    private function makeNewMovement(Request $request)
+    private function makeNewPeriodicalMovement(Request $request)
     {
-        return $movement = new \Kontuak\PeriodicalMovement(
-            Id::parse($request->id()),
+        return $movement = new PeriodicalMovement(
+            PeriodicalMovement\Id::parse($request->id()),
             $request->amount(),
             $request->concept(),
-            new \DateTime($request->date()),
-            Period::factory(
-                PeriodicalMovement::$mapPeriodTypeToDomain[$request->periodType()],
-                $request->periodAmount()
+            Period\Factory::fromType(
+                Mappings\PeriodicalMovement::$mapPeriodTypeToDomain[$request->periodType()],
+                $request->periodAmount(),
+                new IsoDateTime($request->startDate()),
+                new IsoDateTime($request->endDate())
             ),
             $this->currentTimeStamp
         );
@@ -54,15 +55,20 @@ class Put
 
     /**
      * @param Request $request
-     * @param $movement
+     * @param $periodicalMovement
      * @throws \Kontuak\InvalidArgumentException
      * @throws \Kontuak\Movement\Exception\InvalidAmount
      */
-    private function updateAMovement(Request $request, $movement)
+    private function updateAPeriodicalMovement(Request $request, PeriodicalMovement $periodicalMovement)
     {
-        /** @var \Kontuak\PeriodicalMovement $movement */
-        $movement->updateAmount($request->amount());
-        $movement->updateConcept($request->concept());
-        $movement->updateStarts(new IsoDateTime($request->date()));
+        /** @var PeriodicalMovement $periodicalMovement */
+        $periodicalMovement->updateAmount($request->amount());
+        $periodicalMovement->updateConcept($request->concept());
+        $periodicalMovement->updatePeriod(Period\Factory::fromType(
+            Mappings\PeriodicalMovement::$mapPeriodTypeToDomain[$request->periodType()],
+            $request->periodAmount(),
+            new IsoDateTime($request->startDate()),
+            new IsoDateTime($request->endDate())
+        ));
     }
 }
