@@ -70,7 +70,8 @@ class Test extends \PHPUnit_Framework_TestCase
             Id::parse($id),
             1,
             'concept',
-            new DaysPeriod(2, new IsoDateTime('2015-01-01'))
+            new DaysPeriod(2, new IsoDateTime('2015-01-01')),
+            new \DateTimeImmutable('2015-01-01')
         );
         $this->source->add($movement);
 

@@ -2,6 +2,7 @@
 
 namespace Kontuak;
 
+use DateTimeImmutable;
 use Kontuak\EventManagement\EventPublisher;
 use Kontuak\PeriodicalMovement\Event;
 
@@ -21,18 +22,20 @@ class PeriodicalMovement
      * @param $amount
      * @param $concept
      * @param Period $period
+     * @param DateTimeImmutable $currentDateTime
      */
     public function __construct(
         PeriodicalMovement\Id $id,
         $amount,
         $concept,
-        Period $period
+        Period $period,
+        DateTimeImmutable $currentDateTime
     ) {
         $this->id = $id;
         $this->amount = $amount;
         $this->concept = $concept;
         $this->period = $period;
-        EventPublisher::publish(new Event\Created($this));
+        EventPublisher::publish(new Event\Created($this, $currentDateTime));
     }
 
     /**

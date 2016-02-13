@@ -2,12 +2,12 @@
 
 namespace Kontuak\EventManagement;
 
-class EventPublisher
+class EventManager
 {
     /** @var EventPublisher */
     private static $instance;
-    /** @var EventDispatcher[] */
-    private $eventDispatchers = [];
+    /** @var EventPublisher[] */
+    public $eventPublishers = [];
 
     /**
      * EventPublisher constructor.
@@ -31,16 +31,20 @@ class EventPublisher
      */
     static function publish(Event $event)
     {
-        foreach (self::getInstance()->eventDispatchers as $eventDispatcher) {
-            $eventDispatcher->dispatch($event);
+    }
+
+    public function subscribe(Subscriber $subscriber, Subject $subject, $event, $handler)
+    {
+        foreach($this->eventPublishers as $publisher) {
+            $publisher->subscribe($subscriber, $subject, $event, $handler);
         }
     }
 
     /**
-     * @param EventDispatcher $eventListener
+     * @param EventPublisher $eventPublisher
      */
-    public function addEventDispatcher(EventDispatcher $eventListener)
+    public function addEventPublisher(EventPublisher $eventPublisher)
     {
-        $this->eventDispatchers[] = $eventListener;
+        $this->eventPublishers[] = $eventPublisher;
     }
 }

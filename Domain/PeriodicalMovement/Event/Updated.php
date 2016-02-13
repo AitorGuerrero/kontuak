@@ -13,7 +13,6 @@ abstract class Updated extends Event
     public function __construct(PeriodicalMovement $periodicalMovement)
     {
         $this->periodicalMovement = $periodicalMovement;
-        parent::__construct();
     }
 
     /**

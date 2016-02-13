@@ -2,6 +2,7 @@
 
 namespace Kontuak\Ports\PeriodicalMovement;
 
+use Kontuak\CurrentDateTimeProvider;
 use Kontuak\IsoDateTime;
 use Kontuak\Ports\PeriodicalMovement\Create\Request;
 use Kontuak\Ports\Mappings\PeriodicalMovement;
@@ -14,10 +15,13 @@ class Create
 
     /** @var Source */
     private $source;
+    /** @var CurrentDateTimeProvider */
+    private $currentDateTimeProvider;
 
-    public function __construct(Source $source)
+    public function __construct(Source $source, CurrentDateTimeProvider $currentDateTimeProvider)
     {
         $this->source = $source;
+        $this->currentDateTimeProvider = $currentDateTimeProvider;
     }
 
     /**
@@ -42,7 +46,8 @@ class Create
                     PeriodicalMovement::$mapPeriodTypeToDomain[$request->periodType],
                     $request->periodAmount,
                     new IsoDateTime($request->starts)
-                )
+                ),
+                $this->currentDateTimeProvider->getCurrentDateTime()
             )
         );
     }

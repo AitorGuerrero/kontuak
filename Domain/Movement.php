@@ -2,6 +2,7 @@
 
 namespace Kontuak;
 
+use Kontuak\EventManagement\EventPublisher;
 use Kontuak\Movement\Exception\InvalidAmount;
 use Kontuak\Movement\Exception\InvalidConcept;
 use Kontuak\Movement\Id;
@@ -34,6 +35,23 @@ class Movement
         $this->setConcept($concept);
         $this->date = $date;
         $this->created = $created;
+    }
+
+    static function fromPeriodicalMovement(
+        Id $id,
+        IsoDateTime $date,
+        IsoDateTime $created,
+        PeriodicalMovement $periodicalMovement
+    ) {
+        $movement = new static(
+            $id,
+            $periodicalMovement->amount(),
+            $periodicalMovement->concept(),
+            $date,
+            $created
+        );
+        EventManager::subscribe($movement, $periodicalMovement, 'Kontuak\PeriodicalMovement\Event\Updated');
+        return $movement;
     }
 
     /**

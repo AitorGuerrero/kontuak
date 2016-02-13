@@ -2,6 +2,7 @@
 
 namespace Ports\PeriodicalMovement\GetOne;
 
+use DateTimeImmutable;
 use Kontuak\Adapters\InMemory\PeriodicalMovement\Source;
 use Kontuak\Adapters\Transformer\PeriodicalMovement;
 use Kontuak\IsoDateTime;
@@ -49,7 +50,8 @@ class Test extends \PHPUnit_Framework_TestCase
             Id::parse($id),
             10,
             'concept',
-            new DaysPeriod(3, new IsoDateTime('2015-01-01'))
+            new DaysPeriod(3, new IsoDateTime('2015-01-01')),
+            new DateTimeImmutable('2015-01-01')
         );
         $this->source->add($periodicalMovement);
 

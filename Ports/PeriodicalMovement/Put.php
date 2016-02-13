@@ -2,6 +2,7 @@
 
 namespace Kontuak\Ports\PeriodicalMovement;
 
+use Kontuak\CurrentDateTimeProvider;
 use Kontuak\IsoDateTime;
 use Kontuak\Ports\Mappings;
 use Kontuak\Period;
@@ -12,13 +13,13 @@ class Put
 {
     /** @var PeriodicalMovement\Source */
     private $periodicalMovementSource;
-    /** @var \DateTime */
-    private $currentTimeStamp;
+    /** @var CurrentDateTimeProvider */
+    private $currentDateTimeProvider;
 
-    public function __construct(PeriodicalMovement\Source $source, \DateTime $currentTimeStamp)
+    public function __construct(PeriodicalMovement\Source $source, CurrentDateTimeProvider $currentDateTimeProvider)
     {
         $this->periodicalMovementSource = $source;
-        $this->currentTimeStamp = $currentTimeStamp;
+        $this->currentDateTimeProvider = $currentDateTimeProvider;
     }
 
     /**
@@ -30,7 +31,7 @@ class Put
             ->collection()
             ->byId(PeriodicalMovement\Id::parse($request->id()))
             ->current();
-        if(!$periodicalMovement) {
+        if (!$periodicalMovement) {
             $this->makeNewPeriodicalMovement($request);
         } else {
             $this->updateAPeriodicalMovement($request, $periodicalMovement);
@@ -39,7 +40,7 @@ class Put
 
     private function makeNewPeriodicalMovement(Request $request)
     {
-        return $movement = new PeriodicalMovement(
+        return new PeriodicalMovement(
             PeriodicalMovement\Id::parse($request->id()),
             $request->amount(),
             $request->concept(),
@@ -49,7 +50,7 @@ class Put
                 new IsoDateTime($request->startDate()),
                 new IsoDateTime($request->endDate())
             ),
-            $this->currentTimeStamp
+            $this->currentDateTimeProvider->getCurrentDateTime()
         );
     }
 

@@ -3,6 +3,7 @@
 namespace Ports\PeriodicalMovement\Create;
 
 use Kontuak\Adapters\InMemory\PeriodicalMovement\Source;
+use Kontuak\Adapters\StaticCurrentDateTimeProvider;
 use Kontuak\IsoDateTime;
 use Kontuak\Ports\Mappings\PeriodicalMovement;
 use Kontuak\Ports\PeriodicalMovement\Create;
@@ -23,7 +24,7 @@ class Test extends \PHPUnit_Framework_TestCase
     public function shouldAddToTheSource()
     {
         $source = new Source();
-        $useCase = new Create($source);
+        $useCase = new Create($source, new StaticCurrentDateTimeProvider(new \DateTimeImmutable('2015-01-01')));
         $request = $useCase->newRequest();
         $request->id = self::ID;
         $request->concept = self::CONCEPT;

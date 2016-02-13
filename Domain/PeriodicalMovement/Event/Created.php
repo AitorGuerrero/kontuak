@@ -12,7 +12,6 @@ class Created extends Event
 
     public function __construct(PeriodicalMovement $periodicalMovement)
     {
-        parent::__construct();
         $this->periodicalMovement = $periodicalMovement;
     }
 

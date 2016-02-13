@@ -2,6 +2,8 @@
 
 namespace Ports\PeriodicalMovement\Put;
 
+use DateTimeImmutable;
+use Kontuak\Adapters\StaticCurrentDateTimeProvider;
 use Kontuak\IsoDateTime;
 use Kontuak\Ports\PeriodicalMovement\Put;
 use Kontuak\Ports\PeriodicalMovement\Put\Request;
@@ -33,7 +35,7 @@ class Test extends \PHPUnit_Framework_TestCase
         $this->source = new Source();
         $this->useCase = new Put(
             $this->source,
-            new \DateTime(self::CURRENT_ISO_DATE)
+            new StaticCurrentDateTimeProvider(new DateTimeImmutable(self::CURRENT_ISO_DATE))
         );
 
         $this->source->add(new PeriodicalMovement(
@@ -41,7 +43,7 @@ class Test extends \PHPUnit_Framework_TestCase
             self::AMOUNT,
             self::CONCEPT,
             new DaysPeriod(4, new IsoDateTime(self::ISO_DATE)),
-            new \DateTime(self::CURRENT_ISO_DATE)
+            new DateTimeImmutable(self::CURRENT_ISO_DATE)
         ));
 
         $this->request = new Request(

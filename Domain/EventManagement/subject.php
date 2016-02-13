@@ -2,6 +2,7 @@
 
 namespace Kontuak\EventManagement;
 
-abstract class Event
+interface Subject
 {
+
 }
